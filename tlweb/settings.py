@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test',
+        'USER': 'root',
+        'PASSWORD':'imdb',
+        'HOST':'172.29.253.152',
+        'PORT':'3306',
     }
 }
 
