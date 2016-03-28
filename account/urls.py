@@ -3,6 +3,5 @@ from django.contrib import admin
 import views
 
 urlpatterns = [
-    url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),
-    url(r'^login/$', views.login)
+    url(r'^/login$', views.login),
 ]

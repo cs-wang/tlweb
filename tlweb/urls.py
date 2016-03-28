@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),
     url(r'^$', include('index.urls')),
-    url(r'^index/', include('index.urls')),
-    url(r'^account/', include('account.urls'))
+    url(r'^index', include('index.urls')),
+    url(r'^account', include('account.urls'))
 ]
