@@ -1,0 +1,203 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>系统登录-天龙健康会员操作平台</title>
+    <link href="assets/css/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+    <link href="assets/css/demo.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+    <script src="assets/js/jquery.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.SuperSlide.js"></script>
+    <script type="text/javascript" src="assets/js/Validform_v5.3.2_min.js"></script>
+    <link rel="stylesheet" href="assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/font-awesome.css" />
+    <script src="assets/js/layer/layer.js"></script>
+</head>
+
+<body>
+
+
+    <div class="header">
+        <h1 class="headerLogo"><a title="后台管理系统" target="_blank" href="#"><img alt="logo" src="assets/images/logo.png" /></a></h1>
+
+        <div class="headerNav">
+            <a  href="/index/compamy/" id="Company">公司介绍</a>
+&nbsp;&nbsp;&nbsp;
+            <a  href="/index/product/" id="product">产品介绍</a>
+        </div>
+    </div>
+
+    <div class="banner">
+
+        <div class="login-aside">
+            <div id="o-box-up"></div>
+            
+            
+
+            <div id="o-box-down" style="table-layout:fixed;">
+                <div class="error-box"></div>
+                <ul class="tabsLogin cf">
+                    <li class="on"><label for="logonId" class="form-label">会员登陆</label></li>
+                    <li><label for="logonId" class="form-label">管理员登录</label></li>
+                </ul>
+
+
+                <form class="registerform on" action="/account/login/" method="post">
+                    <div class="fm-item">
+                        
+                        <input type="text" value="" maxlength="100" id="username" class="i-text" placeholder="会员用户名" />
+                        <div class="ui-form-explain"></div>
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="password" class="form-label"></label>
+                        <input type="password" value="" maxlength="100" id="password" class="i-text" placeholder="密码" />
+                        <div class="ui-form-explain"></div>
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label"></label>
+                        <button type="submit" class="btn btn-primary" style="width: 242px;" value="" id="loginbtn" >登陆</button>
+                       
+                        <div class="ui-form-explain"></div>
+                    </div>
+                    <div class="fm-item"; style="height:20px">
+                        <label class="form-label"></label>
+                        <p style="width:242px"><span style="float:left"><a href="javascript:;" style="color:white" id="fotpwd">忘记密码</a></span><span style="float:right"><a href="/Account/Reg" style="color:white">我要注册</a></span></p>
+                    </div>
+                    <div class="fm-item">
+                        <label class="form-label"></label>
+                        <p style="width:242px;font-size:9px"><a href="UpdateBrowser.html" target="_blank" style="color:white" id="fotpwd">我无法正常使用</a></p>
+                    </div>
+                </form>
+
+                <form class="registerform" action>
+                    <div class="fm-item">
+                        
+                        <input type="text" value="" maxlength="100" id="username" class="i-text" placeholder="管理员用户名" />
+                        <div class="ui-form-explain"></div>
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="password" class="form-label"></label>
+                        <input type="password" value="" maxlength="100" id="password" class="i-text" placeholder="密码" />
+                        <div class="ui-form-explain"></div>
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label"></label>
+                        <button type="submit" class="btn btn-primary" style="width: 242px;" value="" id="loginbtn" >登陆</button>
+                       
+                        <div class="ui-form-explain"></div>
+                    </div>
+                    <div class="fm-item"; style="height:20px">
+                        <label class="form-label"></label>
+                        <p style="width:242px"><span style="float:left"><a href="javascript:;" style="color:white" id="fotpwd">忘记密码</a></span></p>
+                    </div>
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+        <div class="bd">
+            <ul>
+                <li style="background:url(assets/images/banner1.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
+                <li style="background:url(assets/images/banner2.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
+            </ul>
+        </div>
+
+        <div class="hd"><ul></ul></div>
+    </div>
+    <script type="text/javascript">jQuery(".banner").slide({ titCell: ".hd ul", mainCell: ".bd ul", effect: "fold", autoPlay: true, autoPage: true, trigger: "click" });</script>
+
+
+    <div class="banner-shadow"></div>
+
+    <div class="footer">
+        <p style="color:red">网上新加单会员咨询和会员服务咨询电话：0575-87755511，手机和微信号：18006800511</p>
+        <p>Copyright &copy; 2015.天龙健康会员操作平台 All rights reserved. Powered by <a target="_blank" href="http://www.mrisy.com/">Mrisy System</a> &nbsp;&nbsp; <a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a> </p>
+    </div>
+</body>
+
+<script>
+    jQuery(function ($) {
+        $(".tabsLogin li").each(function(i){
+            $(this).click(function(){
+                $(this).addClass("on").siblings("li").removeClass("on");
+                $(".registerform").eq(i).show().siblings(".registerform").hide();
+            });
+        });
+
+
+        $('form').submit(function () {
+            //return false;
+            return login();
+        })
+
+        $('#loginbtn').click(function () {
+            login(); return false;
+        });
+
+
+        $('#product').click(function () {
+            //iframe层
+            layer.open({
+                type: 2,
+                title: '产品介绍',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['90%', '90%'],
+                content: '/index/product/' //iframe的url
+            });
+            return false;
+        });
+
+        $('#Company').click(function () {
+            //iframe层
+            layer.open({
+                type: 2,
+                title: '公司介绍',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['800px', '600px'],
+                content: '/index/company/' //iframe的url
+            });
+            return false;
+        });
+
+    });
+
+    $('#fotpwd').click(function () {
+        layer.alert('请与您的服务中心联系', { icon: 6 });
+
+    })
+        function login()
+        {
+            $('#loginsuccess').hide();
+            $('#loginerr').hide();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            if (username == '') { $('#username').focus(); return; }
+            if (password == '') { $('#password').focus(); return; }
+            $('#loginbtn').prop('disabled',true);
+            layer.msg('正在登陆中...', {time: 30000, icon: 16 })
+            $.post('/account/login/', { username: username, password: password }, function (json) {
+                layer.closeAll();
+                if (json.result == 'success') {
+                    layer.msg('登陆成功，请稍候...', { icon: 16 });
+                    location.href = '/'
+                } else {
+                    $('#loginerr').show();
+                    $('#loginbtn').removeAttr('disabled');
+                    layer.alert(json.msg, { icon: 5 });
+                    return false;
+                }
+            });
+            return false;
+        }
+</script>
+
+</html>
