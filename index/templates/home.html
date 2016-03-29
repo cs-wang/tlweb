@@ -184,18 +184,18 @@
             if (password == '') { $('#password').focus(); return; }
             $('#loginbtn').prop('disabled',true);
             layer.msg('正在登陆中...', {time: 30000, icon: 16 })
-            $.post('/account/login', { username: username, password: password }, function (json) {
+            $.post('/account/login/', { username: username, password: password }, function (json) {
                 layer.closeAll();
-                if (json.result == 'success') {
+                if (json.result == "success") {
                     layer.msg('登陆成功，请稍候...', { icon: 16 });
                     location.href = '/'
-                } else {
+                } else if(json.result != "success") {
                     $('#loginerr').show();
                     $('#loginbtn').removeAttr('disabled');
-                    layer.alert(json.msg, { icon: 5 });
+                    layer.alert(json.msg, {icon :5 });
                     return false;
                 }
-            });
+            },"json");
             return false;
         }
 </script>

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from compiler.pycodegen import EXCEPT
 
 
 class Advice(models.Model):
@@ -184,18 +185,21 @@ class Member(models.Model):
     class Meta:
         managed = False
         db_table = 'member'
-# def login(user,pwd,role):
+    def login(self,user,pwd):
 #     if role == 1:
-#         userEntity = Member.objects.filter(user_name = user)
-#         if userEntity.password == pwd:
-#             return True
-#         else
-#             return False
-#     else if role = 2:
+        try:
+            userEntity = Member.objects.filter(user_name = user).get()
+            if userEntity.password == pwd:
+                return True
+            else:
+                return False
+        except BaseException, e:
+            return False
+#     elif role == 2:
 #         serviceEntity = Service.objects,filter(service_name = user)
 #         if serviceEntity.service_pwd == pwd:
 #             return True
-#         else
+#         else:
 #             return False
 
 class MemberStatus(models.Model):
