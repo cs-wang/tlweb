@@ -184,19 +184,19 @@ class Member(models.Model):
     class Meta:
         managed = False
         db_table = 'member'
-def login(user,pwd,role):
-    if role == 1:
-        userEntity = Member.objects.filter(user_name = user)
-        if userEntity.password == pwd:
-            return True
-        else
-            return False
-    else if role = 2:
-        serviceEntity = Service.objects,filter(service_name = user)
-        if serviceEntity.service_pwd == pwd:
-            return True
-        else
-            return False
+# def login(user,pwd,role):
+#     if role == 1:
+#         userEntity = Member.objects.filter(user_name = user)
+#         if userEntity.password == pwd:
+#             return True
+#         else
+#             return False
+#     else if role = 2:
+#         serviceEntity = Service.objects,filter(service_name = user)
+#         if serviceEntity.service_pwd == pwd:
+#             return True
+#         else
+#             return False
 
 class MemberStatus(models.Model):
     status_id = models.CharField(primary_key=True, max_length=1)
