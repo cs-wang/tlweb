@@ -4,21 +4,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
     <title>系统登录-天龙健康会员操作平台</title>
-    <link href="assets/css/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
-    <link href="assets/css/demo.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
-    <script src="assets/js/jquery.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.SuperSlide.js"></script>
-    <script type="text/javascript" src="assets/js/Validform_v5.3.2_min.js"></script>
-    <link rel="stylesheet" href="assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="assets/css/font-awesome.css" />
-    <script src="assets/js/layer/layer.js"></script>
+    <link href="/assets/css/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/demo.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+    <script src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.SuperSlide.js"></script>
+    <script type="text/javascript" src="/assets/js/Validform_v5.3.2_min.js"></script>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+    <script src="/assets/js/layer/layer.js"></script>
 </head>
 
 <body>
 
 
     <div class="header">
-        <h1 class="headerLogo"><a title="后台管理系统" target="_blank" href="#"><img alt="logo" src="assets/images/logo.png" /></a></h1>
+        <h1 class="headerLogo"><a title="后台管理系统" target="_blank" href="#"><img alt="logo" src="/assets/images/logo.png" /></a></h1>
 
         <div class="headerNav">
             <a  href="/index/compamy/" id="Company">公司介绍</a>
@@ -104,8 +104,8 @@
 
         <div class="bd">
             <ul>
-                <li style="background:url(assets/images/banner1.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
-                <li style="background:url(assets/images/banner2.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
+                <li style="background:url(/assets/images/banner1.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
+                <li style="background:url(/assets/images/banner2.jpg) #CCE1F3 center 0 no-repeat;"><a href="javascript:;"></a></li>
             </ul>
         </div>
 
@@ -150,7 +150,7 @@
                 shadeClose: true,
                 shade: 0.8,
                 area: ['90%', '90%'],
-                content: '/index/product' //iframe的url
+                content: '/index/product/' //iframe的url
             });
             return false;
         });
@@ -163,7 +163,7 @@
                 shadeClose: true,
                 shade: 0.8,
                 area: ['800px', '600px'],
-                content: '/index/company' //iframe的url
+                content: '/index/company/' //iframe的url
             });
             return false;
         });
@@ -184,7 +184,7 @@
             if (password == '') { $('#password').focus(); return; }
             $('#loginbtn').prop('disabled',true);
             layer.msg('正在登陆中...', {time: 30000, icon: 16 })
-            $.post('/account/login/', { username: username, password: password }, function (json) {
+            $.post('/account/login', { username: username, password: password }, function (json) {
                 layer.closeAll();
                 if (json.result == 'success') {
                     layer.msg('登陆成功，请稍候...', { icon: 16 });

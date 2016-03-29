@@ -8,64 +8,41 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="HandheldFriendly" content="true">
     <!--可无视-->
-    <link rel="stylesheet" type="text/css" media="screen" href="../ADV/reset.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="../ADV/text.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/ADV/reset.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/ADV/text.css">
 
     <!--必要样式-->
-    <link id="skin" rel="stylesheet" type="text/css" media="screen" href="../ADV/style.css">
-
-    <script type="text/javascript" src="../ADV/jquery.min.js"></script>
-    <script type="text/javascript" src="../ADV/jquery.divas-1.0.min.js"></script>
-    <script type="text/javascript">
-$(document).ready(function(){
-
-    $("#slider").divas({
-        slideTransitionClass: "divas-slide-transition-left",
-        titleTransitionClass: "divas-title-transition-left",
-        titleTransitionParameter: "left",
-        titleTransitionStartValue: "-999px",
-        titleTransitionStopValue: "0px",
-        wingsOverlayColor: "rgba(0,0,0,0.6)"
+    <link id="skin" rel="stylesheet" type="text/css" media="screen" href="/assets/ADV/style.css">
+    <script type="text/javascript" src="/assets/ADV/jquery.min.js"></script>
+    <!-- slick slider -->
+    <link rel="stylesheet" href="/assets/ADV/slick/slick.css"/>
+    <link rel="stylesheet" href="/assets/ADV/slick/slick-theme.css"/>
+    <script src="/assets/ADV/slick/slick.min.js"></script>   
+    <script>
+    $(function(){
+        $('.divas-slide-container').slick({
+            dots: false,
+            infinite: true,
+            speed: 500,
+            autoplaySpeed: 4500,
+            slidesToShow: 1,
+            autoplay: true
+        });
     });
-
-});
-    </script>
+    </script> 
 </head>
 <body>
 
     <section id="slider_wrapper">
-        <div id="slider" class="divas-slider" data-id="divas-slider_0" style="width: 1920px; box-sizing: content-box;">
 
-            <ul class="divas-slide-container" data-id="divas-slide-container_0" style="width: 5760px; box-sizing: content-box;">
-                <li class="divas-slide " data-position="2" data-id="divas-slide-2_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p2.png" alt="" data-src="/ADV/IMG/p2.png"></li>
-                <li class="divas-slide " data-position="3" data-id="divas-slide-3_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p3.png" alt="" data-src="/ADV/IMG/p3.png"></li>
-                <li class="divas-slide " data-position="4" data-id="divas-slide-4_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p4.png" alt="" data-src="/ADV/IMG/p4.png"></li>
-                <li class="divas-slide " data-position="9" data-id="divas-slide-9_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p9.png" alt="" data-src="/ADV/IMG/p9.png"></li>
-                <li class="divas-slide " data-position="10" data-id="divas-slide-10_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p22.png" alt="" data-src="/ADV/IMG/p22.png"></li>
-                <!--<li class="divas-slide " data-position="15" data-id="divas-slide-15_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p16.png" alt="" data-src="/ADV/IMG/p16.png"></li>
-                <li class="divas-slide " data-position="17" data-id="divas-slide-17_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p18.png" alt="" data-src="/ADV/IMG/p18.png"></li>
-                <li class="divas-slide " data-position="18" data-id="divas-slide-18_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p19.png" alt="" data-src="/ADV/IMG/p19.png"></li>
-                <li class="divas-slide " data-position="19" data-id="divas-slide-19_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p20.png" alt="" data-src="/ADV/IMG/p20.png"></li>
-                <li class="divas-slide " data-position="20" data-id="divas-slide-20_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p21.png" alt="" data-src="/ADV/IMG/p21.png"></li>
-                <li class="divas-slide " data-position="21" data-id="divas-slide-21_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p22.png" alt="" data-src="/ADV/IMG/p22.png"></li>
-                <li class="divas-slide " data-position="22" data-id="divas-slide-22_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p23.png" alt="" data-src="/ADV/IMG/p23.png"></li>
-                <li class="divas-slide " data-position="23" data-id="divas-slide-23_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p24.png" alt="" data-src="/ADV/IMG/p24.png"></li>
-                <li class="divas-slide " data-position="24" data-id="divas-slide-24_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p25.png" alt="" data-src="/ADV/IMG/p25.png"></li>
-                <li class="divas-slide " data-position="25" data-id="divas-slide-25_0" style="box-sizing: content-box; position: relative; float: left; width: 1152px; margin: 0px; padding: 0px; left: -1920px; height: 720px;"><img src="/ADV/IMG/p26.png" alt="" data-src="/ADV/IMG/p26.png"></li>-->
-            </ul>
-
-            <div class="divas-navigation" data-id="divas-navigation_0">
-                <span class="divas-prev" data-id="divas-prev_0">&nbsp;</span>
-                <span class="divas-next" data-id="divas-next_0">&nbsp;</span>
-            </div>
-
-            <div class="divas-controls" data-id="divas-controls_0">
-                <span class="divas-start" data-id="divas-start_0"><i class="fa fa-play"></i></span>
-                <span class="divas-stop disabled" data-id="divas-stop_0"><i class="fa fa-pause"></i></span>
-            </div>
-
-
-
+        <div class="slider">
+            <ul class="divas-slide-container">
+                <li><img src="/assets/ADV/img/p2.png"></li>
+                <li><img src="/assets/ADV/img/p3.png"></li>
+                <li><img src="/assets/ADV/img/p4.png"></li>
+                <li><img src="/assets/ADV/img/p9.png"></li>
+                <li><img src="/assets/ADV/img/p22.png"></li>
+            </ul>            
         </div>
 
     </section>
