@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'db',
     'index',
-    'account'
+    'account',
+    'service',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'tlweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['./templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
