@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>新增会员 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        天龙健康会员操作平台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+                <!-- #section:basics/navbar.toggle -->
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info">
+                                <small>欢迎,</small>
+                                ZJ001
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" id="chpwd">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Account/Login">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive">
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+
+
+
+
+
+                    <li class="">
+                            <a href="/Services/DashBoard">
+                                <i class="menu-icon fa  fa-tachometer"></i>
+                                <span class="menu-text">
+                                    管理首页
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/NoticeList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    查看公告
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/MsgList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    消息中心
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa  fa-desktop"></i>
+                                <span class="menu-text">
+                                    会员中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/MemberEdit">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            新增会员
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberOrder">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/UserMap">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员网格
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-history"></i>
+                                <span class="menu-text">
+                                    费用中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/ComBank">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            公司收款账户
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=1">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费审核
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=2">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    意见建议
+                                </span>
+                                    <span class="badge badge-danger">
+                                        1
+                                    </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/AdviceList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            意见列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    副中心管理
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/SubService">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            副中心设置
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+            </ul>
+
+
+
+
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+<div class="ace-settings-container" id="ace-settings-container">
+    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+        <i class="ace-icon fa fa-cog bigger-130"></i>
+    </div>
+
+    <div class="ace-settings-box clearfix" id="ace-settings-box">
+        <div class="pull-left width-50">
+            <!-- #section:settings.skins -->
+            <div class="ace-settings-item">
+                <div class="pull-left">
+                    <select id="skin-colorpicker" class="hide">
+                        <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                        <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                        <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                        <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                    </select>
+                </div>
+                <span>&nbsp; 更换颜色</span>
+            </div>
+
+            <!-- /section:settings.skins -->
+            <!-- #section:settings.navbar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                <label class="lbl" for="ace-settings-navbar"> 导航固定 </label>
+            </div>
+
+            <!-- /section:settings.navbar -->
+            <!-- #section:settings.sidebar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                <label class="lbl" for="ace-settings-sidebar"> 菜单固定 </label>
+            </div>
+
+            <!-- /section:settings.sidebar -->
+            <!-- #section:settings.breadcrumbs -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                <label class="lbl" for="ace-settings-breadcrumbs"> 当前位置固定 </label>
+            </div>
+
+            <!-- /section:settings.breadcrumbs -->
+            <!-- #section:settings.rtl -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                <label class="lbl" for="ace-settings-rtl"> 右侧视图 </label>
+            </div>
+
+            <!-- /section:settings.rtl -->
+            <!-- #section:settings.container -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                <label class="lbl" for="ace-settings-add-container">
+                    标准容器视图
+                </label>
+            </div>
+
+            <!-- /section:settings.container -->
+        </div><!-- /.pull-left -->
+
+        <div class="pull-left width-50">
+            <!-- #section:basics/sidebar.options -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
+                <label class="lbl" for="ace-settings-hover"> 移动显示二级菜单 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
+                <label class="lbl" for="ace-settings-compact"> 更改菜单视图 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
+                <label class="lbl" for="ace-settings-highlight"> 更换当前菜单显示 </label>
+            </div>
+
+            <!-- /section:basics/sidebar.options -->
+        </div><!-- /.pull-left -->
+    </div><!-- /.ace-settings-box -->
+</div>
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            新增会员
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row noMarginLR iUcAddNewMember">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+            <input id="UserId" name="UserId" type="hidden" value="0" />
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 手机号码 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="UserName" name="UserName" placeholder="手机号码将是登陆名" class="col-xs-10 col-sm-5" maxlength="12" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 昵称或姓名 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" maxlength="20" />
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">当汇款人非本人时请填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">汇款人非本人时请填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="BindMob" name="BindMob" placeholder="不填写等于登陆账号" class="col-xs-10 col-sm-5" value="" maxlength="11" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">系统短信将发送到您绑定的手机号码</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 登陆密码 </label>
+
+                <div class="col-sm-9">
+                    <!-- #section:elements.form.input-icon -->
+                    <span class="blockinMobile">
+                        <input type="password" id="UserPwd">
+                    </span>
+
+                    <span class="blockinMobile">
+                        <input type="password" id="UserRePwd" placeholder="重复登陆密码">
+                    </span>
+
+                    <!-- /section:elements.form.input-icon -->
+                </div>
+            </div>
+
+            
+
+            <div class="space-4"></div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 微信号 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">微信接受奖金和汇款的会员，必须填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 开户银行 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="BankName" name="BankName" placeholder="" class="col-xs-10 col-sm-5" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">微信不填时您必须填完整开户行，如：农业银行浙江分行杭州西湖支行</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 银行账号 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">银行卡接收奖金和汇款的会员，微信不填时必须填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">绑定银行卡姓名</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货人 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货人电话 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货地址 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> 选择产品 </label>
+
+                    <div class="col-sm-9">
+                        <p class="haveChosen">以下产品选满1000元</p>
+                        <div class="emBox">
+                        <label><input id="A1" name="product" type="checkbox" data-val="500" data-name="亚麻籽益生菌水溶粉500元/提" />亚麻籽益生菌水溶粉500元/提</label> <br />
+                        <label><input id="A4" name="product" type="checkbox" data-val="500" data-name="亚麻全营养代餐棒500元/套" />亚麻全营养代餐棒500元/套</label> <br />
+                        <label><input id="A5" name="product" type="checkbox" data-val="500" data-name="亚麻营养膳食粉500元/套" />亚麻营养膳食粉500元/套</label> <br />
+                        <label><input id="A2" name="product" type="checkbox" data-val="500" data-name="亚麻籽有机冷榨油大礼盒500元/提" />亚麻籽有机冷榨油大礼盒500元/提</label> 
+                        </div>
+
+                        <p class="haveChosen">您选择的是：</p>
+                            <label id="info"></label>
+                        <input id="Mark" type="hidden" />
+                    </div>
+                </div>
+            
+
+
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="button" id="Save">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <a class="btn" href="MemberList">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        返回列表
+                    </a>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+<style>
+    .js-max-input {
+        border: solid 1px #ffd2b2;
+        background: #fffae5;
+        padding: 0 10px 0 10px;
+        font-size: 20px;
+        color: #ff4400;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        new TextMagnifier({
+            inputElem: '#UserName',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4,1],
+
+        });
+        new TextMagnifier({
+            inputElem: '#DepositMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#FromMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#RecMob',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#BankAccount',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [4, 4, 4, 4, 3],
+
+        });
+        new TextMagnifier({
+            inputElem: '#IDCard',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 3, 4, 4, 4],
+
+        });
+
+
+
+
+
+        
+
+        $('input[type="checkbox"][name="product"]').change(function () {
+            //alert('ss');
+            var total = 1000;
+            var select = $('input[type="checkbox"][name="product"]:checked');
+            var selectProduct = '';
+            if (select.length > 2) { $(this).prop('checked', false); return; }
+            $(select).each(function (x, y) {
+                if ($(y).attr('data-val') == 500) {
+                    if (select.length == 1) { selectProduct = selectProduct + $(y).attr('data-name') + 'x 2  +'; }
+                    else if (select.length == 2) { selectProduct = selectProduct + $(y).attr('data-name') + '  +'; }
+                }
+                if ($(y).attr('data-val') == 200) {
+                    if (select.length == 1) {
+                        selectProduct = selectProduct + $(y).attr('data-name') + ' x5';
+                    }
+                    else {
+                        selectProduct = selectProduct + $(y).attr('data-name');
+                    }
+                }
+            })
+            selectProduct = selectProduct.substring(0, selectProduct.length - 1);
+            $('#info').text(selectProduct);
+            $('#Mark').val(selectProduct);
+        });
+
+
+        //$('#A3').trigger('change');
+
+        
+
+
+
+
+
+
+
+        $('#Save').click(function () {
+            var UserId = $('#UserId').val();
+            var UserName = $('#UserName').val();
+            var NickName = $('#NickName').val();
+            var IDCard = '';//$('#IDCard').val();
+            var DepositMobile = $('#DepositMobile').val();
+            var UserPwd = $('#UserPwd').val();
+            var UserRePwd = $('#UserRePwd').val();
+            var UserPayPwd = '1';//$('#UserPayPwd').val();
+            var UserRePayPwd = '1'; //$('#UserRePayPwd').val();
+            var WeChat = $('#WeChat').val();
+            var Alipay = $('#Alipay').val();
+            var BankName = $('#BankName').val();
+            var BankAccount = $('#BankAccount').val();
+            var TrueName = $('#TrueName').val();
+            var RecName = $('#RecName').val();
+            var RecAdd = $('#RecAdd').val();
+            var RecMob = $('#RecMob').val();
+            var Mark = $('#Mark').val();
+            var UserStatus = 4;
+            var BindMob = $('#BindMob').val();
+
+
+            if (UserName == "") { $('#UserName').focus(); layer.tips('手机号码不能为空', '#UserName'); return false; }
+
+            if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
+            //if (IDCard == "") { $('#IDCard').focus(); layer.tips('身份证号不能为空', '#IDCard'); return false; }
+            //if (IDCard != "") {
+            //    if (IDCard.length != 18 || IdCardValidate(IDCard) == false) {
+            //$('#IDCard').focus(); layer.tips('身份证号码不正确', '#IDCard'); return false;
+            //    }
+            //}
+
+
+            if (UserId == '0') {
+                if (UserPwd == "") { $('#UserPwd').focus(); layer.tips('密码不能为空', '#UserPwd'); return false; }
+                if (UserPwd != UserRePwd) { $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false; }
+            }
+            else {
+                if (UserPwd != '' || UserRePwd != '') {
+                    if (UserPwd != UserRePwd) {
+                        $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false;
+                    }
+                }
+            }
+
+
+            if (UserId == '0') {
+                if (UserPayPwd == "") { $('#UserPayPwd').focus(); layer.tips('二级密码不能为空', '#UserPayPwd'); return false; }
+                if (UserPayPwd != UserRePayPwd) { $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false; }
+            }
+            else {
+                if (UserPayPwd != '' || UserRePayPwd != '') {
+                    if (UserPayPwd != UserRePayPwd) {
+                        $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false;
+                    }
+                }
+            }
+
+            //if (BankName == "") { $('#BankName').focus(); layer.tips('银行开户行不能为空', '#BankName'); return false; }
+            //if (BankAccount == "") { $('#BankAccount').focus(); layer.tips('银行账号不能为空', '#BankAccount'); return false; }
+
+            //if (TrueName == "") { $('#TrueName').focus(); layer.tips('真实姓名不能为空', '#TrueName'); return false; }
+            //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
+            //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
+            //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
+
+
+
+            var data = {
+                UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
+                DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
+                WeChat: WeChat, Alipay: Alipay, BankName: BankName, BankAccount: BankAccount,
+                TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob, Mark: Mark
+            }
+            $('#Save').prop('disabled', true);
+            $.post('MemberSave', data, function (json) {
+
+                if (json.result == "t") {
+                    layer.msg('保存成功！', { icon: 1 }, function () { location.href = 'MemberList'; });
+
+                }
+                else {
+                    layer.alert('保存失败。<br />' + json.msg, { icon: 5 });
+                    $('#Save').prop('disabled', false);
+                }
+
+            });
+        })
+    });
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">天龙健康会员操作平台</span>
+                        Mrisy &copy; 2015 &nbsp;&nbsp;<a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a>
+                    </span>
+
+                    &nbsp; &nbsp;
+                    
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="/assets/js/ace/elements.scroller.js"></script>
+    <script src="/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="/assets/js/ace/elements.fileinput.js"></script>
+    <script src="/assets/js/ace/elements.typeahead.js"></script>
+    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="/assets/js/ace/elements.spinner.js"></script>
+    <script src="/assets/js/ace/elements.treeview.js"></script>
+    <script src="/assets/js/ace/elements.wizard.js"></script>
+    <script src="/assets/js/ace/elements.aside.js"></script>
+    <script src="/assets/js/ace/ace.js"></script>
+    <script src="/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="/assets/js/ace/ace.sidebar.js"></script>
+    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="/assets/js/ace/ace.widget-box.js"></script>
+    <script src="/assets/js/ace/ace.settings.js"></script>
+    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+    <script src="../assets/js/layer/layer.js"></script>
+
+    <script>
+        var haveFound = false;
+        $('ul.nav-list li a').each(function () {
+            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
+                $(this).parent().addClass('active').show();
+                haveFound = true;
+                if ($(this).parent().parent().hasClass('submenu')) {
+                    $(this).parent().parent().parent().addClass('active');
+                    $(this).parent().parent().parent().addClass('open');
+                }
+                else {
+                    $(this).parent().addClass('open');
+                }
+            }
+        });
+        if (haveFound == false) {
+            $('ul.nav-list li a').each(function () {
+                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
+                    $(this).parent().addClass('active').show();
+                    if ($(this).parent().parent().hasClass('submenu')) {
+                        $(this).parent().parent().parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('open');
+                    }
+                    else {
+                        $(this).parent().addClass('open');
+                    }
+                }
+            });
+        }
+
+
+        $('#chpwd').click(function () {
+            layer.open({
+                type: 2,
+                title: '修改账户密码',
+                shadeClose: false,
+                shade: 0.8,
+                area: ['400px', '500px'],
+                content: '/Account/ChangePwd' //iframe的url
+            });
+
+        })
+    </script>
+</body>
+</html>
