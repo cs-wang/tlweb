@@ -58,7 +58,7 @@ ROOT_URLCONF = 'tlweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['service/templates','index/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
