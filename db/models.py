@@ -185,22 +185,30 @@ class Member(models.Model):
     class Meta:
         managed = False
         db_table = 'member'
-    def login(self,user,pwd):
-#     if role == 1:
-        try:
-            userEntity = Member.objects.filter(user_name = user).get()
-            if userEntity.password == pwd:
-                return True
-            else:
+    #user用户名 pwd密码 role角色 0为会员1为服务点
+    def login(self,user,pwd,role):
+        print role
+        if role == '0':
+            try:
+                userEntity = Member.objects.filter(user_name = user).get()
+                if userEntity.password == pwd:
+                    return True
+                else:
+                    return False
+            except BaseException, e:
                 return False
-        except BaseException, e:
-            return False
-#     elif role == 2:
-#         serviceEntity = Service.objects,filter(service_name = user)
-#         if serviceEntity.service_pwd == pwd:
-#             return True
-#         else:
-#             return False
+        elif role == '1':
+            try:
+                serviceEntity = Service.objects.filter(service_name = user).get()
+                if serviceEntity.service_pwd == pwd:
+                    return True
+                else:
+                    return False
+            except BaseException, e:
+                return False
+    #user    
+    def register(self,user,nickname,statusid,serviceid,referenceid,newpwd):
+        pass
 
 class MemberStatus(models.Model):
     status_id = models.CharField(primary_key=True, max_length=1)
