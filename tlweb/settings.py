@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'index',
     'account',
     'Services',
+    'Member',
 ]
 
 MIDDLEWARE_CLASSES = [
