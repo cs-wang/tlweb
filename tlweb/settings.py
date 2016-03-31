@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'db',
     'index',
     'account',
-    'service',
+    'Services',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
+        'NAME': 'skydragon',
         'USER': 'root',
-        'PASSWORD':'123456',
+        'PASSWORD':'root',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }
