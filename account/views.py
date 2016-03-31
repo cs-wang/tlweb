@@ -27,4 +27,5 @@ def login(request):
             return HttpResponse(code1)
          
 def register(request):
+
     pass

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from db import models
 # Create your views here.
 
 def DashBoard(request):
@@ -16,6 +17,14 @@ def MsgList(request):
 
 def MemberEdit(request):
 	context = {}
+#	 if request.method == 'GET':
+#		 return 
+#	 elif request.method == 'POST':
+#		 return
+	member_ = models.Member()
+	flag = member_.register('success',"nickname_","delegation_phone_","delegation_info_",\
+		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
+		  "receiver_addr_","order_Memo",1,0)   
 	return render(request, 'Services/MemberEdit.html', context)
 
 def MemberList(request):

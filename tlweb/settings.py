@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'skydragon',
+        'NAME': 'test',
         'USER': 'root',
-        'PASSWORD':'root',
+        'PASSWORD':'123456',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }
