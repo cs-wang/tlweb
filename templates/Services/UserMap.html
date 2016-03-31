@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>新增会员 - 天龙健康会员操作平台</title>
+    <title>会员网络 - 天龙健康会员操作平台</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -411,428 +413,192 @@
 <!-- /.ace-settings-container -->
 <!-- /section:settings.box -->
 
-                    <div class="row noMarginLR">
+                    <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
                             
-<!-- /section:settings.box -->
+
+
+
+
 <div class="page-header">
     <h1>
         会员中心
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            新增会员
+            会员网格
         </small>
     </h1>
-</div><!-- /.page-header -->
+</div>
 
-
-<div class="row noMarginLR iUcAddNewMember">
-    <div class="col-xs-12">
-        <form class="form-horizontal" role="form">
-            <input id="UserId" name="UserId" type="hidden" value="0" />
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 用户名 </label>
-
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="UserName" name="UserName" placeholder="用户名就是登录名" class="col-xs-10 col-sm-5" maxlength="12" />
-                </div>
+<div class="widget-body">
+    <div class="widget-main padding-8">
+        <ul id="tree1" class="tree tree-unselectable" role="tree">
+  <li class="tree-branch hide" data-template="treebranch" role="treeitem"
+  aria-expanded="false">
+    <div class="tree-branch-header">
+      <span class="tree-branch-name">
+        <i class=" icon-folder ace-icon fa fa-users">
+        </i>
+        <span class="tree-label">
+        </span>
+      </span>
+    </div>
+    <ul class="tree-branch-children" role="group">
+    </ul>
+  </li>
+  <li class="tree-item hide" data-template="treeitem" role="treeitem">
+    <span class="tree-item-name">
+      <i class=" icon-item ace-icon fa fa-user">
+      </i>
+      <span class="tree-label">
+      </span>
+    </span>
+  </li>
+  <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+    <div class="tree-branch-header">
+      <span class="tree-branch-name" data-id="394">
+        <i class="icon-folder ace-icon fa fa-eye">
+        </i>
+        <span class="tree-label">
+          诸暨服务中心
+        </span>
+      </span>
+    </div>
+    <ul class="tree-branch-children" role="group">
+      <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+        <div class="tree-branch-header">
+          <span class="tree-branch-name" data-id="441">
+            <i class="icon-folder ace-icon fa fa-eye">
+            </i>
+            <span class="tree-label">
+              王萍[13515752198]
+            </span>
+          </span>
+        </div>
+        <ul class="tree-branch-children" role="group">
+          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+            <div class="tree-branch-header">
+              <span class="tree-branch-name" data-id="445">
+                <i class="icon-folder ace-icon fa fa-eye">
+                </i>
+                <span class="tree-label">
+                  朱国英[15157596370]
+                </span>
+              </span>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 昵称或姓名 </label>
-
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" maxlength="20" />
-                </div>
+          </li>
+          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+            <div class="tree-branch-header">
+              <span class="tree-branch-name" data-id="449">
+                <i class="icon-folder ace-icon fa fa-eye">
+                </i>
+                <span class="tree-label">
+                  张燏琼[18268208081]
+                </span>
+              </span>
             </div>
+          </li>
+          
+        </ul>
+      </li>
 
-            
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
-
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">当汇款人非本人时请填写</span>
-                        </span>
-                    </p>
-                </div>
+      <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+        <div class="tree-branch-header">
+          <span class="tree-branch-name" data-id="441">
+            <i class="icon-folder ace-icon fa fa-eye">
+            </i>
+            <span class="tree-label">
+              王萍[13515752198]
+            </span>
+          </span>
+        </div>
+        <ul class="tree-branch-children" role="group">
+          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+            <div class="tree-branch-header">
+              <span class="tree-branch-name" data-id="445">
+                <i class="icon-folder ace-icon fa fa-eye">
+                </i>
+                <span class="tree-label">
+                  朱国英[15157596370]
+                </span>
+              </span>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">汇款人非本人时请填写</span>
-                        </span>
-                    </p>
-                </div>
+          </li>
+          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
+            <div class="tree-branch-header">
+              <span class="tree-branch-name" data-id="449">
+                <i class="icon-folder ace-icon fa fa-eye">
+                </i>
+                <span class="tree-label">
+                  张燏琼[18268208081]
+                </span>
+              </span>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
+          </li>
+          
+        </ul>
+      </li>
 
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="BindMob" name="BindMob" placeholder="必须填写作为打款的联系号码" class="col-xs-10 col-sm-5" value="" maxlength="11" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">系统奖金短信提醒将发送到您绑定的手机号码</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 登陆密码 </label>
-
-                <div class="col-sm-9">
-                    <!-- #section:elements.form.input-icon -->
-                    <span class="blockinMobile">
-                        <input type="password" id="UserPwd">
-                    </span>
-
-                    <span class="blockinMobile">
-                        <input type="password" id="UserRePwd" placeholder="重复登陆密码">
-                    </span>
-
-                    <!-- /section:elements.form.input-icon -->
-                </div>
-            </div>
-
-            
-
-            <div class="space-4"></div>
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 微信号 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">微信接受奖金和汇款的会员，必须填写</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 开户银行 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="BankName" name="BankName" placeholder="" class="col-xs-10 col-sm-5" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">微信不填时您必须填完整开户行，如：农业银行浙江分行杭州西湖支行</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 银行账号 </label>
-
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">银行卡接收奖金和汇款的会员，微信不填时必须填写</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 银行卡持卡人 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" />
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">绑定银行卡姓名</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 收货人 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" />
-
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 收货人电话 </label>
-
-                <div class="col-sm-9 parentCls">
-                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" />
-
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 收货地址 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" />
-
-                    <p style="clear:both">
-                        <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right"> 选择产品 </label>
-
-                    <div class="col-sm-9">
-                        <p class="haveChosen">以下产品选满1000元</p>
-                        <div class="emBox">
-                        <label><input id="A1" name="product" type="checkbox" data-val="500" data-name="亚麻籽益生菌水溶粉500元/提" />亚麻籽益生菌水溶粉500元/提</label> <br />
-                        <label><input id="A4" name="product" type="checkbox" data-val="500" data-name="亚麻全营养代餐棒500元/套" />亚麻全营养代餐棒500元/套</label> <br />
-                        <label><input id="A5" name="product" type="checkbox" data-val="500" data-name="亚麻营养膳食粉500元/套" />亚麻营养膳食粉500元/套</label> <br />
-                        <label><input id="A2" name="product" type="checkbox" data-val="500" data-name="亚麻籽有机冷榨油大礼盒500元/提" />亚麻籽有机冷榨油大礼盒500元/提</label> 
-                        </div>
-
-                        <p class="haveChosen">您选择的是：</p>
-                            <label id="info"></label>
-                        <input id="Mark" type="hidden" />
-                    </div>
-                </div>
-            
-
-
-
-            <div class="clearfix form-actions">
-                <div class="col-md-offset-3 col-md-9">
-                    <button class="btn btn-info" type="button" id="Save">
-                        <i class="ace-icon fa fa-check bigger-110"></i>
-                        保存
-                    </button>
-
-                    &nbsp; &nbsp; &nbsp;
-                    <a class="btn" href="MemberList">
-                        <i class="ace-icon fa fa-undo bigger-110"></i>
-                        返回列表
-                    </a>
-                </div>
-            </div>
-
-
-        </form>
+    </ul>
+    
+  </li>
+</ul>
     </div>
 </div>
+
+
+
+
+
+
 <style>
-    .js-max-input {
-        border: solid 1px #ffd2b2;
-        background: #fffae5;
-        padding: 0 10px 0 10px;
-        font-size: 20px;
-        color: #ff4400;
-    }
+    
 </style>
-<script>
-    $(document).ready(function () {
-
-        new TextMagnifier({
-            inputElem: '#UserName',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [3, 4, 4,1],
-
-        });
-        new TextMagnifier({
-            inputElem: '#DepositMobile',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [3, 4, 4],
-
-        });
-        new TextMagnifier({
-            inputElem: '#FromMobile',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [3, 4, 4],
-
-        });
-        new TextMagnifier({
-            inputElem: '#RecMob',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [3, 4, 4],
-
-        });
-        new TextMagnifier({
-            inputElem: '#BankAccount',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [4, 4, 4, 4, 3],
-
-        });
-        new TextMagnifier({
-            inputElem: '#IDCard',
-            //parentCls: 'col-sm-9',
-            align: 'top',
-            splitType: [3, 3, 4, 4, 4],
-
-        });
-
-
-
-
-
-        
-
-        $('input[type="checkbox"][name="product"]').change(function () {
-            //alert('ss');
-            var total = 1000;
-            var select = $('input[type="checkbox"][name="product"]:checked');
-            var selectProduct = '';
-            if (select.length > 2) { $(this).prop('checked', false); return; }
-            $(select).each(function (x, y) {
-                if ($(y).attr('data-val') == 500) {
-                    if (select.length == 1) { selectProduct = selectProduct + $(y).attr('data-name') + 'x 2  +'; }
-                    else if (select.length == 2) { selectProduct = selectProduct + $(y).attr('data-name') + '  +'; }
-                }
-                /*if ($(y).attr('data-val') == 200) {
-                    if (select.length == 1) {
-                        selectProduct = selectProduct + $(y).attr('data-name') + ' x5';
-                    }
-                    else {
-                        selectProduct = selectProduct + $(y).attr('data-name');
-                    }
-                }*/
-            })
-            selectProduct = selectProduct.substring(0, selectProduct.length - 1);
-            $('#info').text(selectProduct);
-            $('#Mark').val(selectProduct);
-        });
-
-
-        //$('#A3').trigger('change');
-
-        
-
-
-
-
-
-
-
-        $('#Save').click(function () {
-            var UserId = $('#UserId').val();
-            var UserName = $('#UserName').val();
-            var NickName = $('#NickName').val();
-            var IDCard = '';//$('#IDCard').val();
-            var DepositMobile = $('#DepositMobile').val();
-            var UserPwd = $('#UserPwd').val();
-            var UserRePwd = $('#UserRePwd').val();
-            var UserPayPwd = '1';//$('#UserPayPwd').val();
-            var UserRePayPwd = '1'; //$('#UserRePayPwd').val();
-            var WeChat = $('#WeChat').val();
-            var Alipay = $('#Alipay').val();
-            var BankName = $('#BankName').val();
-            var BankAccount = $('#BankAccount').val();
-            var TrueName = $('#TrueName').val();
-            var RecName = $('#RecName').val();
-            var RecAdd = $('#RecAdd').val();
-            var RecMob = $('#RecMob').val();
-            var Mark = $('#Mark').val();
-            var UserStatus = 4;
-            var BindMob = $('#BindMob').val();
-
-
-            if (UserName == "") { $('#UserName').focus(); layer.tips('手机号码不能为空', '#UserName'); return false; }
-
-            if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
-            //if (IDCard == "") { $('#IDCard').focus(); layer.tips('身份证号不能为空', '#IDCard'); return false; }
-            //if (IDCard != "") {
-            //    if (IDCard.length != 18 || IdCardValidate(IDCard) == false) {
-            //$('#IDCard').focus(); layer.tips('身份证号码不正确', '#IDCard'); return false;
-            //    }
-            //}
-
-
-            if (UserId == '0') {
-                if (UserPwd == "") { $('#UserPwd').focus(); layer.tips('密码不能为空', '#UserPwd'); return false; }
-                if (UserPwd != UserRePwd) { $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false; }
+<script type="text/javascript">
+    jQuery(function ($) {
+        // 这是写死的效果，上线后如需要动态获取的话，请去使用fuelux.tree.js
+        $(".tree-branch-header").click(function(e){
+            e.stopPropagation();
+            var sonList = $(this).next("ul.tree-branch-children");
+            if(sonList.hasClass("open")){
+                $(this).next("ul.tree-branch-children").css("display","block").slideDown().removeClass("open");    
+            }else{
+                $(this).next("ul.tree-branch-children").slideUp().addClass("open");    
             }
-            else {
-                if (UserPwd != '' || UserRePwd != '') {
-                    if (UserPwd != UserRePwd) {
-                        $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false;
-                    }
-                }
-            }
-
-
-            if (UserId == '0') {
-                if (UserPayPwd == "") { $('#UserPayPwd').focus(); layer.tips('二级密码不能为空', '#UserPayPwd'); return false; }
-                if (UserPayPwd != UserRePayPwd) { $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false; }
-            }
-            else {
-                if (UserPayPwd != '' || UserRePayPwd != '') {
-                    if (UserPayPwd != UserRePayPwd) {
-                        $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false;
-                    }
-                }
-            }
-
-            //if (BankName == "") { $('#BankName').focus(); layer.tips('银行开户行不能为空', '#BankName'); return false; }
-            //if (BankAccount == "") { $('#BankAccount').focus(); layer.tips('银行账号不能为空', '#BankAccount'); return false; }
-
-            //if (TrueName == "") { $('#TrueName').focus(); layer.tips('真实姓名不能为空', '#TrueName'); return false; }
-            //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
-            //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
-            //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
+            
+        });
+           
+        // $('#tree1').ace_tree({
+        //     dataSource: GetData,
+        //     multiSelect: false,
+        //     cacheItems: true,
+        //     'open-icon': 'ace-icon fa  fa-eye',
+        //     'close-icon': 'ace-icon fa fa-users',
+        //     'selectable' : false,
+        //     'selected-icon' : 'ace-icon fa fa-user',
+        //     'unselected-icon' : 'ace-icon fa fa-user',
+        //     loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+        // });
 
 
 
-            var data = {
-                UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
-                DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
-                WeChat: WeChat, Alipay: Alipay, BankName: BankName, BankAccount: BankAccount,
-                TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob, Mark: Mark
-            }
-            $('#Save').prop('disabled', true);
-            $.post('MemberSave', data, function (json) {
 
-                if (json.result == "t") {
-                    layer.msg('保存成功！', { icon: 1 }, function () { location.href = 'MemberList'; });
 
-                }
-                else {
-                    layer.alert('保存失败。<br />' + json.msg, { icon: 5 });
-                    $('#Save').prop('disabled', false);
-                }
+        // function GetData(a, callback) {
+        //     var uid = 0;
+        //     var step = 0;
+        //     if (a != null) { uid = a.UserId, step = a.step; }
+        //     $.post('yourJSON', { Uid: uid, step: step }, function (json) {
+        //         callback({ data: json });
+        //     });
+        // }
 
-            });
-        })
-    });
+
+       
+});
 </script>
+
 
 
                             <!-- PAGE CONTENT ENDS -->
@@ -887,7 +653,7 @@
     <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
     <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
 
-    <script src="../assets/js/layer/layer.js"></script>
+    <script src="/assets/js/layer/layer.js"></script>
 
     <script>
         var haveFound = false;

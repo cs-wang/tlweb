@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>会员列表 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        天龙健康会员操作平台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+                <!-- #section:basics/navbar.toggle -->
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info">
+                                <small>欢迎,</small>
+                                ZJ001
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" id="chpwd">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Account/Login">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive">
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+
+
+
+
+
+                    <li class="">
+                            <a href="/Services/DashBoard">
+                                <i class="menu-icon fa  fa-tachometer"></i>
+                                <span class="menu-text">
+                                    管理首页
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/NoticeList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    查看公告
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/MsgList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    消息中心
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa  fa-desktop"></i>
+                                <span class="menu-text">
+                                    会员中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/MemberEdit">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            新增会员
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberOrder">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/UserMap">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员网格
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-history"></i>
+                                <span class="menu-text">
+                                    费用中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/ComBank">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            公司收款账户
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=1">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费审核
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=2">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    意见建议
+                                </span>
+                                    <span class="badge badge-danger">
+                                        1
+                                    </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/AdviceList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            意见列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    副中心管理
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/SubService">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            副中心设置
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+            </ul>
+
+
+
+
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+<div class="ace-settings-container" id="ace-settings-container">
+    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+        <i class="ace-icon fa fa-cog bigger-130"></i>
+    </div>
+
+    <div class="ace-settings-box clearfix" id="ace-settings-box">
+        <div class="pull-left width-50">
+            <!-- #section:settings.skins -->
+            <div class="ace-settings-item">
+                <div class="pull-left">
+                    <select id="skin-colorpicker" class="hide">
+                        <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                        <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                        <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                        <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                    </select>
+                </div>
+                <span>&nbsp; 更换颜色</span>
+            </div>
+
+            <!-- /section:settings.skins -->
+            <!-- #section:settings.navbar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                <label class="lbl" for="ace-settings-navbar"> 导航固定 </label>
+            </div>
+
+            <!-- /section:settings.navbar -->
+            <!-- #section:settings.sidebar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                <label class="lbl" for="ace-settings-sidebar"> 菜单固定 </label>
+            </div>
+
+            <!-- /section:settings.sidebar -->
+            <!-- #section:settings.breadcrumbs -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                <label class="lbl" for="ace-settings-breadcrumbs"> 当前位置固定 </label>
+            </div>
+
+            <!-- /section:settings.breadcrumbs -->
+            <!-- #section:settings.rtl -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                <label class="lbl" for="ace-settings-rtl"> 右侧视图 </label>
+            </div>
+
+            <!-- /section:settings.rtl -->
+            <!-- #section:settings.container -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                <label class="lbl" for="ace-settings-add-container">
+                    标准容器视图
+                </label>
+            </div>
+
+            <!-- /section:settings.container -->
+        </div><!-- /.pull-left -->
+
+        <div class="pull-left width-50">
+            <!-- #section:basics/sidebar.options -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
+                <label class="lbl" for="ace-settings-hover"> 移动显示二级菜单 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
+                <label class="lbl" for="ace-settings-compact"> 更改菜单视图 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
+                <label class="lbl" for="ace-settings-highlight"> 更换当前菜单显示 </label>
+            </div>
+
+            <!-- /section:basics/sidebar.options -->
+        </div><!-- /.pull-left -->
+    </div><!-- /.ace-settings-box -->
+</div>
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            会员列表 
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+<div class="row noMarginLR iUcAddNewMember">
+    <div class="col-xs-12">
+        <div class="alert alert-info">
+           会员出局之后需要加单的，请让会员登录之后在首页点击申请加单，然后在本页审核即可
+        </div>
+        <div>
+            <form class="form-inline hasBlockToolItem" action="MemberList" method="Get"c>
+
+
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
+
+                <select class="" id="UserStatus" name="UserStatus"><option value="-1">所有</option>
+<option value="1">已激活</option>
+<option value="2">已审核</option>
+<option value="4">未审核</option>
+<option value="3">服务中心锁定</option>
+<option value="5">管理员锁定</option>
+<option value="9">已出局</option>
+<option value="10">申请加单</option>
+</select>
+
+                
+
+                <select class="" id="orderby" name="orderby"><option value="1">注册时间倒序</option>
+<option value="2">注册时间正序</option>
+<option value="3">确认时间倒序</option>
+<option value="4">确认时间正序</option>
+</select>
+
+                <select class="" id="regfrom" name="regfrom"><option value="-1">所有注册点</option>
+<option value="1">服务中心注册</option>
+<option value="2">会员推荐</option>
+<option value="3">推荐注册</option>
+<option value="4">副中心注册</option>
+<option value="0">未知</option>
+</select>
+
+                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" />
+                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" />
+                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" />
+                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" />
+
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
+                </button>
+            </form>
+        </div>
+        
+        <div class="iWideTable cf">
+            <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:10%;">昵称或姓名</th>
+                    <th style="width:12%;">编号</th>
+                    <th style="width:8%;">托管手机</th>
+                    <th style="width:8%;">绑定手机</th>
+                    <th style="width:6%;">状态</th>
+                    <th style="width:10%;">注册时间</th>
+                    <th style="width:10%;">审核时间</th>
+                    <th style="width:12%;">注册来源</th>
+                    <th style="width:8%;">直推</th>
+                    
+                    <th style="width:220px;"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=604" title="查看会员订单">刘文儿</a></td>
+                        <td data-name="mob" style="font-size:14px;">13957538728</td>
+                        <td>13806767333</td>
+                        <td>13957538728</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-17 11:18</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="492" class="recome" title="点击查看推荐人">【丁凤英】</a>推荐
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="604">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="604">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=604">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1CE92D4DDCE842C3F43CAF3878D48E0CA32AF6EB09D553D9A44300227892CA3F6B76779FED4773A8AAC2488C18DCE9E37E17BC41D222DF24EED5DD8BF671D9C16FFB8FA6B6EA8199A81E9E7BD4C22F344CD0BAEB6076B228FB7D052E3321A74094B82DE9E5FCD1B421695519D4F52870C01F5C5A16EA70145F0D6F729335A1AD" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=603" title="查看会员订单">陈佳佑</a></td>
+                        <td data-name="mob" style="font-size:14px;">15967599711</td>
+                        <td>陈雪飞</td>
+                        <td>15967599711</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-15 17:02</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="439" class="recome" title="点击查看推荐人">【陈晓阳】</a>推荐
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="603">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="603">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=603">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="7A123EA146429F14A02214F09B1ECFC26DFDC137D707EC0A094FFCC67DB82A70517D08AF4370E545B836DA09B9BBFEF895F23864A3BAC95CEC48B0134F0C256FD3141F3CE19C5082F259EE2ACA758184DD31E98A4597933021E751EBCA415AAAD4A51358A5EB13F4C7078E17FCF511E1ECCE98D008A880D2874602A755794A4D" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=602" title="查看会员订单">吕铭燕</a></td>
+                        <td data-name="mob" style="font-size:14px;">13655752552</td>
+                        <td>陈雪飞</td>
+                        <td>13575590190</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-15 16:53</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="601" class="recome" title="点击查看推荐人">【吕铭燕】</a>推荐
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="602">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="602">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=602">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="B441E2E2165373B115AF250187020769670AEAC2F4E94C2C1601CEB60A093A78831B58112CE3C463F49BFF8522721AA27423366E17D741A157FB362853CAA97F11069A270DD64FD71BFDD2492FDE364019AA96AA17140F325163C1076EC8031A727707AA9A175D68A15C5D9CF4A9C247E05FEDF6D021010E7AF41901ED7DB3E6" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=601" title="查看会员订单">吕铭燕</a></td>
+                        <td data-name="mob" style="font-size:14px;">13575590190</td>
+                        <td>陈雪飞</td>
+                        <td>13575590190</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-15 16:45</td>
+                        <td>2016-03-15 17:39</td>
+                        <td>
+                                <a href="javascript:;" data-id="439" class="recome" title="点击查看推荐人">【陈晓阳】</a>推荐
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="601">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=601">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="5F876241C7525C38B282EC6C4C2E1ABCFB8CFDFC02DE179A5CC1ABA7B37CDF39B4561DD333631B859C46BABB856A72925BF77CC8BAA5035B0140AC47D11701DEF2B7ED395EFBAEF8FF1D187D97DCF80F53E5A0FC5163D762EBA2C110EC094E889A175FAE52259B3322944D7AEBD343827AD376C422270C2FA7A7218D63FAE515" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=600" title="查看会员订单">鲍旭霞</a></td>
+                        <td data-name="mob" style="font-size:14px;">15372505629</td>
+                        <td></td>
+                        <td>15372505629</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-15 15:10</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="542" class="recome" title="点击查看推荐人">【黄丽君】</a>推荐注册
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="600">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="600">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=600">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="7F900381CBBE61EAA0FFAF2435EA2BA386F0AB4CC57444B3236F22A092AFCC3CCEAC025466C595D384FED5F247B42457365BCABF08B00758059142B1F44692D9DA00D5527B8579CAA5FB8F1C3577C015331DDAA1504D8ED5EA90A8600D4702D654443C3A4C29DBC145679C426C03C611ED2CCD82640F4230E1B6AEDDB94BFB7" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=599" title="查看会员订单">章大海</a></td>
+                        <td data-name="mob" style="font-size:14px;">18248607779</td>
+                        <td>13429565866</td>
+                        <td>18248607779</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-15 14:11</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="598" class="recome" title="点击查看推荐人">【屠加平】</a>推荐注册
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="599">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="599">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=599">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="2C3D4DDF3C41435BED729AB276771BB635ACEDD55007CB04F9AB9A99034E62DB52B224ACE8EAA5F035F39A4CCA210B3A7CF0766FE0334B3402EBFBCB78B8739E9B7852F55CC31AC1AC5393DA8EBFF075E3E46D441AF8CEDC308AA8FF4D531B773E79BAD819DD9459D572E311B03395090BA925FE457B634F63E7EAAC80F0ADF4" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=598" title="查看会员订单">屠加平</a></td>
+                        <td data-name="mob" style="font-size:14px;">18805850708</td>
+                        <td></td>
+                        <td>18805850708</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-15 13:44</td>
+                        <td>2016-03-15 14:15</td>
+                        <td>
+                                <a href="javascript:;" data-id="597" class="recome" title="点击查看推荐人">【斯铭杰】</a>推荐注册
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="598">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=598">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="400E700E80E95ABA06B3FD5C8BD7ED7757B1B5547DC283C1A38F85130A08C7B6D0B4A4B92DCAD415EBBE362DC3D463499859F5CE1FEF4B96DB7275BA09DF8623A25066D69203F900FDE112079816F9E948118F45122D9D4B35B93B40384A794D52C400D2B9598E1320BB901B4F4D7A0DBFA4B010E354669D4A115B327691F42E" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=597" title="查看会员订单">斯铭杰</a></td>
+                        <td data-name="mob" style="font-size:14px;">15925822678</td>
+                        <td></td>
+                        <td>15925822678</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-15 13:38</td>
+                        <td>2016-03-15 14:00</td>
+                        <td>
+                                <a href="javascript:;" data-id="595" class="recome" title="点击查看推荐人">【陈天新】</a>推荐注册
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="597">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=597">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="765975C05A8426EA640934049A2DE254360F953226FD103C1C694CCBB5E12833A69825AA23026E7100EE17EE8C2199722244E882BF0EBC42E121C1A4FD4C81890AF4F4753AEAE8416F23420A9C4F2D60289F49A6E199249B0900A680762FEE0CEA00E910D7F9982BE21B6DEE1B8B154257F8E533B3A22F423925D688FE9DCF5E" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=596" title="查看会员订单">胡兰芳</a></td>
+                        <td data-name="mob" style="font-size:14px;">18258093408</td>
+                        <td>陈雪飞</td>
+                        <td>18258093408</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-15 12:21</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="558" class="recome" title="点击查看推荐人">【赵家玉】</a>推荐
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="596">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="596">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=596">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="3BBF94C508BD0B4D8254A0F6B8EE8A7F16C73850263F7C02DCE7EE61A0BA2E51BCED19359059E3E7F2296F22F876A124BF477075C51FD3DF0581D78BC18F28DE2A750B821B87DB73DC0B749274ABC35F7D975A69C9C6DA734B4E3233E755CA921A27AAF1DAEA5C3763021B73C93C9FFE2B047CEBDE33E29F547A970B88DFDAE" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=595" title="查看会员订单">陈天新</a></td>
+                        <td data-name="mob" style="font-size:14px;">13857555083</td>
+                        <td>13675765382</td>
+                        <td>13857555083</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-15 08:26</td>
+                        <td>2016-03-15 13:54</td>
+                        <td>
+                                <a href="javascript:;" data-id="563" class="recome" title="点击查看推荐人">【金建英】</a>推荐注册
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="595">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=595">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="4B5D7F0D2712ED32BEEBD159893EC12368922E79C024C27A8EB4F4CF2B66666D68B2E6CC7EDC9855CB9B974B52A627E78BC19A18173A748AA56049138644FA2B1D95568CCD70567E2B28934C19ACBBF6A1EB5675D14D2EB1687FC11DF677AE33D6F5E6AAF2336421A4B5EC5F04FCBAE61998C78481CA2A98ECBD56415CD3A416" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=594" title="查看会员订单">夏新来</a></td>
+                        <td data-name="mob" style="font-size:14px;">15267593318</td>
+                        <td></td>
+                        <td>15267593318</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-14 20:56</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="593" class="recome" title="点击查看推荐人">【蒋成丰】</a>推荐注册
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="594">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="594">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=594">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="83341BEAD5DC87AE940E56196F7207BE117A8196C594059D26194704F874781B0FD74DA6A84D1ACAA9DCBB46EC0276F8B2B15018D5492CC9D84D673438CE18373CECECF3FEF5A19332F1958EBC69C2B7874E08929AE837F42B3F6C88D244AF2EAA8B55493C253EEDF901CBB111F38F7EBE53271F8EDD6DC961B99A26CA656A25" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=593" title="查看会员订单">蒋成丰</a></td>
+                        <td data-name="mob" style="font-size:14px;">13065580338</td>
+                        <td></td>
+                        <td>13065580338</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-14 17:28</td>
+                        <td>2016-03-14 21:03</td>
+                        <td>
+                                <a href="javascript:;" data-id="480" class="recome" title="点击查看推荐人">【赵林】</a>推荐注册
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="593">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=593">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1C11C1728F505E5D84F4592EC13B9150EF24CD9B9AE06C83E7F430528E732A9BE1D4906462620070CD0E2FBB06A5299706591115C0007440C524E0FFA510C7DFB4675C72EFEA9A17C2633115C3C22DA34A057C53D41168B00E59FD477A8397F99ABDE8FCC3C25DDFE582A1E3563B7F1D2607D833193234967FFC7F98775991CA" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=592" title="查看会员订单">陈雪君</a></td>
+                        <td data-name="mob" style="font-size:14px;">18268780885</td>
+                        <td></td>
+                        <td>18268780885</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-14 15:48</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="554" class="recome" title="点击查看推荐人">【陈丽萍】</a>推荐注册
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="592">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="592">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=592">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="3D7544129BEA60474F4C59387DA8D052989A4512EEB07B6AF6D020F7C9F4B1E4A955E55CBAFE9CB2C7FE72D003093CC04C2BE3D2A2B9A061E1581A193DA25B878094E3C2460E4542BBAFE0241EA6EB6274FF0896A829A0708B710F2A8112E06364571A4E7AD87DF21406E23623AE4A49E5C56129D733D78DA19AFB15B7237D3E" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=591" title="查看会员订单">任少华</a></td>
+                        <td data-name="mob" style="font-size:14px;">18258588277</td>
+                        <td></td>
+                        <td>18258588277</td>
+                        <td><span class="label label-warning">已审核</span></td>
+                        <td>2016-03-14 10:52</td>
+                        <td></td>
+                        <td>
+                                <a href="javascript:;" data-id="590" class="recome" title="点击查看推荐人">【陈婷】</a>推荐注册
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                    <a class="btn btn-mini btn-warning audit" data-id="591">激活</a>
+                                                                <a class="btn btn-mini btn-primary view" data-id="591">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=591">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="57D9DF290615BB7FBE2C8E37E1A2ABC3D0A5E0860B93254576D200E6FBB318FFC02CF755747113B6E7799DF50DDBA87C1B4FDF3867BFC924274E7EED536E69E7C36E4ADE7D37E9D9BE4E506CFA11AFC7C3F9F1010CA77D2B428BB34EC130BAE59ACAA7CCD9DB5E19C95A18DA714F18217235BEE2BF6BA9ECA4F0B5FEB842641" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="MemberOrder?UserId=590" title="查看会员订单">陈婷</a></td>
+                        <td data-name="mob" style="font-size:14px;">13858508007</td>
+                        <td></td>
+                        <td>13858508007</td>
+                        <td><span class="label label-success">已激活</span></td>
+                        <td>2016-03-13 14:50</td>
+                        <td>2016-03-14 11:11</td>
+                        <td>
+                                <a href="javascript:;" data-id="480" class="recome" title="点击查看推荐人">【赵林】</a>推荐注册
+                        </td>
+                        <td>1</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                                                                                <a class="btn btn-mini btn-primary view" data-id="590">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="MemberEdit?UserId=590">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="86DD60A0E26F0CAFBC1CC6DE702B0AFE06D4E9C0D886A7513776A1BF93F708D9387F416FB540DDC39E8C00AD88B0EC3B298E2B90FFEB633F5ED9463DD44DFC3CA044462E00FA6CE2252A61D135C4D6060BBA354BE37DA9A52972930F116FDBDDA8EA7C7C8BBB72317C298CF47DCA7B531416DC37D6FDFC8BCA008A4EDC8822EE" data-id="">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+
+
+            </tbody>
+            </table>
+        </div>
+
+        
+
+
+
+
+<div class="row">
+    <div class="col-xs-6 iPagesLeft">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 1 页 共 11 页 &nbsp; 共 162 条记录
+        </div> 
+    </div>
+    <div class="col-xs-6 iPagesRight">
+        <div class="dataTables_paginate paging_simple_numbers">
+
+                <ul class="pagination">
+                   
+
+                        <li class="paginate_button previous disabled"><a href="?p=0">第一页</a></li>
+                        <li class="paginate_button previous disabled"><a href="?p=0">上一页</a></li>
+                    
+                                        <li class="paginate_button active"><a>1</a></li>
+                        <li class="paginate_button"><a href="?p=1">2</a> </li>
+                        <li class="paginate_button"><a href="?p=2">3</a> </li>
+                    
+                        <li class="paginate_button more"><a href="?p=5">...</a> </li>
+                        <li class="paginate_button"><a href="?p=10">11</a> </li>
+                                            <li class="paginate_button next"><a href="?p=1">下一页</a> </li>
+                        <li class="paginate_button next"><a href="?p=10">最末页</a> </li>
+                </ul>
+        </div>
+    </div>
+</div>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+<script>
+    var sW = $(window).width();
+
+    $('td[data-name="counttd"]').each(function (x, y) {
+        var id = $(y).attr('data-id');
+        $.getJSON("GetRecomeAllCount", { UserId: id }, function (json) {
+            $(y).text(json.count);
+            //alert(json.count);
+        });
+    });
+
+
+    $('.viewrecom').click(function () {
+        var sign = $(this).attr('data-sign');
+        // var _url = "ViewReCome?sign=" + sign;
+        var _url = "弹窗-查看推荐.html";
+        layer.open({
+            type: 2,
+            title: '查看推荐',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+
+
+    $('.view').click(function () {
+        var id = $(this).attr('data-id');
+        // var _url = "ViewMember?UserId=" + id;
+        var _url = "弹窗-查看会员信息.html";
+        layer.open({
+            type: 2,
+            title: '查看会员信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+
+
+    $('.recome').click(function () {
+        var id = $(this).attr('data-id');
+        // var _url = "ViewMember?UserId=" + id;
+        var _url = "弹窗-推荐人信息.html";
+        layer.open({
+            type: 2,
+            title: '查看推荐人信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+
+    $('.audit').click(function () { //SetAuditReg
+        var id = $(this).attr('data-id');
+        // var _url = "SetAudit?UserId=" + id;
+        var _url = "SetAudit?UserId=" + id;
+        var _url = "弹窗-审核会员信息.html";
+        layer.open({
+            type: 2,
+            title: '审核会员信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+
+    })
+
+    $('.reconsume').click(function () { //SetAuditReg
+        var id = $(this).attr('data-id');
+        var _url = "reconsume?UserId=" + id;
+        layer.open({
+            type: 2,
+            title: '会员复消',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '550px'],
+            content: _url
+        });
+
+    })
+    $('.child').click(function () { //SetAuditReg
+
+        var id = $(this).attr('data-id');
+        layer.confirm('您确定要生成该会员的子账号吗？<br><font color="red">注意：生成之后的子账号等同于新注册账号，仍然需要经过审核才能使用！登陆为在其原有账号之后加一字母，最多不超过26个子账号</font>', { icon: 3 }, function (index) {
+            layer.close(index);
+            layer.msg('正在处理中...', { icon: 16 });
+            $.post('CreateChild', { UserId: id }, function (json) {
+                layer.closeAll('loading');
+                if (json.result == "t") {
+                    layer.alert('操作成功!<br />新生成的用户名为：' + json.msg,{ icon: 1 }, function () { location.href = location.href; })
+                }
+                else {
+                    layer.alert('操作失败！' + json.msg, { icon: 5 });
+                }
+            });
+        });
+    })
+
+    $('.audit1').click(function () { 
+
+        var id = $(this).attr('data-id');
+        layer.confirm('您确定要审核吗？审核之后需要激活才能进入公排，请悉知', { icon: 3 }, function (index) {
+            layer.close(index);
+            layer.msg('正在处理中...', { icon: 16 });
+            $.post('SetAudit1', { UserId: id }, function (json) {
+                layer.closeAll('loading');
+                if (json.result == "t") {
+                    layer.alert('操作成功!', { icon: 1 }, function () { location.href = location.href; })
+                }
+                else {
+                    layer.alert('操作失败！' + json.msg, { icon: 5 });
+                }
+            });
+        });
+    })
+
+
+
+    $('td[data-name="mob"]').each(function (x,y) {
+        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        $(y).text(_n);
+    })
+
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">天龙健康会员操作平台</span>
+                        Mrisy &copy; 2015 &nbsp;&nbsp;<a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a>
+                    </span>
+
+                    &nbsp; &nbsp;
+                    
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="/assets/js/ace/elements.scroller.js"></script>
+    <script src="/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="/assets/js/ace/elements.fileinput.js"></script>
+    <script src="/assets/js/ace/elements.typeahead.js"></script>
+    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="/assets/js/ace/elements.spinner.js"></script>
+    <script src="/assets/js/ace/elements.treeview.js"></script>
+    <script src="/assets/js/ace/elements.wizard.js"></script>
+    <script src="/assets/js/ace/elements.aside.js"></script>
+    <script src="/assets/js/ace/ace.js"></script>
+    <script src="/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="/assets/js/ace/ace.sidebar.js"></script>
+    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="/assets/js/ace/ace.widget-box.js"></script>
+    <script src="/assets/js/ace/ace.settings.js"></script>
+    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+    <script src="/assets/js/layer/layer.js"></script>
+
+    <script>
+        var haveFound = false;
+        $('ul.nav-list li a').each(function () {
+            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
+                $(this).parent().addClass('active').show();
+                haveFound = true;
+                if ($(this).parent().parent().hasClass('submenu')) {
+                    $(this).parent().parent().parent().addClass('active');
+                    $(this).parent().parent().parent().addClass('open');
+                }
+                else {
+                    $(this).parent().addClass('open');
+                }
+            }
+        });
+        if (haveFound == false) {
+            $('ul.nav-list li a').each(function () {
+                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
+                    $(this).parent().addClass('active').show();
+                    if ($(this).parent().parent().hasClass('submenu')) {
+                        $(this).parent().parent().parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('open');
+                    }
+                    else {
+                        $(this).parent().addClass('open');
+                    }
+                }
+            });
+        }
+
+
+        $('#chpwd').click(function () {
+            layer.open({
+                type: 2,
+                title: '修改账户密码',
+                shadeClose: false,
+                shade: 0.8,
+                area: ['400px', '500px'],
+                content: '/Account/ChangePwd' //iframe的url
+            });
+
+        })
+    </script>
+</body>
+</html>
