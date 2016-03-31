@@ -22,7 +22,7 @@ def MemberEdit(request):
 #	 elif request.method == 'POST':
 #		 return
 	member_ = models.Member()
-	flag = member_.register('success',"nickname_","delegation_phone_","delegation_info_",\
+	flag = member_.register('wcs',"nickname_","delegation_phone_","delegation_info_",\
 		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
 		  "receiver_addr_","order_Memo",1,0)   
 	return render(request, 'Services/MemberEdit.html', context)

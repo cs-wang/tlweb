@@ -1,8 +1,8 @@
 from django.contrib import admin
-
+ 
 # Register your models here.
 from db.models import MemberStatus,Advice,CommissionDetail,CommissionOrder,Member,Message,OrderForm,Product,Service,ServiceAccount,ShortMessage
-
+ 
 class MemberStatuss(admin.ModelAdmin):
     list_display=('status_id','status_desc')
     search_fields=('status_id','status_desc')
@@ -13,9 +13,9 @@ class CommissionDetails(admin.ModelAdmin):
     list_display=('commission_type','commission_desc')
     search_fields=('commission_type','commission_desc')
 class CommissionOrders(admin.ModelAdmin):
-    list_display=('commission_id','user_name','commission_price','commission_type','commission_memo','commission_created',\
+    list_display=('commission_id','user_id','commission_price','commission_type','commission_memo','commission_created',\
                   'commission_sent','commission_status')
-    search_fields=('commission_id','user_name','commission_price','commission_type','commission_memo','commission_created',\
+    search_fields=('commission_id','user_id','commission_price','commission_type','commission_memo','commission_created',\
                    'commission_sent','commission_status')
 class Members(admin.ModelAdmin):
     list_display=('user_name','password','nickname','status','service_id','reference_id','user_id','delegation_phone',\
@@ -28,9 +28,9 @@ class Messages(admin.ModelAdmin):
     list_display=('message_id','message_title','message_content','sent_time','message_status')
     search_fields=('message_id','message_title','message_content','sent_time','message_status')
 class OrderForms(admin.ModelAdmin):
-    list_display=('order_id','order_rank','user_name','order_price','order_type','order_created','order_finished',\
+    list_display=('order_id','service_id','order_rank','user_id','order_price','order_type','order_created','order_finished',\
                   'order_memo','order_status','express_name','express_number')
-    search_fields=('order_id','order_rank','user_name','order_price','order_type','order_created','order_finished',\
+    search_fields=('order_id','service_id','order_rank','user_id','order_price','order_type','order_created','order_finished',\
                   'order_memo','order_status','express_name','express_number')
 class Products(admin.ModelAdmin):
     list_display=('product_id','product_name','product_price')
@@ -39,12 +39,12 @@ class Services(admin.ModelAdmin):
     list_display=('service_id','service_name','service_pwd','service_area','role')
     search_fields=('service_id','service_name','service_pwd','service_area','role')
 class ServiceAccounts(admin.ModelAdmin):
-    list_display=('service_id','bank','bank_account','card_holder','phone')
-    search_fields=('service_id','bank','bank_account','card_holder','phone')
+    list_display=('service','bank','bank_account','card_holder','phone')
+    search_fields=('service','bank','bank_account','card_holder','phone')
 class ShortMessages(admin.ModelAdmin):
     list_display=('message_id','message_content')
     search_fields=('message_id','message_content')
-
+ 
 admin.site.register(MemberStatus,MemberStatuss)
 admin.site.register(Advice,Advices)
 admin.site.register(CommissionDetail,CommissionDetails)
