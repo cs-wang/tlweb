@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
 
 from django.db import models
 from compiler.pycodegen import EXCEPT
-
+from django.utils import timezone
 
 class Advice(models.Model):
     advice_id = models.BigIntegerField(primary_key=True)
@@ -170,7 +171,7 @@ class Member(models.Model):
     reference_id = models.BigIntegerField(blank=True, null=True)
     user_id = models.BigIntegerField(blank=True, null=True)
     delegation_phone = models.CharField(max_length=20, blank=True, null=True)
-    delegation_info = models.CharField(max_length=500, blank=True, null=True)
+    delegation_info = models.CharField(max_length=100, blank=True, null=True)
     bind_phone = models.CharField(max_length=20)
     weixin_id = models.CharField(max_length=50, blank=True, null=True)
     bank = models.CharField(max_length=255)
@@ -206,10 +207,39 @@ class Member(models.Model):
                     return False
             except BaseException, e:
                 return False
-    #user    
-    def register(self,user,nickname,statusid,serviceid,referenceid,newpwd):
-        pass
-
+    #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
+    #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
+    #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID
+    #同时修改会员表和订单表
+    def register(self,user,nickname_,delegation_phone_,delegation_info_,\
+         bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
+         receiver_addr_,order_Memo_,serviceid,referenceid):
+            userEntity = Member.objects.filter(user_name = user)
+            if len(userEntity) >= 1:
+                print "用户名已经被注册"
+                return False
+            else:
+                try:
+                    #获取id最大值
+                    id = Member.objects.latest('user_id')
+                    time_ = timezone.now()
+                    #修改member表
+                    Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
+                                          status = MemberStatus(status_id = 1),service_id = serviceid,reference_id = referenceid,\
+                                          user_id = id.user_id+1,delegation_phone = delegation_phone_,\
+                                          delegation_info = delegation_info_,bind_phone = bind_phone_,\
+                                          weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
+                                          receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
+                                          register_time = time_)
+                    #修改订单表
+                    id = OrderForm.objects.latest('order_id')
+                    OrderForm.objects.create(order_id = id.order_id+1, service_id = serviceid , user_name = Member(user_name = user),\
+                                             order_price = 1000, order_type = 0,order_created = time_,order_memo = order_Memo_,\
+                                             order_status ="未发货" )
+                    print "注册成功"
+                except BaseException,e:
+                    print e
+                pass
 class MemberStatus(models.Model):
     status_id = models.CharField(primary_key=True, max_length=1)
     status_desc = models.CharField(max_length=20, blank=True, null=True)
@@ -233,16 +263,18 @@ class Message(models.Model):
 
 class OrderForm(models.Model):
     order_id = models.BigIntegerField(primary_key=True)
+    service_id = models.BigIntegerField(blank=True, null=True)
     order_rank = models.BigIntegerField(blank=True, null=True)
     user_name = models.ForeignKey(Member, models.DO_NOTHING, db_column='user_name', blank=True, null=True)
     order_price = models.FloatField(blank=True, null=True)
     order_type = models.CharField(max_length=1, blank=True, null=True)
     order_created = models.DateTimeField(blank=True, null=True)
     order_finished = models.DateTimeField(blank=True, null=True)
-    order_memo = models.CharField(max_length=255, blank=True, null=True)
-    order_status = models.CharField(max_length=20, blank=True, null=True)
+    order_memo = models.CharField(max_length=100, blank=True, null=True)
+    order_status = models.CharField(max_length=5, blank=True, null=True)
     express_name = models.CharField(max_length=20, blank=True, null=True)
     express_number = models.CharField(max_length=50, blank=True, null=True)
+    
 
     class Meta:
         managed = False
@@ -276,7 +308,7 @@ class ServiceAccount(models.Model):
     bank = models.CharField(primary_key=True, max_length=255)
     bank_account = models.CharField(max_length=50, blank=True, null=True)
     card_holder = models.CharField(max_length=20, blank=True, null=True)
-    phone = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False

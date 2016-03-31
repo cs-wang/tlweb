@@ -432,10 +432,10 @@
         <form class="form-horizontal" role="form">
             <input id="UserId" name="UserId" type="hidden" value="0" />
             <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 手机号码 </label>
+                <label class="col-sm-3 control-label no-padding-right"> 用户名 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="UserName" name="UserName" placeholder="手机号码将是登陆名" class="col-xs-10 col-sm-5" maxlength="12" />
+                    <input type="text" id="UserName" name="UserName" placeholder="用户名就是登录名" class="col-xs-10 col-sm-5" maxlength="12" />
                 </div>
             </div>
             <div class="form-group">
@@ -475,10 +475,10 @@
                 <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="BindMob" name="BindMob" placeholder="不填写等于登陆账号" class="col-xs-10 col-sm-5" value="" maxlength="11" />
+                    <input type="text" id="BindMob" name="BindMob" placeholder="必须填写作为打款的联系号码" class="col-xs-10 col-sm-5" value="" maxlength="11" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
-                            <span class="middle" style="color:red">系统短信将发送到您绑定的手机号码</span>
+                            <span class="middle" style="color:red">系统奖金短信提醒将发送到您绑定的手机号码</span>
                         </span>
                     </p>
                 </div>
@@ -549,7 +549,7 @@
 
 
             <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
+                <label class="col-sm-3 control-label no-padding-right"> 银行卡持卡人 </label>
 
                 <div class="col-sm-9">
                     <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" />
@@ -717,14 +717,14 @@
                     if (select.length == 1) { selectProduct = selectProduct + $(y).attr('data-name') + 'x 2  +'; }
                     else if (select.length == 2) { selectProduct = selectProduct + $(y).attr('data-name') + '  +'; }
                 }
-                if ($(y).attr('data-val') == 200) {
+                /*if ($(y).attr('data-val') == 200) {
                     if (select.length == 1) {
                         selectProduct = selectProduct + $(y).attr('data-name') + ' x5';
                     }
                     else {
                         selectProduct = selectProduct + $(y).attr('data-name');
                     }
-                }
+                }*/
             })
             selectProduct = selectProduct.substring(0, selectProduct.length - 1);
             $('#info').text(selectProduct);
