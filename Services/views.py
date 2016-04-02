@@ -41,7 +41,11 @@ def Promotion(request):
 def AdviceList(request):
 	context = {}
 	return render(request, 'Services/AdviceList.html', context)
-    
+
+def PopUpViewAdvice(request):
+	context = {}
+	return render(request, 'Services/PopUpViewAdvice.html', context)
+
 def SubService(request):
 	context = {}
 	return render(request, 'Services/SubService.html', context)
