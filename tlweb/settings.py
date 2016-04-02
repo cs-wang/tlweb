@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'db',
     'index',
     'account',
-    'service',
+    'Services',
+    'Member',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
+        'NAME': 'tldb',
         'USER': 'root',
         'PASSWORD':'123456',
         'HOST':'127.0.0.1',

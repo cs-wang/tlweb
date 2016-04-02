@@ -1,0 +1,872 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>会员订单 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        天龙健康会员操作平台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+                <!-- #section:basics/navbar.toggle -->
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info">
+                                <small>欢迎,</small>
+                                ZJ001
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" id="chpwd">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Account/Login">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive">
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+
+
+
+
+
+                    <li class="">
+                            <a href="/Services/DashBoard">
+                                <i class="menu-icon fa  fa-tachometer"></i>
+                                <span class="menu-text">
+                                    管理首页
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/NoticeList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    查看公告
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Services/MsgList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    消息中心
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa  fa-desktop"></i>
+                                <span class="menu-text">
+                                    会员中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/MemberEdit">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            新增会员
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/MemberOrder">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/UserMap">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            会员网格
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-history"></i>
+                                <span class="menu-text">
+                                    费用中心
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/ComBank">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            公司收款账户
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=1">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费审核
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion?GiftStatus=2">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Services/Promotion">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推广费发放列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    意见建议
+                                </span>
+                                    <span class="badge badge-danger">
+                                        1
+                                    </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/AdviceList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            意见列表
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    副中心管理
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Services/SubService">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            副中心设置
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+            </ul>
+
+
+
+
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+<div class="ace-settings-container" id="ace-settings-container">
+    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+        <i class="ace-icon fa fa-cog bigger-130"></i>
+    </div>
+
+    <div class="ace-settings-box clearfix" id="ace-settings-box">
+        <div class="pull-left width-50">
+            <!-- #section:settings.skins -->
+            <div class="ace-settings-item">
+                <div class="pull-left">
+                    <select id="skin-colorpicker" class="hide">
+                        <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                        <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                        <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                        <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                    </select>
+                </div>
+                <span>&nbsp; 更换颜色</span>
+            </div>
+
+            <!-- /section:settings.skins -->
+            <!-- #section:settings.navbar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                <label class="lbl" for="ace-settings-navbar"> 导航固定 </label>
+            </div>
+
+            <!-- /section:settings.navbar -->
+            <!-- #section:settings.sidebar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                <label class="lbl" for="ace-settings-sidebar"> 菜单固定 </label>
+            </div>
+
+            <!-- /section:settings.sidebar -->
+            <!-- #section:settings.breadcrumbs -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                <label class="lbl" for="ace-settings-breadcrumbs"> 当前位置固定 </label>
+            </div>
+
+            <!-- /section:settings.breadcrumbs -->
+            <!-- #section:settings.rtl -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                <label class="lbl" for="ace-settings-rtl"> 右侧视图 </label>
+            </div>
+
+            <!-- /section:settings.rtl -->
+            <!-- #section:settings.container -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                <label class="lbl" for="ace-settings-add-container">
+                    标准容器视图
+                </label>
+            </div>
+
+            <!-- /section:settings.container -->
+        </div><!-- /.pull-left -->
+
+        <div class="pull-left width-50">
+            <!-- #section:basics/sidebar.options -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
+                <label class="lbl" for="ace-settings-hover"> 移动显示二级菜单 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
+                <label class="lbl" for="ace-settings-compact"> 更改菜单视图 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
+                <label class="lbl" for="ace-settings-highlight"> 更换当前菜单显示 </label>
+            </div>
+
+            <!-- /section:basics/sidebar.options -->
+        </div><!-- /.pull-left -->
+    </div><!-- /.ace-settings-box -->
+</div>
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+
+<link rel="stylesheet" href="/assets/css/datepicker.css" />
+<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
+<script src="/assets/js/layer/layer.js"></script>
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            会员订单
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row noMarginLR">
+    <div class="col-xs-12">
+        <div>
+            <form class="form-inline hasBlockToolItem" action="?" method="Get">
+                
+
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户姓名/手机号码" />
+                <select class="" id="OrderStatus" name="OrderStatus"><option value="0">所有</option>
+<option value="1">待发货</option>
+<option value="2">已发货</option>
+</select>
+
+
+                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 起" />
+                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 止" />
+
+
+
+
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
+                </button>
+            </form>
+        </div>
+    
+        <div class="iWideTable cf">
+            <table id="simple-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:5px;"><input id="chk" type="checkbox" /></th>
+                        <th style="width:15%;">昵称或姓名</th>
+                        <th style="width:15%;">手机</th>
+                        <th style="width:15%;">订单金额</th>
+                        <th style="width:15%;">订单类型</th>
+                        <th style="width:15%;">订单时间</th>
+                        <th style="">订单备注</th>
+                        <th style="width:60px">状态</th>
+                        <th style="width:20px"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="363" />
+                            </td>
+                            <td>刘文儿</td>
+                            <td data-name="mob" style="font-size:16px;">13957538728</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-17 12:38:10</td>
+                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="362" />
+                            </td>
+                            <td>陈佳佑</td>
+                            <td data-name="mob" style="font-size:16px;">15967599711</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 17:39:02</td>
+                            <td>亚麻籽益生菌水溶粉400元/提  + 亚麻全营养代餐棒400元/套  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="361" />
+                            </td>
+                            <td>吕铭燕</td>
+                            <td data-name="mob" style="font-size:16px;">13655752552</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 17:38:48</td>
+                            <td>亚麻全营养代餐棒400元/套  + 亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="360" />
+                            </td>
+                            <td>吕铭燕</td>
+                            <td data-name="mob" style="font-size:16px;">13575590190</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 17:38:43</td>
+                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="359" />
+                            </td>
+                            <td>鲍旭霞</td>
+                            <td data-name="mob" style="font-size:16px;">15372505629</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 16:12:38</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="358" />
+                            </td>
+                            <td>章大海</td>
+                            <td data-name="mob" style="font-size:16px;">18248607779</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 14:14:58</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="357" />
+                            </td>
+                            <td>屠加平</td>
+                            <td data-name="mob" style="font-size:16px;">18805850708</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 14:00:02</td>
+                            <td>亚麻营养膳食粉400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="356" />
+                            </td>
+                            <td>斯铭杰</td>
+                            <td data-name="mob" style="font-size:16px;">15925822678</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 13:54:30</td>
+                            <td>亚麻全营养代餐棒400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="355" />
+                            </td>
+                            <td>胡兰芳</td>
+                            <td data-name="mob" style="font-size:16px;">18258093408</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 12:25:27</td>
+                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="354" />
+                            </td>
+                            <td>陈天新</td>
+                            <td data-name="mob" style="font-size:16px;">13857555083</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-15 08:49:55</td>
+                            <td>亚麻全营养代餐棒400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="353" />
+                            </td>
+                            <td>夏新来</td>
+                            <td data-name="mob" style="font-size:16px;">15267593318</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-14 21:03:23</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="352" />
+                            </td>
+                            <td>蒋成丰</td>
+                            <td data-name="mob" style="font-size:16px;">13065580338</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-14 19:49:13</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="351" />
+                            </td>
+                            <td>陈雪君</td>
+                            <td data-name="mob" style="font-size:16px;">18268780885</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-14 16:03:13</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="350" />
+                            </td>
+                            <td>任少华</td>
+                            <td data-name="mob" style="font-size:16px;">18258588277</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-14 11:10:53</td>
+                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="349" />
+                            </td>
+                            <td>郭漪</td>
+                            <td data-name="mob" style="font-size:16px;">15957585859</td>
+                            <td>1000</td>
+                            <td>报单</td>
+                            <td>2016-03-13 18:44:59</td>
+                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
+                            <td>未发货</td>
+                            <td></td>
+                        </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+        <div class="iCountTxt">订单金额合计：        151000.00</div>
+        
+        <button class="btn btn-sm btn-pink" id="batDeliver">批量发货</button>
+        
+
+
+
+
+<div class="row">
+    <div class="col-xs-6 iPagesLeft">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 1 页 共 11 页 &nbsp; 共 151 条记录
+        </div> 
+    </div>
+    <div class="col-xs-6 iPagesRight">
+        <div class="dataTables_paginate paging_simple_numbers">
+
+                <ul class="pagination">
+                   
+
+                        <li class="paginate_button previous disabled"><a href="?p=0">第一页</a></li>
+                        <li class="paginate_button previous disabled"><a href="?p=0">上一页</a></li>
+                    
+                                        <li class="paginate_button active"><a>1</a></li>
+                        <li class="paginate_button"><a href="?p=1">2</a> </li>
+                        <li class="paginate_button"><a href="?p=2">3</a> </li>
+                    
+                        <li class="paginate_button more"><a href="?p=5">...</a> </li>
+                        <li class="paginate_button"><a href="?p=10">11</a> </li>
+                                            <li class="paginate_button next"><a href="?p=1">下一页</a> </li>
+                        <li class="paginate_button next"><a href="?p=10">最末页</a> </li>
+                </ul>
+        </div>
+    </div>
+</div>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+<script>
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+    $('td[data-name="mob"]').each(function (x, y) {
+        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        $(y).text(_n);
+    });
+
+
+
+
+    $('#chk').click(function () {
+        $('input[name="chk"]').each(function () {
+            $(this).prop('checked', $('#chk').prop('checked'))
+        });
+    })
+
+    $('#batDeliver').click(function () {
+        var ids = new Array();
+        $("input[name='chk']").each(function () {
+            if ($(this).prop('checked') == true) {
+                ids.push($(this).val());
+            }
+        });
+        if (ids.length == 0) {
+            layer.alert('您没有选择任何一条数据', { icon: 5 });
+        }
+        else {
+            // var _url = "Deliver?ids=" + ids.join(',');
+            var _url = "弹窗-确认发货.html";
+            layer.open({
+                type: 2,
+                title: '确认发货',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['80%', '90%'],
+                content: _url
+            });
+        }
+    });
+    $('.view').click(function () {
+        var opid = $(this).attr('data-opid');
+        var _url = "ViewDeliver?id=" + opid;
+        layer.open({
+            type: 2,
+            title: '查看发货单',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['800px', '450px'],
+            content: _url
+        });
+
+    })
+
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">天龙健康会员操作平台</span>
+                        Mrisy &copy; 2015 &nbsp;&nbsp;<a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a>
+                    </span>
+
+                    &nbsp; &nbsp;
+                    
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="/assets/js/ace/elements.scroller.js"></script>
+    <script src="/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="/assets/js/ace/elements.fileinput.js"></script>
+    <script src="/assets/js/ace/elements.typeahead.js"></script>
+    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="/assets/js/ace/elements.spinner.js"></script>
+    <script src="/assets/js/ace/elements.treeview.js"></script>
+    <script src="/assets/js/ace/elements.wizard.js"></script>
+    <script src="/assets/js/ace/elements.aside.js"></script>
+    <script src="/assets/js/ace/ace.js"></script>
+    <script src="/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="/assets/js/ace/ace.sidebar.js"></script>
+    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="/assets/js/ace/ace.widget-box.js"></script>
+    <script src="/assets/js/ace/ace.settings.js"></script>
+    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+    <script src="/assets/js/layer/layer.js"></script>
+
+    <script>
+        var haveFound = false;
+        $('ul.nav-list li a').each(function () {
+            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
+                $(this).parent().addClass('active').show();
+                haveFound = true;
+                if ($(this).parent().parent().hasClass('submenu')) {
+                    $(this).parent().parent().parent().addClass('active');
+                    $(this).parent().parent().parent().addClass('open');
+                }
+                else {
+                    $(this).parent().addClass('open');
+                }
+            }
+        });
+        if (haveFound == false) {
+            $('ul.nav-list li a').each(function () {
+                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
+                    $(this).parent().addClass('active').show();
+                    if ($(this).parent().parent().hasClass('submenu')) {
+                        $(this).parent().parent().parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('open');
+                    }
+                    else {
+                        $(this).parent().addClass('open');
+                    }
+                }
+            });
+        }
+
+
+        $('#chpwd').click(function () {
+            layer.open({
+                type: 2,
+                title: '修改账户密码',
+                shadeClose: false,
+                shade: 0.8,
+                area: ['400px', '500px'],
+                content: '/Account/ChangePwd' //iframe的url
+            });
+
+        })
+    </script>
+</body>
+</html>

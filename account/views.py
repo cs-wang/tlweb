@@ -1,18 +1,31 @@
+# -*- coding:utf-8 -*- 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 import json
 from db import models
+from urllib2 import Request
 def login(request):
     if request.method == 'GET':
         it = models.ShortMessage.objects.all()
         return HttpResponseRedirect('/')
     elif request.method == 'POST':
-        print request.POST['username'],request.POST['password']
+        user_ = request.POST['username']
+        pwd_ = request.POST['password']    
+        role_ = request.POST['role']
+        print user_, pwd_,role_
+        member_ = models.Member()
+        flag = member_.login(user_,pwd_,role_)
+        
         obj = {'result':'success'}
+        obj1 = {'msg':'登录失败'}
         code = str(json.dumps(obj))
-        return HttpResponse(code)
-    
+        code1 = str(json.dumps(obj1))
+        if flag == True:
+            return HttpResponse(code)
+        elif flag == False:
+            return HttpResponse(code1)
+         
 def register(request):
-    
+
     pass

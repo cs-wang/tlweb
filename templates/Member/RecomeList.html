@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>我推荐的会员 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        天龙健康会员操作平台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+                <!-- #section:basics/navbar.toggle -->
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info">
+                                <small>欢迎,</small>
+                                15906753588
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" id="chpwd">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="/Account/Login">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive">
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+
+
+
+
+
+                    <li class="">
+                            <a href="/Member/DashBoard">
+                                <i class="menu-icon fa  fa-tachometer"></i>
+                                <span class="menu-text">
+                                    我的首页
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Member/MsgList">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    消息中心
+
+                                            <span class="badge badge-danger">5</span>
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="/Member/ShowModel">
+                                <i class="menu-icon fa  fa-info-circle"></i>
+                                <span class="menu-text">
+                                    模式介绍
+
+                                </span>
+                            </a>
+                            <b class="arrow"></b> 
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa  fa-desktop"></i>
+                                <span class="menu-text">
+                                    业务管理
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Member/ComBank">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            公司收款账户
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/MemberOrder">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            我的订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/RewardOrder">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            待支付佣金订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/RewardOrderList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            佣金订单
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa  fa-desktop"></i>
+                                <span class="menu-text">
+                                    推荐管理
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Member/Recome">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            推荐会员
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/RecomeList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            我推荐的会员
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/MyRecomeAll">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            我推荐的网络
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-key"></i>
+                                <span class="menu-text">
+                                    系统设置
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Member/MyData">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            资料修改
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+                    <li class="">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <i class="menu-icon fa   fa-comments"></i>
+                                <span class="menu-text">
+                                    意见建议
+                                </span>
+                                                                    <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                    <li class="">
+                                        <a href="/Member/Advice?type=SD">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            申请修改资料
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/Advice?type=BD">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            发送报单汇款信息
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/Advice">
+                                            <i class="menu-icon fa  fa-edit"></i>
+                                            发表意见
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Member/AdviceList">
+                                            <i class="menu-icon fa  fa-list"></i>
+                                            我的意见
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                            </ul>
+                    </li>
+            </ul>
+
+
+
+
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+<div class="ace-settings-container" id="ace-settings-container">
+    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+        <i class="ace-icon fa fa-cog bigger-130"></i>
+    </div>
+
+    <div class="ace-settings-box clearfix" id="ace-settings-box">
+        <div class="pull-left width-50">
+            <!-- #section:settings.skins -->
+            <div class="ace-settings-item">
+                <div class="pull-left">
+                    <select id="skin-colorpicker" class="hide">
+                        <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                        <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                        <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                        <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                    </select>
+                </div>
+                <span>&nbsp; 更换颜色</span>
+            </div>
+
+            <!-- /section:settings.skins -->
+            <!-- #section:settings.navbar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                <label class="lbl" for="ace-settings-navbar"> 导航固定 </label>
+            </div>
+
+            <!-- /section:settings.navbar -->
+            <!-- #section:settings.sidebar -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                <label class="lbl" for="ace-settings-sidebar"> 菜单固定 </label>
+            </div>
+
+            <!-- /section:settings.sidebar -->
+            <!-- #section:settings.breadcrumbs -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                <label class="lbl" for="ace-settings-breadcrumbs"> 当前位置固定 </label>
+            </div>
+
+            <!-- /section:settings.breadcrumbs -->
+            <!-- #section:settings.rtl -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                <label class="lbl" for="ace-settings-rtl"> 右侧视图 </label>
+            </div>
+
+            <!-- /section:settings.rtl -->
+            <!-- #section:settings.container -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                <label class="lbl" for="ace-settings-add-container">
+                    标准容器视图
+                </label>
+            </div>
+
+            <!-- /section:settings.container -->
+        </div><!-- /.pull-left -->
+
+        <div class="pull-left width-50">
+            <!-- #section:basics/sidebar.options -->
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
+                <label class="lbl" for="ace-settings-hover"> 移动显示二级菜单 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
+                <label class="lbl" for="ace-settings-compact"> 更改菜单视图 </label>
+            </div>
+
+            <div class="ace-settings-item">
+                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
+                <label class="lbl" for="ace-settings-highlight"> 更换当前菜单显示 </label>
+            </div>
+
+            <!-- /section:basics/sidebar.options -->
+        </div><!-- /.pull-left -->
+    </div><!-- /.ace-settings-box -->
+</div>
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+
+<script src="/assets/js/layer/layer.js"></script>
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        推荐管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            我推荐的会员 
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row noMarginLR">
+    <div class="col-xs-12">
+            <div>
+            <form class="form-inline hasBlockToolItem" action="?" method="Get">
+
+
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
+
+
+
+                <select class="col-xs-4 col-sm-4" id="LevelId" name="LevelId" style="width:120px"><option value="0">所有</option>
+<option value="1">一星</option>
+<option value="2">二星</option>
+<option value="3">三星</option>
+<option value="4">四星</option>
+<option value="5">五星</option>
+</select>
+
+
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
+                </button>
+            </form>
+        </div>
+
+        <div class="iWideTable cf">
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:11%;">昵称或姓名</th>
+                    <th style="width:11%;">注册手机</th>
+                    
+                    
+                    <th style="width:11%;">注册时间</th>
+                    <th style="width:11%;">确认时间</th>
+                    <th style="width:11%;">TA的推荐数</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                    <tr><td>蒋成丰</td>
+                        
+                        <td>13065580338</td>
+                        
+                        
+                        
+                        <td>2016-03-14 17:28</td>
+                        <td>2016-03-14 21:03</td>
+                        
+                        
+                        <td>1</td>
+                    </tr>
+                    <tr><td>陈婷</td>
+                        
+                        <td>13858508007</td>
+                        
+                        
+                        
+                        <td>2016-03-13 14:50</td>
+                        <td>2016-03-14 11:11</td>
+                        
+                        
+                        <td>1</td>
+                    </tr>
+                    <tr><td>蒋荷燕</td>
+                        
+                        <td>15968568546</td>
+                        
+                        
+                        
+                        <td>2016-03-08 14:13</td>
+                        <td>2016-03-08 14:20</td>
+                        
+                        
+                        <td>1</td>
+                    </tr>
+                    <tr><td>张伟光</td>
+                        
+                        <td>13600630166</td>
+                        
+                        
+                        
+                        <td>2016-03-07 12:57</td>
+                        <td>2016-03-07 15:29</td>
+                        
+                        
+                        <td>1</td>
+                    </tr>
+                    <tr><td>李莉</td>
+                        
+                        <td>13858521060</td>
+                        
+                        
+                        
+                        <td>2016-03-06 14:27</td>
+                        <td>2016-03-06 14:51</td>
+                        
+                        
+                        <td>2</td>
+                    </tr>
+
+
+            </tbody>
+        </table>
+        </div>
+        
+
+
+
+
+<div class="row">
+    <div class="col-xs-6 iPagesLeft">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 1 页 共 1 页 &nbsp; 共 5 条记录
+        </div> 
+    </div>
+    <div class="col-xs-6 iPagesRight">
+        <div class="dataTables_paginate paging_simple_numbers">
+
+        </div>
+    </div>
+</div>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+<script>
+    $('.viewrecom').click(function () {
+        var sign = $(this).attr('data-sign');
+        var _url = "ViewReCome?sign=" + sign;
+        layer.open({
+            type: 2,
+            title: '查看推荐',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+
+    })
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">天龙健康会员操作平台</span>
+                        Mrisy &copy; 2015 &nbsp;&nbsp;<a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a>
+                    </span>
+
+                    &nbsp; &nbsp;
+                    
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="/assets/js/ace/elements.scroller.js"></script>
+    <script src="/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="/assets/js/ace/elements.fileinput.js"></script>
+    <script src="/assets/js/ace/elements.typeahead.js"></script>
+    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="/assets/js/ace/elements.spinner.js"></script>
+    <script src="/assets/js/ace/elements.treeview.js"></script>
+    <script src="/assets/js/ace/elements.wizard.js"></script>
+    <script src="/assets/js/ace/elements.aside.js"></script>
+    <script src="/assets/js/ace/ace.js"></script>
+    <script src="/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="/assets/js/ace/ace.sidebar.js"></script>
+    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="/assets/js/ace/ace.widget-box.js"></script>
+    <script src="/assets/js/ace/ace.settings.js"></script>
+    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+    <script src="/assets/js/layer/layer.js"></script>
+
+    <script>
+        var haveFound = false;
+        $('ul.nav-list li a').each(function () {
+            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
+                $(this).parent().addClass('active').show();
+                haveFound = true;
+                if ($(this).parent().parent().hasClass('submenu')) {
+                    $(this).parent().parent().parent().addClass('active');
+                    $(this).parent().parent().parent().addClass('open');
+                }
+                else {
+                    $(this).parent().addClass('open');
+                }
+            }
+        });
+        if (haveFound == false) {
+            $('ul.nav-list li a').each(function () {
+                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
+                    $(this).parent().addClass('active').show();
+                    if ($(this).parent().parent().hasClass('submenu')) {
+                        $(this).parent().parent().parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('open');
+                    }
+                    else {
+                        $(this).parent().addClass('open');
+                    }
+                }
+            });
+        }
+
+
+        $('#chpwd').click(function () {
+            layer.open({
+                type: 2,
+                title: '修改账户密码',
+                shadeClose: false,
+                shade: 0.8,
+                area: ['400px', '500px'],
+                content: '/Account/ChangePwd' //iframe的url
+            });
+
+        })
+    </script>
+</body>
+</html>

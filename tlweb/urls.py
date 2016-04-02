@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^index/', include('index.urls')),
     url(r'^account/', include('account.urls')),
-    url(r'^service/', include('service.urls'))
+    url(r'^Services/', include('Services.urls')),
+    url(r'^Member/', include('Member.urls')),
 ]
