@@ -7,8 +7,8 @@ class MemberStatuss(admin.ModelAdmin):
     list_display=('status_id','status_desc')
     search_fields=('status_id','status_desc')
 class Advices(admin.ModelAdmin):
-    list_display=('advice_id','user_name','advice_content','advice_created','reply_time','service')
-    search_fields=('advice_id','user_name','advice_content','advice_created','reply_time','service')
+    list_display=('advice_id','user_id','advice_title','advice_content','advice_created','reply_time','service','advice_status','reply_content')
+    search_fields=('advice_id','user_id','advice_title','advice_content','advice_created','reply_time','service','advice_status','reply_content')
 class CommissionDetails(admin.ModelAdmin):
     list_display=('commission_type','commission_desc')
     search_fields=('commission_type','commission_desc')
