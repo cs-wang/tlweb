@@ -12,8 +12,17 @@ def NoticeList(request):
 	return render(request, 'Services/NoticeList.html', context)
 
 def MsgList(request):
-	context = {}
+	msg_ = models.Message()
+	msgs = msg_.getAllMsg()
+	context = {'msglist':msgs,'msgnum':len(msgs)}
 	return render(request, 'Services/MsgList.html', context)
+
+def ViewMsg(request):
+	msgid = request.GET.get('MsgId')
+	msg_ = models.Message()
+	msg = msg_.getFilterMsg(msgid)
+	context = {'msgcontent':msg.message_title+","+msg.message_content}
+	return render(request, 'Services/ViewMsg.html', context)
 
 def MemberEdit(request):
 	context = {}

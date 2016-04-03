@@ -113,6 +113,14 @@ class Message(models.Model):
     message_content = models.CharField(max_length=255, blank=True, null=True)
     sent_time = models.DateTimeField(blank=True, null=True)
     message_status = models.CharField(max_length=1, blank=True, null=True)
+    def getAllMsg(self):
+      msgs =Message.objects.all()
+      return msgs
+
+    def getFilterMsg(self,msgid):
+      msg = Message.objects.filter(message_id = msgid).get()
+      return msg
+
 
 class OrderForm(models.Model):
     order_id = models.AutoField(primary_key=True)
