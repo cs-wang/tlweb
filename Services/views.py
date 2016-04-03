@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from db import models
+import json
 # Create your views here.
 
 def DashBoard(request):
@@ -21,8 +22,23 @@ def ViewMsg(request):
 	msgid = request.GET.get('MsgId')
 	msg_ = models.Message()
 	msg = msg_.getFilterMsg(msgid)
-	context = {'msgcontent':msg.message_title+","+msg.message_content}
+	context = {'msgtitle':msg.message_title,'msgcontent':msg.message_content,'msgid':msg.message_id}
 	return render(request, 'Services/ViewMsg.html', context)
+
+def MsgRead(request):
+	msgid = request.POST.get('MsgId')
+	print msgid
+	msg_ = models.Message()
+	#msg_.updateMsgStatus(msgid)
+	msg = msg_.getFilterMsg(msgid)
+
+	print msg.message_status
+	if msg.message_status == "1":
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
 
 def MemberEdit(request):
 	context = {}

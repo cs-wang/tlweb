@@ -457,7 +457,13 @@
                     <tr>
                         <td>{{msg.message_title}}</td>
                         <td>{{msg.sent_time}}</td>
-                        <td><span class="label label-success ">已读</span></td>
+                        <td>
+                            {% if msg.message_status == "0" %}
+                                <span class="label label-warning ">未读</span> 
+                            {% else %}
+                                <span class="label label-success ">已读</span>       
+                            {% endif %}
+                        </td>
                         <td>
                             <button class="btn btn-minier btn-pink read" data-id="{{msg.message_id}}">阅读</button>
                         </td>

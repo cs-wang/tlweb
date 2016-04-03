@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^NoticeList/$', views.NoticeList),
     url(r'^MsgList/$', views.MsgList),
     url(r'^MsgList/ViewMsg/$', views.ViewMsg),
+    url(r'^MsgList/ViewMsg/MsgRead/$', views.MsgRead),
     url(r'^MemberEdit/$', views.MemberEdit),
     url(r'^MemberList/MemberEdit/$', views.MemberEdit),
     url(r'^MemberList/$', views.MemberList),

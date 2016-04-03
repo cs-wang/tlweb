@@ -25,8 +25,8 @@ class Members(admin.ModelAdmin):
                    'delegation_info','bind_phone','weixin_id','bank','account','card_holder','receiver',\
                    'receiver_phone','receiver_addr','register_time','confirm_time')
 class Messages(admin.ModelAdmin):
-    list_display=('message_id','message_title','message_content','sent_time','message_status')
-    search_fields=('message_id','message_title','message_content','sent_time','message_status')
+    list_display=('message_id','message_title','message_content','sent_time','message_status','id')
+    search_fields=('message_id','message_title','message_content','sent_time','message_status','id')
 class OrderForms(admin.ModelAdmin):
     list_display=('order_id','service_id','order_rank','user_id','order_price','order_type','order_created','order_finished',\
                   'order_memo','order_status','express_name','express_number')

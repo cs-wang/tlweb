@@ -55,7 +55,6 @@
 </head>
 
 <body class="no-skin">
-
     <div class="main-container" id="main-container">
         <div class="main-content">
             <div class="main-content-inner">
@@ -70,13 +69,13 @@
                                         <!-- PAGE CONTENT BEGINS -->
 
                                         <h3 class="header smaller lighter blue">
-                                            <small>张燏琼申请加单，请审核</small>
+                                            <small>{{msgtitle}}</small>
                                         </h3>
 
                                         <div class="row" style="text-align:left;margin:0 auto">
                                            服务中心：<br>
                                            {{msgcontent}}
-                                           <br><a target='_blank' href="/Services/MemberList?UserInfo=18268208081&UserStatus=10&orderby=1&regfrom=-1&regStart=&regEnd=&subStart=&subEnd=">请点击此处审核</a>
+                                           <br><a target='_blank' href="/Services/MemberList/?UserInfo=18268208081&UserStatus=10&orderby=1&regfrom=-1&regStart=&regEnd=&subStart=&subEnd=">请点击此处审核</a>
                                         </div>
                                         <hr>
                                         <div style="text-align:center">
@@ -92,21 +91,15 @@
                 </div><!-- /.page-content -->
             </div>
         </div><!-- /.main-content -->
-
-
     </div>
-
     <script src="/assets/js/layer/layer.js"></script>
-
 </body>
 
 <script>
     $(document).ready(function () {
-
-
         $('#read').click(function () {
             parent.layer.msg('确认中...', { icon: 16 });
-            $.post('MsgRead',{ MsgId:858 }, function (json) {
+            $.post('MsgRead/',{ MsgId:{{msgid}} }, function (json) {
                 if (json.result == "t") {
                     parent.location.href=parent.location.href;
                     parent.layer.closeAll();
@@ -114,7 +107,7 @@
                 else {
                     parent.layer.alert('请刷新后再试', { icon: 5 });
                 }
-            });
+            }, "json");
         });
 
         $('#close').click(function () {
