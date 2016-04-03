@@ -27,5 +27,9 @@ def login(request):
             return HttpResponse(code1)
          
 def register(request):
-
-    pass
+    member_ = models.Member()
+    #有推荐人
+    flag = member_.register('newUser',"hahah","delegation_phone_","delegation_info_",\
+          "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
+          "receiver_addr_","order_Memo",1,1)
+    return HttpResponse("ok")

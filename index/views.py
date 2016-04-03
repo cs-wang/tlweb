@@ -11,3 +11,6 @@ def company(request):
 def product(request):
     context = {}
     return render(request, 'index/product.html', context)
+def page(request):
+    context = {}
+    return render(request, 'index/pageTest.html', context)
