@@ -140,12 +140,16 @@ class Member(models.Model):
                     OrderForm.objects.create(service_id = serviceid , user_id = Member(user_id = i.user_id),\
                                              order_price = 1000, order_type = 0,order_created = time_,order_memo = order_Memo_,\
                                              order_status ="未发货" )
+                    #消息列表中增加一条
+                    #Message.objects.create()
                 except BaseException,e:
                     print e
                 pass    
 
 class Message(models.Model):
-    message_id = models.BigIntegerField(primary_key=True)
+    message_id = models.AutoField(primary_key=True)
+    #id可以是userid或者是serviceid
+    id = models.BigIntegerField(blank=True, null=True)
     message_title = models.CharField(max_length=255, blank=True, null=True)
     message_content = models.CharField(max_length=255, blank=True, null=True)
     sent_time = models.DateTimeField(blank=True, null=True)
@@ -176,6 +180,7 @@ class Service(models.Model):
     service_pwd = models.CharField(max_length=32, blank=True, null=True)
     service_area = models.CharField(max_length=20, blank=True, null=True)
     role = models.CharField(max_length=1, blank=True, null=True)
+
     
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)
