@@ -7,12 +7,53 @@ from django.utils import timezone
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
-    user_name = models.ForeignKey('Member', models.DO_NOTHING, db_column='user_name', blank=True, null=True)
+    user_id = models.ForeignKey('Member', models.DO_NOTHING, db_column='user_id', blank=True, null=True)
+    advice_title = models.CharField(max_length=20, blank=True, null=True)
     advice_content = models.CharField(max_length=255, blank=True, null=True)
     advice_created = models.DateTimeField(blank=True, null=True)
+    reply_content = models.CharField(max_length=255, blank=True, null=True)
     reply_time = models.DateTimeField(blank=True, null=True)
+    advice_status = models.CharField(max_length=1, blank=True, null=True)
     service = models.ForeignKey('Service', models.DO_NOTHING)
-
+    #发送意见 advice_status = 0 为未阅读，1为已阅读
+    def send_advice(self,user_id_,title_,content_,service_id_):
+        try:
+            time_ = timezone.now()
+            Advice.objects.create(user_id = Member(user_id_), advice_title = title_, advice_content = content_,service = Service(service_id_)\
+                                  ,advice_status = 0, advice_created = time_)
+        except BaseException, e:
+            print e
+    def reply_advice(self,user_id_,reply_content_,service_id_,advice_id_):
+        try:
+            time_ = timezone.now()
+            advice = Advice.objects.filter(advice_id = advice_id_).get()
+            advice.advice_status = 1
+            advice.reply_time = time_
+            advice.reply_content = reply_content_
+            advice.save()
+        except BaseException, e:
+            print e
+    def my_advice(self,user_id_,title_ = None,advice_status_ = None,\
+                  time_start_ = None,time_end_ = None):
+        try:
+            args = {}
+            args['user_id'] = user_id_
+            args1 = {}
+            if title_ != None:
+                args['advice_title'] = title_
+            if advice_status_ != None:
+                args['advice_status'] = advice_status_
+            if time_start_ !=None:
+                args['advice_created__gt'] = time_start_
+            if time_end_ !=None:
+                args1['advice_created'] = time_end_
+                adviceList = Advice.objects.filter(**args).exclude(**args1).all()
+                print adviceList
+            else:
+                adviceList = Advice.objects.filter(**args).all()
+                print adviceList
+        except BaseException, e:
+            print e
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)
@@ -54,7 +95,6 @@ class Member(models.Model):
  
     #user用户名 pwd密码 role角色 0为会员1为服务点
     def login(self,user,pwd,role):
-         print role
          if role == '0':
              try:
                  userEntity = Member.objects.filter(user_name = user).get()
@@ -87,8 +127,6 @@ class Member(models.Model):
                 return False
             else:
                 try:
-                    print "hello" 
-                    #获取id最大值
                     time_ = timezone.now()
                     #修改member表
                     i = Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
@@ -102,13 +140,16 @@ class Member(models.Model):
                     OrderForm.objects.create(service_id = serviceid , user_id = Member(user_id = i.user_id),\
                                              order_price = 1000, order_type = 0,order_created = time_,order_memo = order_Memo_,\
                                              order_status ="未发货" )
-                    print "注册成功"
+                    #消息列表中增加一条
+                    #Message.objects.create()
                 except BaseException,e:
                     print e
                 pass    
 
 class Message(models.Model):
-    message_id = models.BigIntegerField(primary_key=True)
+    message_id = models.AutoField(primary_key=True)
+    #id可以是userid或者是serviceid
+    id = models.BigIntegerField(blank=True, null=True)
     message_title = models.CharField(max_length=255, blank=True, null=True)
     message_content = models.CharField(max_length=255, blank=True, null=True)
     sent_time = models.DateTimeField(blank=True, null=True)
@@ -147,6 +188,7 @@ class Service(models.Model):
     service_pwd = models.CharField(max_length=32, blank=True, null=True)
     service_area = models.CharField(max_length=20, blank=True, null=True)
     role = models.CharField(max_length=1, blank=True, null=True)
+
     
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)
