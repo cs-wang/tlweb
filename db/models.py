@@ -4,6 +4,9 @@ from db import common
 from django.db import models
 from compiler.pycodegen import EXCEPT
 from django.utils import timezone
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -31,8 +34,10 @@ class Advice(models.Model):
             advice.reply_time = time_
             advice.reply_content = reply_content_
             advice.save()
+            return True
         except BaseException, e:
             print e
+            return False
     def my_advice(self,user_id_,title_ = None,advice_status_ = None,\
                   time_start_ = None,time_end_ = None):
         try:
@@ -48,12 +53,15 @@ class Advice(models.Model):
             if time_end_ !=None:
                 args1['advice_created'] = time_end_
                 adviceList = Advice.objects.filter(**args).exclude(**args1).all()
-                print adviceList
+#                 print adviceList
+                return adviceList
             else:
                 adviceList = Advice.objects.filter(**args).all()
-                print adviceList
+#                 print adviceList
+                return adviceList
         except BaseException, e:
             print e
+            return False
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)
@@ -115,7 +123,7 @@ class Member(models.Model):
                  return False
     #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
     #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
-    #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID
+    #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID 推荐人Id为0时为所在服务中心
     #同时修改会员表和订单表
     def register(self,user,nickname_,delegation_phone_,delegation_info_,\
          bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
@@ -139,12 +147,14 @@ class Member(models.Model):
                     #修改订单表
                     OrderForm.objects.create(service_id = serviceid , user_id = Member(user_id = i.user_id),\
                                              order_price = 1000, order_type = 0,order_created = time_,order_memo = order_Memo_,\
-                                             order_status ="未发货" )
+                                             order_status ="已发货" )
                     #消息列表中增加一条
-                    #Message.objects.create()
+                    Message.objects.create(id = serviceid,message_title = nickname_+"申请加单请审核",message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
+                                           sent_time = time_, message_status = '0')
+                    return True
                 except BaseException,e:
                     print e
-                pass    
+                    return False    
 
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
@@ -153,8 +163,27 @@ class Message(models.Model):
     message_title = models.CharField(max_length=255, blank=True, null=True)
     message_content = models.CharField(max_length=255, blank=True, null=True)
     sent_time = models.DateTimeField(blank=True, null=True)
+    #0表示未读，1表示为已读
     message_status = models.CharField(max_length=1, blank=True, null=True)
-
+    def readMessage(self,message_id_):
+        try:
+            msg = Message.objects.filter(message_id = message_id_).get()
+            msg.message_status = 1
+            msg.save()
+            return True
+        except BaseException,e:
+            print e
+            return False
+    #message_status_ 为2表示所有消息
+    def myMessage(self,id_,message_status_ = 2):
+        if message_status_ == 2:
+            msglist = Message.objects.filter(id = id_).all()
+            print msglist
+            return msglist
+        else:
+            msglist = Message.objects.filter(id = id_,message_status = message_status_).all()
+            print msglist
+            return msglist 
 class OrderForm(models.Model):
     order_id = models.AutoField(primary_key=True)
     service_id = models.BigIntegerField(blank=True, null=True)

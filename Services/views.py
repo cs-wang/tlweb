@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*- 
 from django.shortcuts import render
 from django.http import HttpResponse
 from db import models
@@ -13,6 +14,9 @@ def NoticeList(request):
 
 def MsgList(request):
 	context = {}
+	msgobj = models.Message()
+# 	msgobj.readMessage(1)
+# 	msgobj.myMessage(1,0)
 	return render(request, 'Services/MsgList.html', context)
 
 def MemberEdit(request):
@@ -22,7 +26,7 @@ def MemberEdit(request):
 #	 elif request.method == 'POST':
 #		 return
 	member_ = models.Member()
-	flag = member_.register('wcs',"nickname_","delegation_phone_","delegation_info_",\
+	flag = member_.register('zdg',"赵镇辉啊","delegation_phone_","delegation_info_",\
 		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
 		  "receiver_addr_","order_Memo",1,0)   
 	return render(request, 'Services/MemberEdit.html', context)
