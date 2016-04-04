@@ -200,24 +200,27 @@ class Message(models.Model):
             print e
             return False
     #message_status_ 为2表示所有消息 0表示未读，1表示为已读 role = 0 为会员,= 1为服务中心
-    def myMessage(self,id_,role_,message_status_ = 2):
+    def myMessage(self,role_,id_,message_status_):
+        #print "role_:",role_
         if role_ == 0:
-            if message_status_ == 2:
+            if message_status_=="2":
                 msglist = Message.objects.filter(user_id = id_).all()
-                print msglist
+                #print msglist
                 return msglist
             else:
                 msglist = Message.objects.filter(user_id = id_,message_status = message_status_).all()
-                print msglist
+                #int msglist
                 return msglist
         elif role_ == 1:
-            if message_status_ == 2:
+            #print "message_status_:",message_status_
+            if message_status_=="2":
+                #print "id_:",id_
                 msglist = Message.objects.filter(service_id = id_).all()
-                print msglist
+                #print msglist
                 return msglist
             else:
-                msglist = Message.objects.filter(service_id = id_,message_status = message_status_).all()
-                print msglist
+                msglist = Message.objects.filter(service_id = id_, message_status = message_status_).all()
+                #print msglist
                 return msglist
     #服务中心审核订单后创建一条消息通知
     

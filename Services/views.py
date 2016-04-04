@@ -17,9 +17,13 @@ def NoticeList(request):
 	return render(request, 'Services/NoticeList.html', context)
 
 def MsgList(request):
-	msg_ = models.Message()
-	msgs = msg_.getAllMsg()
-	context = {'msglist':msgs,'msgnum':len(msgs)}
+	sta = request.GET.get('sta')
+	if sta==None:
+		sta="2"
+	msgobj = models.Message()
+	msgs = msgobj.myMessage(1, 1, sta)
+	context = { 'msglist':msgs,
+				'msgnum':len(msgs), }
 #	msgobj = models.Message()
 # 	msgobj.readMessage(5)
 # 	msgobj.myMessage(1,1,0)
@@ -29,17 +33,17 @@ def ViewMsg(request):
 	msgid = request.GET.get('MsgId')
 	msg_ = models.Message()
 	msg = msg_.getFilterMsg(msgid)
-	context = {'msgtitle':msg.message_title,'msgcontent':msg.message_content,'msgid':msg.message_id}
+	context = {	'msgtitle':msg.message_title,
+				'msgcontent':msg.message_content,
+				'msgid':msg.message_id, }
 	return render(request, 'Services/ViewMsg.html', context)
 
 def MsgRead(request):
 	msgid = request.POST.get('MsgId')
-	print msgid
 	msg_ = models.Message()
-	#msg_.updateMsgStatus(msgid)
+	msg_.readMessage(msgid)
 	msg = msg_.getFilterMsg(msgid)
-
-	print msg.message_status
+	print msg.message_id,msg.message_status
 	if msg.message_status == "1":
 		obj = {'result':'t'}
 	else:
