@@ -65,8 +65,10 @@ def MemberEdit(request):
 	return render(request, 'Services/MemberEdit.html', context)
 
 def MemberList(request):
-	context = {}
 	member_ = models.Member()
+	memberlist = member_.MemberList()
+	print "MemberList:",memberlist
+	context = { 'memberlist':memberlist, }
 	flag = member_.activateMember(3,1)
 	return render(request, 'Services/MemberList.html', context)
 

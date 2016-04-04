@@ -169,6 +169,9 @@ class Member(models.Model):
         except BaseException,e:
             print e
             return False
+    def MemberList(self):
+        return Member.objects.all();
+
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid

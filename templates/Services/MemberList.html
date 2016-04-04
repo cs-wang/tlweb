@@ -488,20 +488,34 @@
                     <th style="width:10%;">审核时间</th>
                     <th style="width:12%;">注册来源</th>
                     <th style="width:8%;">直推</th>
-                    
-                    <th style="width:220px;"></th>
+                    <th style="width:220px;">操作</th>
                 </tr>
             </thead>
 
             <tbody>
+            		{% for member in memberlist %}           
                     <tr>
-                        <td><a href="MemberOrder?UserId=604" title="查看会员订单">刘文儿</a></td>
-                        <td data-name="mob" style="font-size:14px;">13957538728</td>
-                        <td>13806767333</td>
-                        <td>13957538728</td>
-                        <td><span class="label label-warning">已审核</span></td>
-                        <td>2016-03-17 11:18</td>
-                        <td></td>
+                        <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
+                       	{% if member.user_name != None %}
+                        {{member.user_name}}
+                        {% else %}
+                        {{member.nickname}}
+                        {% endif %}
+                        </a></td>
+                        <td data-name="mob" style="font-size:14px;">{{member.user_id}}</td>
+                        <td>{{member.delegation_phone}}</td>
+                        <td>{{member.bind_phone}}</td>
+
+                        {% if member.status.status_id == "1" %}
+                        	<td><span class="label label-success">已激活</span></td>
+                        {% elif member.status.status_id == "2" %}
+                        	<td><span class="label label-warning">已审核</span></td>
+                        {% else %}
+							<td><span class="label">未审核</span></td>
+                        {%endif%}
+                        
+                        <td>{{member.register_time}}</td>
+                        <td>{{member.confirm_time}}</td>
                         <td>
                                 <a href="javascript:;" data-id="492" class="recome" title="点击查看推荐人">【丁凤英】</a>推荐
                         </td>
@@ -509,13 +523,14 @@
                         
                         <td>
                             <div class=" btn-group">
-                                                                    <a class="btn btn-mini btn-warning audit" data-id="604">激活</a>
-                                                                <a class="btn btn-mini btn-primary view" data-id="604">查看</a>
+                                    <a class="btn btn-mini btn-warning audit" data-id="604">激活</a>
+                                    <a class="btn btn-mini btn-primary view" data-id="604">查看</a>
                                     <a class="btn btn-mini btn-purple" href="../MemberEdit?UserId=604">修改</a>
                                     <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1CE92D4DDCE842C3F43CAF3878D48E0CA32AF6EB09D553D9A44300227892CA3F6B76779FED4773A8AAC2488C18DCE9E37E17BC41D222DF24EED5DD8BF671D9C16FFB8FA6B6EA8199A81E9E7BD4C22F344CD0BAEB6076B228FB7D052E3321A74094B82DE9E5FCD1B421695519D4F52870C01F5C5A16EA70145F0D6F729335A1AD" data-id="">查看推荐</button>
                             </div>
                         </td>
                     </tr>
+                    {% endfor %}
                     <tr>
                         <td><a href="MemberOrder?UserId=603" title="查看会员订单">陈佳佑</a></td>
                         <td data-name="mob" style="font-size:14px;">15967599711</td>
