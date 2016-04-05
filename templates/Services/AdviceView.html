@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,56 +69,70 @@
 
 <div class="widget-box">
     <div class="widget-header widget-header-flat">
-        <h4 class="widget-title smaller">aaa</h4>
+        <h4 class="widget-title smaller">{{adv.user_id.user_name}} 报单资料</h4>
 
     </div>
 
 
     <div class="widget-body">
         <div class="widget-main">
-asdasdsa
-            <p style="margin-top:10px;margin-bottom:0;color:#808080">发表时间：2016-03-21 17:09</p>
+致服务中心：<br>&nbsp;&nbsp;本人编号：{{adv.user_id.user_id}}&nbsp;<br>&nbsp;&nbsp;本人报单款已由_________银行，姓名：__________卡号：_________&nbsp;，共计人民币&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;元<br>&nbsp;&nbsp;已汇至公司指定账号________银行________卡上<br>&nbsp;&nbsp;报单人：{{adv.user_id.user_name}}&nbsp;<br>&nbsp;&nbsp;联系电话：{{adv.user_id.bind_phone}}&nbsp;<br>请审核！
+            <p style="margin-top:10px;margin-bottom:0;color:#808080">发表时间：{{adv.advice_created}}</p>
         </div>
     </div>
-
-
-
 </div>
 
 
 
 
-
+{% if adv.advice_status == "0" %}
 
     <div class="widget-box">
         <div class="widget-header widget-header-flat">
-            <h4 class="widget-title smaller">服务中心回复</h4>
+            <h4 class="widget-title smaller">回复意见</h4>
 
         </div>
 
 
         <div class="widget-body">
             <div class="widget-main">
+                <textarea id="back" rows="2" cols="20" style="width:100%;height:100px;" maxlength="500"></textarea>
+              <div><button class="btn btn-primary " id="sub">回复意见</button></div>
+            </div>
+            
+        </div>
+    </div>
 
-                111
-                <p style="margin-top:10px;margin-bottom:0;color:#808080">回复时间：2016-03-21 17:10</p>
+    {% else %}
+
+    <div class="widget-box">
+        <div class="widget-header widget-header-flat">
+            <h4 class="widget-title smaller">服务中心回复</h4>
+
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                {{adv.reply_content}}
+                <p style="margin-top:10px;margin-bottom:0;color:#808080">回复时间：{{adv.reply_time}}</p>
             </div>
         </div>
     </div>
+
+
+    {% endif %}
 <script>
     $('#sub').click(function () {
-        layer.msg('正在处理中...', { icon: 16 });$(this).prop('disabled', true);
-        $.post('AdviceSub', { id: 8, info: $('#back').val() }, function (json) {
+        layer.msg('正在处理中...', { icon: 16 });
+        //$(this).prop('disabled', true);
+        $.post('AdviceSub/', { id: {{adv.advice_id}}, info: $('#back').val() }, function (json) {
             layer.closeAll('loading');
             if (json.result == "t") {
-                layer.msg('回复成功！', { icon: 1 }, function () { parent.location.href = 'AdviceList' });
-
+                layer.msg('回复成功！', { icon: 1 }, function () { parent.location.href = '../../AdviceList' });
             }
             else {
                 layer.alert('回复失败.', { icon: 5 });
             }
-
-        });
+        }, "json");
 
     })
 
@@ -139,7 +152,8 @@ asdasdsa
 
     </div>
 
-    
+    <script src="/assets/js/layer/layer.js"></script>
 
 </body>
 </html>
+

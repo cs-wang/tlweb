@@ -439,11 +439,11 @@
                 <input id="title" name="title" type="text" class="input-sm" placeholder="意见标题" />
 
 
-                服务中心 <select class="" id="serviceReadStatus" name="serviceReadStatus"><option value="-1">所有</option>
+                服务中心 <select class="" id="serviceReadStatus" name="serviceReadStatus"><option value="2">所有</option>
 <option value="0">未阅读</option>
 <option value="1">已阅读</option>
 </select>
-                管理员 <select class="" id="adminReadStatus" name="adminReadStatus"><option value="-1">所有</option>
+                管理员 <select class="" id="adminReadStatus" name="adminReadStatus"><option value="2">所有</option>
 <option value="0">未阅读</option>
 <option value="1">已阅读</option>
 </select>
@@ -463,68 +463,29 @@
                 <tr>
                     <th style="width:10%;">发表人</th>
                     <th style="width:50%;">标题</th>
-                    <th style="width:10%">发表时间</th>
+                    <th style="width:20%">发表时间</th>
                     <th style="width:10%">服务中心</th>
-                    <th style="width:10%">管理员</th>
                     <th style="width:10%">点击查看</th>
-
-
                 </tr>
             </thead>
 
             <tbody>
+                    {% for advice in advlist %}
                     <tr>
-                        <td></td>
-                        <td>aaa</td>
-                        <td>2016-03-21 17:09</td>
+                        <td>{{advice.user_id.user_name}}</td>
+                        <td>{{advice.advice_title}}</td>
+                        <td>{{advice.advice_created}}</td>
+                        {% if advice.advice_status == "0" %}
+                        <td><span class='label'>未阅读</span></td>
+                        {% else %}
                         <td><span class='label label-success'>已阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="8">查看意见</button></td>
+                        {% endif %}
+                        <td><button class="btn btn-minier btn-light view" data-id="{{advice.advice_id}}">查看意见</button></td>
                     </tr>
-                    <tr>
-                        <td>胡惠琴</td>
-                        <td>胡惠琴 报单资料</td>
-                        <td>2016-03-09 16:26</td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="7">查看意见</button></td>
-                    </tr>
-                    <tr>
-                        <td>仲凡</td>
-                        <td>仲凡 报单资料</td>
-                        <td>2016-03-06 17:18</td>
-                        <td><span class='label label-success'>已阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="6">查看意见</button></td>
-                    </tr>
-                    <tr>
-                        <td>仲凡</td>
-                        <td>仲凡 报单资料</td>
-                        <td>2016-03-06 17:16</td>
-                        <td><span class='label label-success'>已阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="5">查看意见</button></td>
-                    </tr>
-                    <tr>
-                        <td>陈雪飞</td>
-                        <td>陈雪飞 报单资料</td>
-                        <td>2016-03-06 16:28</td>
-                        <td><span class='label label-success'>已阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="4">查看意见</button></td>
-                    </tr>
-
-
+                    {% endfor %}
             </tbody>
         </table>
     </div>
-
-
-
-        
-
-
-
 
 <div class="row">
     <div class="col-xs-6 iPagesLeft">
@@ -547,8 +508,7 @@
     })
     $('.view').click(function () {
         var Id = $(this).attr('data-id');
-        // var _url = "AdviceView?id=" + Id;
-        var _url = "PopUpViewAdvice";
+         var _url = "AdviceView/?id=" + Id;
         layer.open({
             type: 2,
             title: '查看意见',

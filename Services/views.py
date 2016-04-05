@@ -72,6 +72,10 @@ def MemberList(request):
 	flag = member_.activateMember(3,1)
 	return render(request, 'Services/MemberList.html', context)
 
+def SetAudit(request):
+	context = {}
+	return render(request, 'Services/SetAudit.html', context)
+
 def MemberOrder(request):
 	context = {}
 	order_ = models.OrderForm()
@@ -98,12 +102,33 @@ def Promotion(request):
 	return render(request, 'Services/Promotion.html', context)
 
 def AdviceList(request):
-	context = {}
+	advobj = models.Advice()
+	advlist = advobj.my_advice(1)
+	print "my_advice:",advlist
+	context = {'advlist':advlist}
 	return render(request, 'Services/AdviceList.html', context)
 
-def PopUpViewAdvice(request):
-	context = {}
-	return render(request, 'Services/PopUpViewAdvice.html', context)
+def AdviceView(request):
+	advid = request.GET.get('id')
+	print "advid:",advid
+	advobj = models.Advice()
+	adv = advobj.one_advice(advid)
+	context = {'adv':adv}
+	return render(request, 'Services/AdviceView.html', context)
+
+def AdviceSub(request):
+	advid = request.POST.get('id')
+	advcon = request.POST.get('info')
+	print "advcon:",advcon
+	advobj = models.Advice()
+	advobj.reply_advice(1,advcon,1,advid)
+	advice = advobj.one_advice(advid)
+	if advice.advice_status == "1":
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
 
 def SubService(request):
 	context = {}

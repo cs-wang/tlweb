@@ -62,6 +62,11 @@ class Advice(models.Model):
         except BaseException, e:
             print e
             return False
+
+    def one_advice(self, adv_id_):
+    	advice = Advice.objects.filter(advice_id = adv_id_).get()
+    	return advice
+
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)

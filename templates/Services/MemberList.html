@@ -523,9 +523,9 @@
                         
                         <td>
                             <div class=" btn-group">
-                                    <a class="btn btn-mini btn-warning audit" data-id="604">激活</a>
-                                    <a class="btn btn-mini btn-primary view" data-id="604">查看</a>
-                                    <a class="btn btn-mini btn-purple" href="../MemberEdit?UserId=604">修改</a>
+                                    <a class="btn btn-mini btn-warning audit" data-id="{{member.user_id}}">激活</a>
+                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="../MemberEdit?UserId={{member.user_id}}">修改</a>
                                     <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1CE92D4DDCE842C3F43CAF3878D48E0CA32AF6EB09D553D9A44300227892CA3F6B76779FED4773A8AAC2488C18DCE9E37E17BC41D222DF24EED5DD8BF671D9C16FFB8FA6B6EA8199A81E9E7BD4C22F344CD0BAEB6076B228FB7D052E3321A74094B82DE9E5FCD1B421695519D4F52870C01F5C5A16EA70145F0D6F729335A1AD" data-id="">查看推荐</button>
                             </div>
                         </td>
@@ -903,8 +903,8 @@
 
     $('.view').click(function () {
         var id = $(this).attr('data-id');
-        // var _url = "ViewMember?UserId=" + id;
-        var _url = "弹窗-查看会员信息.html";
+        //var _url = "ViewMember?UserId=" + id;
+        //var _url = "弹窗-查看会员信息.html";
         layer.open({
             type: 2,
             title: '查看会员信息',
@@ -929,12 +929,12 @@
             content: _url
         });
     })
-
+    // 激活
     $('.audit').click(function () { //SetAuditReg
         var id = $(this).attr('data-id');
         // var _url = "SetAudit?UserId=" + id;
         var _url = "SetAudit?UserId=" + id;
-        var _url = "弹窗-审核会员信息.html";
+        //var _url = "弹窗-审核会员信息.html";
         layer.open({
             type: 2,
             title: '审核会员信息',
@@ -959,6 +959,7 @@
         });
 
     })
+    
     $('.child').click(function () { //SetAuditReg
 
         var id = $(this).attr('data-id');
@@ -976,7 +977,7 @@
             });
         });
     })
-
+    // 审核
     $('.audit1').click(function () { 
 
         var id = $(this).attr('data-id');
