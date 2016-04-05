@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
 from db import common
+from django.db.models import Q
 from django.db import models
 from compiler.pycodegen import EXCEPT
 from django.utils import timezone
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+FirstRatio=0.05
+SecondRatio=0.03
+ThirdRatio=0.02
+ONE_PAGE_OF_DATA = 5
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -38,11 +44,17 @@ class Advice(models.Model):
         except BaseException, e:
             print e
             return False
-    def my_advice(self,user_id_,title_ = None,advice_status_ = None,\
-                  time_start_ = None,time_end_ = None):
+    #我的意见role = 0为服务中心，=1为会员
+    def my_advice(self,user_or_service_id_,role_="1",title_ = None,advice_status_ = None,\
+                  time_start_ = None,time_end_ = None,pageNum=1):
         try:
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
             args = {}
-            args['user_id'] = user_id_
+            if role_ =="1":
+                args['user_id'] = user_or_service_id_
+            if role_ =="0":
+                args['service_id'] = user_or_service_id_
             args1 = {}
             if title_ != None:
                 args['advice_title'] = title_
@@ -52,16 +64,17 @@ class Advice(models.Model):
                 args['advice_created__gt'] = time_start_
             if time_end_ !=None:
                 args1['advice_created__gt'] = time_end_
-                adviceList = Advice.objects.filter(**args).exclude(**args1).all()
-#                 print adviceList
-                return adviceList
+                adviceList = Advice.objects.filter(**args).exclude(**args1).all()[startPos:endPos]
+                count = Advice.objects.filter(**args).exclude(**args1).count()
+                return adviceList,(count/ONE_PAGE_OF_DATA)+1
             else:
-                adviceList = Advice.objects.filter(**args).all()
-#                 print adviceList
-                return adviceList
+                adviceList = Advice.objects.filter(**args).all()[startPos:endPos]
+                count = Advice.objects.filter(**args).count()
+                return adviceList,(count/ONE_PAGE_OF_DATA)+1
         except BaseException, e:
             print e
             return False
+
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)
@@ -169,6 +182,48 @@ class Member(models.Model):
         except BaseException,e:
             print e
             return False
+    #会员页面中的我推荐的会员
+    def myReference(self,user_id_,pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        args = []
+        try:
+            myReferenceList = Member.objects.filter(reference_id = user_id_ ).all()
+            counts = Member.objects.filter(reference_id = user_id_ ).count()
+            for i in myReferenceList:
+                count = Member.objects.filter(reference_id = i.user_id ).count()
+                args.append({"nickname":i.nickname,"phone":i.bind_phone,"reg_time":i.register_time,"conf_time":i.confirm_time,"ref_count":count})
+                return args[startPos:endPos],(counts/ONE_PAGE_OF_DATA)+1
+        except BaseException,e:
+            print e
+    #会员页面中我推荐的网络
+    def myReferenceNet(self,user_id_,pageNum=1):
+        try:
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
+            args=[]
+            myReferenceList = Member.objects.filter(reference_id = user_id_ ).all()
+        except BaseException,e:
+            print e
+    #会员的会员网络
+    #role = 0 为服务中心，= 1为会员默认为第一页
+#     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
+#         try:
+#             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+#             endPos = pageNum*ONE_PAGE_OF_DATA
+#             if role_ == '0':
+#                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()[startPos:endPos]
+#                 count = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).count()
+#                 print count
+#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
+#             if role_ == '1':
+#                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()[startPos:endPos]
+#                 count = Member.objects.filter(reference_id = userOrServiceid_).count()
+#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
+#         except BaseException,e:
+#             print e
+            
+            
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid
@@ -191,26 +246,30 @@ class Message(models.Model):
             print e
             return False
     #message_status_ 为2表示所有消息 0表示未读，1表示为已读 role = 0 为会员,= 1为服务中心
-    def myMessage(self,id_,role_,message_status_ = 2):
-        if role_ == 0:
-            if message_status_ == 2:
-                msglist = Message.objects.filter(user_id = id_).all()
-                print msglist
-                return msglist
-            else:
-                msglist = Message.objects.filter(user_id = id_,message_status = message_status_).all()
-                print msglist
-                return msglist
-        elif role_ == 1:
-            if message_status_ == 2:
-                msglist = Message.objects.filter(service_id = id_).all()
-                print msglist
-                return msglist
-            else:
-                msglist = Message.objects.filter(service_id = id_,message_status = message_status_).all()
-                print msglist
-                return msglist
-    #服务中心审核订单后创建一条消息通知
+    def myMessage(self,id_,role_,message_status_ = 2,pageNum = 1):
+        try:
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
+            if role_ == "0":
+                if message_status_ == "2":
+                    msglist = Message.objects.filter(user_id = id_).all()[startPos:endPos]
+                    count = Message.objects.filter(user_id = id_).count()
+                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+                else:
+                    msglist = Message.objects.filter(user_id = id_,message_status = message_status_).all()[startPos:endPos]
+                    count = Message.objects.filter(user_id = id_,message_status = message_status_).count()
+                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+            elif role_ == "1":
+                if message_status_ == "2":
+                    msglist = Message.objects.filter(service_id = id_).all()[startPos:endPos]
+                    count = Message.objects.filter(service_id = id_).count()
+                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+                else:
+                    msglist = Message.objects.filter(service_id = id_,message_status = message_status_).all()[startPos:endPos]
+                    count = Message.objects.filter(service_id = id_,message_status = message_status_).count()
+                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+        except BaseException,e:
+            print e
     
 class OrderForm(models.Model):
     order_id = models.AutoField(primary_key=True)
@@ -256,26 +315,60 @@ class OrderForm(models.Model):
             print e
             return False
     #order_type 为0表示未发货的,1表示已发货的，2为所有 会员界面中我的订单
-    def myMemberOrder(self,user_id_,start_time_=None,end_time_=None,order_type=2):
-        arg={}
-        args={}
-        args['user_id']=user_id_
-        if start_time_ !=None:
-            args['order_created__gt']=start_time_
-        if order_type == 0:
-            args['order_status']='未发货'
-        if order_type == 1:
-            args['order_status']='已发货'
-        if end_time_ !=None:
-            arg['order_created__gt']=end_time_
-            print "haha"
-            orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()
-            return orderlist
-        elif end_time_ == None:
-            orderlist = OrderForm.objects.filter(**args).all()
-            return orderlist
-    def myServiceOrder(self):
-        pass
+    def myMemberOrder(self,user_id_,start_time_=None,end_time_=None,order_type_="2",pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        try:
+            arg={}
+            args={}
+            args['user_id']=user_id_
+            if start_time_ !=None:
+                args['order_created__gt']=start_time_
+            if order_type_ == "0":
+                args['order_status']='未发货'
+            if order_type_ == "1":
+                args['order_status']='已发货'
+            if end_time_ !=None:
+                arg['order_created__gt']=end_time_
+                orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
+                count = OrderForm.objects.filter(**args).exclude(**arg).count()
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+            elif end_time_ == None:
+                orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
+                count = OrderForm.objects.filter(**args).count()
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+        except BaseException,e:
+            print e 
+    #服务中心的订单 #order_type 为0表示未发货的,1表示已发货的，2为所有
+    def myServiceOrder(self,service_id_,user_or_phone_=None,order_type_='2',start_time_=None,end_time_=None,pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        try:
+            arg={}
+            args={}
+            args['service_id']=service_id_
+            if user_or_phone_ !=None:
+                #如果用户名或者绑定手机号给出
+                i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).all()
+                args['user_id'] = i.get().user_id
+            if start_time_ !=None:
+                args['order_created__gt']=start_time_
+            if order_type_ == "0":
+                args['order_status']='未发货'
+            if order_type_ == "1":
+                args['order_status']='已发货'
+            if end_time_ !=None:
+                arg['order_created__gt']=end_time_
+                orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
+                count = OrderForm.objects.filter(**args).exclude(**arg).count()
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+            elif end_time_ == None:
+                orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
+                count = OrderForm.objects.filter(**args).count()
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+        except BaseException,e:
+            print e
+    
 class Product(models.Model):
     product_id = models.BigIntegerField(primary_key=True)
     product_name = models.CharField(max_length=100, blank=True, null=True)
