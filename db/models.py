@@ -75,6 +75,9 @@ class Advice(models.Model):
             print e
             return False
 
+    def one_advice(self, adv_id_):
+    	advice = Advice.objects.filter(advice_id = adv_id_).get()
+    	return advice
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)
@@ -224,6 +227,9 @@ class Member(models.Model):
 #             print e
             
             
+    def MemberList(self):
+        return Member.objects.all();
+
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid
@@ -234,6 +240,15 @@ class Message(models.Model):
     sent_time = models.DateTimeField(blank=True, null=True)
     #0表示未读，1表示为已读
     message_status = models.CharField(max_length=1, blank=True, null=True)
+
+    def getAllMsg(self):
+      msgs =Message.objects.all()
+      return msgs
+
+    def getFilterMsg(self,msgid):
+      msg = Message.objects.filter(message_id = msgid).get()
+      return msg
+
     #该函数只是改变了消息的状态 服务中心或用户阅读了该消息
     def readMessage(self,message_id_):
         try:
@@ -270,7 +285,9 @@ class Message(models.Model):
                     return msglist,(count/ONE_PAGE_OF_DATA)+1
         except BaseException,e:
             print e
+    #服务中心审核订单后创建一条消息通知
     
+
 class OrderForm(models.Model):
     order_id = models.AutoField(primary_key=True)
     service_id = models.BigIntegerField(blank=True, null=True)
