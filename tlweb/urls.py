@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),
     url(r'^$', views.home),
     url(r'^index/', include('index.urls')),
-    url(r'^account/', include('account.urls')),
+    url(r'^Account/', include('Account.urls')),
     url(r'^Services/', include('Services.urls')),
     url(r'^Member/', include('Member.urls')),
 ]

@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
-encoding//account/views.py=utf-8
+encoding//Account/views.py=utf-8
+encoding//Member/views.py=utf-8
+encoding//Services/views.py=utf-8
 encoding//db/common.py=utf8
 encoding//db/models.py=utf-8

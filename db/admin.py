@@ -7,8 +7,8 @@ class MemberStatuss(admin.ModelAdmin):
     list_display=('status_id','status_desc')
     search_fields=('status_id','status_desc')
 class Advices(admin.ModelAdmin):
-    list_display=('advice_id','user_name','advice_content','advice_created','reply_time','service')
-    search_fields=('advice_id','user_name','advice_content','advice_created','reply_time','service')
+    list_display=('advice_id','user_id','advice_title','advice_content','advice_created','reply_time','service','advice_status','reply_content')
+    search_fields=('advice_id','user_id','advice_title','advice_content','advice_created','reply_time','service','advice_status','reply_content')
 class CommissionDetails(admin.ModelAdmin):
     list_display=('commission_type','commission_desc')
     search_fields=('commission_type','commission_desc')
@@ -25,12 +25,12 @@ class Members(admin.ModelAdmin):
                    'delegation_info','bind_phone','weixin_id','bank','account','card_holder','receiver',\
                    'receiver_phone','receiver_addr','register_time','confirm_time')
 class Messages(admin.ModelAdmin):
-    list_display=('message_id','message_title','message_content','sent_time','message_status')
-    search_fields=('message_id','message_title','message_content','sent_time','message_status')
+    list_display=('message_id','message_title','message_content','sent_time','message_status','user_id','service_id')
+    search_fields=('message_id','message_title','message_content','sent_time','message_status','user_id','service_id')
 class OrderForms(admin.ModelAdmin):
-    list_display=('order_id','service_id','order_rank','user_id','order_price','order_type','order_created','order_finished',\
+    list_display=('order_id','service_id','order_valid_time','user_id','order_price','order_type','order_created','order_finished',\
                   'order_memo','order_status','express_name','express_number')
-    search_fields=('order_id','service_id','order_rank','user_id','order_price','order_type','order_created','order_finished',\
+    search_fields=('order_id','service_id','order_valid_time','user_id','order_price','order_type','order_created','order_finished',\
                   'order_memo','order_status','express_name','express_number')
 class Products(admin.ModelAdmin):
     list_display=('product_id','product_name','product_price')

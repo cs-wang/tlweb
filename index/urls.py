@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^company/$', views.company),
     url(r'^product/$', views.product),
+    url(r'^page/$', views.page)
 ]
