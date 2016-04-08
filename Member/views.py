@@ -9,22 +9,32 @@ import json
 from db import models
 from urllib2 import Request
 def DashBoard(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/DashBoard.html', context)
 
 def MsgList(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/MsgList.html', context)
 
 def ShowModel(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/ShowModel.html', context)
 
 def ComBank(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/ComBank.html', context)
 
 def MemberOrder(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	member_ = models.OrderForm()
 	ordlist, maxPage = member_.myMemberOrder(1,None,None,"1",1)
 	for i in ordlist:
@@ -35,22 +45,32 @@ def MemberOrder(request):
 	return render(request, 'Member/MemberOrder.html', context)
 
 def RewardOrder(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/RewardOrder.html', context)
 
 def RewardOrderList(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/RewardOrderList.html', context)
 
 def Recome(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/Recome.html', context)
 
 def RecomeList(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/RecomeList.html', context)
 
 def MyRecomeAll(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	member_ = models.Member()
 	list ,maxPage = member_.myReference(1,1)
@@ -59,10 +79,14 @@ def MyRecomeAll(request):
 	return render(request, 'Member/MyRecomeAll.html', context)
 
 def MyData(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/MyData.html', context)
 
 def Advice(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	advice_ = models.Advice()
 	#advice_.send_advice(1,"没阅读啊哈哈","内容内容",1)
@@ -76,6 +100,8 @@ def Advice(request):
 	return render(request, 'Member/Advice.html', context)
 
 def AdviceList(request):
+	if request.session['role'] != '0':
+		return HttpResponseRedirect('/')
 	context = {}
 	advice_ = models.Advice()
 	naive = parse_datetime("2016-03-21 10:28:45")

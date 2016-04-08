@@ -132,8 +132,10 @@ class Member(models.Model):
              try:
                  serviceEntity = Service.objects.filter(service_name = user).get()
                  if serviceEntity.service_pwd == pwd:
+                     print 'service login success'
                      return True
                  else:
+                     print 'service login fail'
                      return False
              except BaseException, e:
                  return False
@@ -210,21 +212,21 @@ class Member(models.Model):
             print e
     #会员的会员网络
     #role = 0 为服务中心，= 1为会员默认为第一页
-#     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
-#         try:
-#             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
-#             endPos = pageNum*ONE_PAGE_OF_DATA
-#             if role_ == '0':
-#                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()[startPos:endPos]
-#                 count = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).count()
-#                 print count
-#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
-#             if role_ == '1':
-#                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()[startPos:endPos]
-#                 count = Member.objects.filter(reference_id = userOrServiceid_).count()
-#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
-#         except BaseException,e:
-#             print e
+    def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
+        try:
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
+            if role_ == '0':
+                memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()[startPos:endPos]
+                count = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).count()
+                print count
+                return memberlist,(count/ONE_PAGE_OF_DATA)+1
+            if role_ == '1':
+                memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()[startPos:endPos]
+                count = Member.objects.filter(reference_id = userOrServiceid_).count()
+                return memberlist,(count/ONE_PAGE_OF_DATA)+1
+        except BaseException,e:
+            print e
             
             
     def MemberList(self):

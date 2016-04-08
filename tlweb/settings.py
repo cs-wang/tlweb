@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'db',
-    'index',
+    'Index',
     'Account',
     'Services',
     'Member',
@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tldb',
+        'NAME': 'test',
         'USER': 'root',
-        'PASSWORD':'root',
+        'PASSWORD':'123456',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }

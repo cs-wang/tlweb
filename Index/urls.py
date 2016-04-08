@@ -6,7 +6,7 @@ import views
 urlpatterns = [
     #url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),
     url(r'^$', views.home),
-    url(r'^company/$', views.company),
-    url(r'^product/$', views.product),
-    url(r'^page/$', views.page)
+    url(r'^Company/$', views.company),
+    url(r'^Product/$', views.product),
+    url(r'^Page/$', views.page)
 ]

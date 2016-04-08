@@ -13,15 +13,19 @@ def login(request):
         user_ = request.POST['username']
         pwd_ = request.POST['password']    
         role_ = request.POST['role']
-        print user_, pwd_,role_
+        #print user_, pwd_,role_
         member_ = models.Member()
         flag = member_.login(user_,pwd_,role_)
         
-        obj = {'result':'success'}
+        obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
         code = str(json.dumps(obj))
         code1 = str(json.dumps(obj1))
         if flag == True:
+            if role_ == '0':
+                request.session['role'] = '0'
+            elif role_ == '1':
+                request.session['role'] = '1'
             return HttpResponse(code)
         elif flag == False:
             return HttpResponse(code1)
