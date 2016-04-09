@@ -13,10 +13,10 @@ def login(request):
         user_ = request.POST['username']
         pwd_ = request.POST['password']    
         role_ = request.POST['role']
-        #print user_, pwd_,role_
+        print user_, pwd_,role_
         member_ = models.Member()
         flag = member_.login(user_,pwd_,role_)
-        
+        print flag,'hello'
         obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
         code = str(json.dumps(obj))
