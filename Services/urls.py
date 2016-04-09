@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^MsgList/ViewMsg/$', views.ViewMsg),
     url(r'^MsgList/ViewMsg/MsgRead/$', views.MsgRead),
     url(r'^MemberEdit/$', views.MemberEdit),
+    url(r'^MemberEdit/MemberSave/$', views.MemberSave),
+    url(r'^MemberEdit/MemberList/$', views.MemberList),
     url(r'^MemberList/$', views.MemberList),
     url(r'^MemberList/SetAudit/$', views.SetAudit),
     url(r'^MemberList/MemberEdit/$', views.MemberEdit),
