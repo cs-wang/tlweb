@@ -36,8 +36,8 @@ class Products(admin.ModelAdmin):
     list_display=('product_id','product_name','product_price')
     search_fields=('product_id','product_name','product_price')
 class Services(admin.ModelAdmin):
-    list_display=('service_id','service_name','service_pwd','service_area','role')
-    search_fields=('service_id','service_name','service_pwd','service_area','role')
+    list_display=('service_id','service_name','service_pwd','service_area','role','service_response','service_memo','service_ref')
+    search_fields=('service_id','service_name','service_pwd','service_area','role','service_response','service_memo','service_ref')
 class ServiceAccounts(admin.ModelAdmin):
     list_display=('service','bank','bank_account','card_holder','phone')
     search_fields=('service','bank','bank_account','card_holder','phone')

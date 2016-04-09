@@ -13,10 +13,10 @@ def login(request):
         user_ = request.POST['username']
         pwd_ = request.POST['password']    
         role_ = request.POST['role']
-        #print user_, pwd_,role_
+        print user_, pwd_,role_
         member_ = models.Member()
         flag = member_.login(user_,pwd_,role_)
-        
+        print flag,'hello'
         obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
         code = str(json.dumps(obj))
@@ -33,7 +33,9 @@ def login(request):
 def register(request):
     member_ = models.Member()
     #有推荐人
-    flag = member_.register('new',"hahah","delegation_phone_","delegation_info_",\
-          "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
-          "receiver_addr_","order_Memo",1,1)
-    return HttpResponse("ok")
+#     flag = member_.register('new',"hahah","delegation_phone_","delegation_info_",\
+#           "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
+#           "receiver_addr_","order_Memo",1,1)
+    context ={}
+    return render(request, 'index/home.html', context)
+#     return HttpResponse("ok")

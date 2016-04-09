@@ -22,6 +22,7 @@ def NoticeList(request):
 	return render(request, 'Services/NoticeList.html', context)
 
 def MsgList(request):
+
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	sta = request.GET.get('sta')
@@ -34,10 +35,10 @@ def MsgList(request):
 #	msgobj = models.Message()
 # 	msgobj.readMessage(5)
 
- 	msglist,pageMax =  msgobj.myMessage(1,"1","2",3)
- 	for i in msglist:
- 		print i.message_id
- 	print "最多可以有" ,pageMax
+#  	msglist,pageMax =  msgobj.myMessage(1,"1","2",3)
+#  	for i in msglist:
+#  		print i.message_id
+#  	print "最多可以有" ,pageMax
 
 # 	msgobj.myMessage(1,1,0)
 	return render(request, 'Services/MsgList.html', context)
@@ -77,13 +78,37 @@ def MemberEdit(request):
 #	 elif request.method == 'POST':
 #		 return
 
-# 	member_ = models.Member()
+ 	member_ = models.Member()
 # 	flag = member_.register('zdg',"赵镇辉啊","delegation_phone_","delegation_info_",\
 # 		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
 # 		  "receiver_addr_","order_Memo",1,0)   
+	print member_.fixInfo(1,"改密码咯","新手机号码","新微信号码","新开户银行","新账户啊","新持卡人啊","新收货人啊","新收货电话啊","新收获地址啊")
+	
 	return render(request, 'Services/MemberEdit.html', context)
 
 def MemberList(request):
+# 	naive = parse_datetime("2017-02-21 10:28:45")
+#  	naive1 = parse_datetime("2016-04-01 10:28:45")
+#  	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
+#  	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
+  	member_ = models.Member()
+#  	memberlist,pageMax = member_.MemberList(1,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
+#                    reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=time_1,pageNum=1)
+#  	for i in memberlist:
+#  		print i.user_name
+# 	print "MemberList:",memberlist
+#  	context = { 'memberlist':memberlist, }
+# 	flag = member_.activateMember(3,1)
+# 	list , pageMax = member_.myReference('1',1)
+# 	print list.count()
+	#print "最多",pageMax
+	#list_1,list_2,list_3, pageMax = 
+# 	list, pageMax = member_.myIndirectRef('1',1)
+
+# 	print list
+# 	print "最多",pageMax
+	print member_.myInfo(1).user_name
+	context = { }
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	member_ = models.Member()
@@ -141,6 +166,17 @@ def Promotion(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
+	pro = models.CommissionOrder()
+# 	naive = parse_datetime("2017-02-21 10:28:45")
+#   	naive1 = parse_datetime("2016-04-01 10:28:45")
+#   	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
+#   	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
+# 	list, pageMax = pro.commissionList(user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1)
+# 	for i in list :
+# 		print i.commission_type.commission_desc
+# 	print "最多",pageMax
+# 	pro.deliverComm(1)
+# 	pro.confirmComm(1)
 	return render(request, 'Services/Promotion.html', context)
 
 def AdviceList(request):
@@ -190,5 +226,9 @@ def AdviceSub(request):
 def SubService(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	ser = models.Service()
+	#ser.saveSecService("改个名字","service_pwd_",None,"service_area_",\
+#                        '2',"老zhuji","老李备忘录")
+	print ser.getSecService('2').service_id
 	context = {}
 	return render(request, 'Services/SubService.html', context)
