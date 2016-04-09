@@ -87,7 +87,6 @@ def MemberEdit(request):
 	return render(request, 'Services/MemberEdit.html', context)
 
 def MemberList(request):
-<<<<<<< HEAD
 # 	naive = parse_datetime("2017-02-21 10:28:45")
 #  	naive1 = parse_datetime("2016-04-01 10:28:45")
 #  	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
@@ -110,7 +109,6 @@ def MemberList(request):
 # 	print "最多",pageMax
 	print member_.myInfo(1).user_name
 	context = { }
-=======
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	member_ = models.Member()
@@ -118,7 +116,6 @@ def MemberList(request):
 	print "MemberList:",memberlist
 	context = { 'memberlist':memberlist, }
 	flag = member_.activateMember(3,1)
->>>>>>> newbranch
 	return render(request, 'Services/MemberList.html', context)
 
 def SetAudit(request):
