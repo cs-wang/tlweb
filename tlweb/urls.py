@@ -17,12 +17,12 @@ from django.conf.urls import url,include
 from django.contrib import admin
 import views
 import settings
-from index import views
+from Index import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),
     url(r'^$', views.home),
-    url(r'^index/', include('index.urls')),
+    url(r'^Index/', include('Index.urls')),
     url(r'^Account/', include('Account.urls')),
     url(r'^Services/', include('Services.urls')),
     url(r'^Member/', include('Member.urls')),

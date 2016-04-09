@@ -132,8 +132,10 @@ class Member(models.Model):
              try:
                  serviceEntity = Service.objects.filter(service_name = user).get()
                  if serviceEntity.service_pwd == pwd:
+                     print 'service login success'
                      return True
                  else:
+                     print 'service login fail'
                      return False
              except BaseException, e:
                  return False
