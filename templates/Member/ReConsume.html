@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>ReConsume</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container btn btn-danger" id="navbar-container">
+                        恭喜您已经获得本轮所有佣金，本次加单八折！
+        </div><!-- /.navbar-container -->
+    </div>
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+
+
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+<!-- /section:settings.box -->
+
+
+
+<div class="row noMarginLR iUcAddNewMember">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+            <input id="UserId" name="UserId" type="hidden" value="0" />
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> 选择产品 </label>
+
+                    <div class="col-sm-9">
+                        <p class="haveChosen">以下产品选满1000元</p>
+                        <div class="emBox">
+                        <label><input id="A1" name="product" type="checkbox" data-val="500" data-name="亚麻籽益生菌水溶粉500元/提" />亚麻籽益生菌水溶粉500元/提</label> <br />
+                        <label><input id="A4" name="product" type="checkbox" data-val="500" data-name="亚麻全营养代餐棒500元/套" />亚麻全营养代餐棒500元/套</label> <br />
+                        <label><input id="A5" name="product" type="checkbox" data-val="500" data-name="亚麻营养膳食粉500元/套" />亚麻营养膳食粉500元/套</label> <br />
+                        <label><input id="A2" name="product" type="checkbox" data-val="500" data-name="亚麻籽有机冷榨油大礼盒500元/提" />亚麻籽有机冷榨油大礼盒500元/提</label> 
+                        </div>
+
+                        <p class="haveChosen">您选择的是：</p>
+                            <label id="info"></label>
+                        <input id="Mark" type="hidden" />
+                    </div>
+                </div>
+            
+        
+        <!--div class="clearfix form-actions"-->
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="button" id="Save">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+                </div>
+            </div>
+        <!--/div-->
+
+        </form>
+    </div>
+</div>
+<style>
+    .js-max-input {
+        border: solid 1px #ffd2b2;
+        background: #fffae5;
+        padding: 0 10px 0 10px;
+        font-size: 20px;
+        color: #ff4400;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        $('input[type="checkbox"][name="product"]').change(function () {
+            //alert('ss');
+            var total = 1000;
+            var select = $('input[type="checkbox"][name="product"]:checked');
+            var selectProduct = '';
+            if (select.length > 2) { $(this).prop('checked', false); return; }
+            $(select).each(function (x, y) {
+                if ($(y).attr('data-val') == 500) {
+                    if (select.length == 1) { selectProduct = selectProduct + $(y).attr('data-name') + 'x 2  +'; }
+                    else if (select.length == 2) { selectProduct = selectProduct + $(y).attr('data-name') + '  +'; }
+                }
+                /*if ($(y).attr('data-val') == 200) {
+                    if (select.length == 1) {
+                        selectProduct = selectProduct + $(y).attr('data-name') + ' x5';
+                    }
+                    else {
+                        selectProduct = selectProduct + $(y).attr('data-name');
+                    }
+                }*/
+            })
+            selectProduct = selectProduct.substring(0, selectProduct.length - 1);
+            $('#info').text(selectProduct);
+            $('#Mark').val(selectProduct);
+        });
+
+        $('#Save').click(function () {
+            var Mark = $('#Mark').val();
+            if (Mark == "")
+            {
+                layer.alert('请选择产品', { icon: 6 });
+                return;
+            }
+            var data = { Mark: Mark }
+            $('#Save').prop('disabled', true);
+            $.post('ReConsumeSave/', data, function (json) {
+                if (json.result == "t") {
+                    layer.msg('加单成功！', { icon: 1, time: 2000 }, function(){});
+                    parent.location.href=parent.location.href;
+                    parent.layer.closeAll();
+                }
+                else {
+                    layer.alert('加单失败。<br />' + json.msg, { icon: 5 });
+                    $('#Save').prop('disabled', false);
+                }
+            }, "json");
+        })
+    });
+</script>
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="/assets/js/ace/elements.scroller.js"></script>
+    <script src="/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="/assets/js/ace/elements.fileinput.js"></script>
+    <script src="/assets/js/ace/elements.typeahead.js"></script>
+    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="/assets/js/ace/elements.spinner.js"></script>
+    <script src="/assets/js/ace/elements.treeview.js"></script>
+    <script src="/assets/js/ace/elements.wizard.js"></script>
+    <script src="/assets/js/ace/elements.aside.js"></script>
+    <script src="/assets/js/ace/ace.js"></script>
+    <script src="/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="/assets/js/ace/ace.sidebar.js"></script>
+    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="/assets/js/ace/ace.widget-box.js"></script>
+    <script src="/assets/js/ace/ace.settings.js"></script>
+    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+    <script src="/assets/js/layer/layer.js"></script>
+
+    <script>
+        var haveFound = false;
+        $('ul.nav-list li a').each(function () {
+            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
+                $(this).parent().addClass('active').show();
+                haveFound = true;
+                if ($(this).parent().parent().hasClass('submenu')) {
+                    $(this).parent().parent().parent().addClass('active');
+                    $(this).parent().parent().parent().addClass('open');
+                }
+                else {
+                    $(this).parent().addClass('open');
+                }
+            }
+        });
+        if (haveFound == false) {
+            $('ul.nav-list li a').each(function () {
+                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
+                    $(this).parent().addClass('active').show();
+                    if ($(this).parent().parent().hasClass('submenu')) {
+                        $(this).parent().parent().parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('open');
+                    }
+                    else {
+                        $(this).parent().addClass('open');
+                    }
+                }
+            });
+        }
+
+
+        $('#chpwd').click(function () {
+            layer.open({
+                type: 2,
+                title: '修改账户密码',
+                shadeClose: false,
+                shade: 0.8,
+                area: ['400px', '500px'],
+                content: '/Account/ChangePwd' //iframe的url
+            });
+
+        })
+    </script>
+</body>
+</html>

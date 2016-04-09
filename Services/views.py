@@ -86,6 +86,53 @@ def MemberEdit(request):
 	
 	return render(request, 'Services/MemberEdit.html', context)
 
+def MemberSave(request):
+	RegUserId = request.POST['UserId']
+	RegUserName = request.POST['UserName']
+	RegNickName = request.POST['NickName']
+	RegIDCard = request.POST['IDCard']
+	RegUserStatus = request.POST['UserStatus']
+	RegBindMob = request.POST['BindMob']
+	RegDepositMobile = request.POST['DepositMobile']
+	RegUserPwd = request.POST['UserPwd']
+	RegUserPayPwd = request.POST['UserPayPwd']
+	RegWeChat = request.POST['WeChat']
+	RegAlipay = request.POST['Alipay']
+	RegBankName = request.POST['BankName']
+	RegBankAccount = request.POST['BankAccount']
+	RegTrueName = request.POST['TrueName']
+	RegRecName = request.POST['RecName']
+	RegRecAdd = request.POST['RecAdd']
+	RegRecMob = request.POST['RecMob']
+	RegMark = request.POST['Mark']
+	print "RegUserId:",RegUserId
+	print "RegUserName:",RegUserName
+	print "RegNickName:",RegNickName
+	print "RegIDCard:",RegIDCard
+	print "RegUserStatus:",RegUserStatus
+	print "RegBindMob:",RegBindMob
+	print "RegDepositMobile:",RegDepositMobile
+	print "RegUserPwd:",RegUserPwd
+	print "RegUserPayPwd:",RegUserPayPwd
+	print "RegWeChat:",RegWeChat
+	print "RegAlipay:",RegAlipay
+	print "RegBankName:",RegBankName
+	print "RegBankAccount:",RegBankAccount
+	print "RegTrueName:",RegTrueName
+	print "RegRecName:",RegRecName
+	print "RegRecAdd:",RegRecAdd
+	print "RegRecMob:",RegRecMob
+	print "RegMark:",RegMark
+	memberobj = models.Member()
+	if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+		RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f',
+			'msg':'用户名已经被注册'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
+
 def MemberList(request):
 # 	naive = parse_datetime("2017-02-21 10:28:45")
 #  	naive1 = parse_datetime("2016-04-01 10:28:45")

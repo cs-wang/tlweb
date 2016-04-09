@@ -4,6 +4,8 @@ import views
 
 urlpatterns = [
     url(r'^DashBoard/$', views.DashBoard),
+    url(r'^DashBoard/ReConsume/$', views.ReConsume),
+    url(r'^DashBoard/ReConsume/ReConsumeSave/$', views.ReConsumeSave),
     url(r'^MsgList/$', views.MsgList),
     url(r'^ShowModel/$', views.ShowModel),
     url(r'^ComBank/$', views.ComBank),

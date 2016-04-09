@@ -147,10 +147,6 @@
 
             <ul class="nav nav-list">
 
-
-
-
-
                     <li class="">
                             <a href="/Services/DashBoard">
                                 <i class="menu-icon fa  fa-tachometer"></i>
@@ -304,11 +300,6 @@
                     </li>
             </ul>
 
-
-
-
-
-
             <!-- #section:basics/sidebar.layout.minimize -->
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
                 <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
@@ -435,14 +426,14 @@
                 <label class="col-sm-3 control-label no-padding-right"> 用户名 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="UserName" name="UserName" placeholder="用户名就是登录名" class="col-xs-10 col-sm-5" maxlength="12" />
+                    <input type="text" id="UserName" name="UserName" placeholder="用户名就是登录名" class="col-xs-10 col-sm-5" maxlength="12" value="shanghai"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 昵称或姓名 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" maxlength="20" />
+                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" maxlength="20" value="上海滩混世魔王"/>
                 </div>
             </div>
 
@@ -451,7 +442,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" value="18516557885"/>
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">当汇款人非本人时请填写</span>
@@ -463,7 +454,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="" />
+                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="我是你大爷" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">汇款人非本人时请填写</span>
@@ -475,7 +466,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="BindMob" name="BindMob" placeholder="必须填写作为打款的联系号码" class="col-xs-10 col-sm-5" value="" maxlength="11" />
+                    <input type="text" id="BindMob" name="BindMob" placeholder="必须填写作为打款的联系号码" class="col-xs-10 col-sm-5" value="15555167886" maxlength="11" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">系统奖金短信提醒将发送到您绑定的手机号码</span>
@@ -490,11 +481,11 @@
                 <div class="col-sm-9">
                     <!-- #section:elements.form.input-icon -->
                     <span class="blockinMobile">
-                        <input type="password" id="UserPwd">
+                        <input type="password" id="UserPwd" value="123456" />
                     </span>
 
                     <span class="blockinMobile">
-                        <input type="password" id="UserRePwd" placeholder="重复登陆密码">
+                        <input type="password" id="UserRePwd" placeholder="重复登陆密码" value="123456" />
                     </span>
 
                     <!-- /section:elements.form.input-icon -->
@@ -510,7 +501,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 微信号 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" value="我的微信" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">微信接受奖金和汇款的会员，必须填写</span>
@@ -519,13 +510,11 @@
                 </div>
             </div>
 
-
-
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 开户银行 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="BankName" name="BankName" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="BankName" name="BankName" placeholder="" class="col-xs-10 col-sm-5" value="农业银行浙江分行杭州西湖支行" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">微信不填时您必须填完整开户行，如：农业银行浙江分行杭州西湖支行</span>
@@ -538,7 +527,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 银行账号 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" value="6227123423456688" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">银行卡接收奖金和汇款的会员，微信不填时必须填写</span>
@@ -547,12 +536,11 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 银行卡持卡人 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" value="赵大爷" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">绑定银行卡姓名</span>
@@ -561,12 +549,11 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 收货人 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" value="李大爷" />
 
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
@@ -581,7 +568,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 收货人电话 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" value="18812348765" />
 
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
@@ -595,7 +582,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 收货地址 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" />
+                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" value="上海市普陀区中山北路3663号，华东师范大学中北校区，学生9号宿舍" />
 
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
@@ -622,9 +609,6 @@
                         <input id="Mark" type="hidden" />
                     </div>
                 </div>
-            
-
-
 
             <div class="clearfix form-actions">
                 <div class="col-md-offset-3 col-md-9">
@@ -640,7 +624,6 @@
                     </a>
                 </div>
             </div>
-
 
         </form>
     </div>
@@ -700,12 +683,6 @@
 
         });
 
-
-
-
-
-        
-
         $('input[type="checkbox"][name="product"]').change(function () {
             //alert('ss');
             var total = 1000;
@@ -731,16 +708,7 @@
             $('#Mark').val(selectProduct);
         });
 
-
         //$('#A3').trigger('change');
-
-        
-
-
-
-
-
-
 
         $('#Save').click(function () {
             var UserId = $('#UserId').val();
@@ -764,9 +732,7 @@
             var UserStatus = 4;
             var BindMob = $('#BindMob').val();
 
-
             if (UserName == "") { $('#UserName').focus(); layer.tips('手机号码不能为空', '#UserName'); return false; }
-
             if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
             //if (IDCard == "") { $('#IDCard').focus(); layer.tips('身份证号不能为空', '#IDCard'); return false; }
             //if (IDCard != "") {
@@ -774,7 +740,6 @@
             //$('#IDCard').focus(); layer.tips('身份证号码不正确', '#IDCard'); return false;
             //    }
             //}
-
 
             if (UserId == '0') {
                 if (UserPwd == "") { $('#UserPwd').focus(); layer.tips('密码不能为空', '#UserPwd'); return false; }
@@ -787,7 +752,6 @@
                     }
                 }
             }
-
 
             if (UserId == '0') {
                 if (UserPayPwd == "") { $('#UserPayPwd').focus(); layer.tips('二级密码不能为空', '#UserPayPwd'); return false; }
@@ -809,8 +773,6 @@
             //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
             //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
 
-
-
             var data = {
                 UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
                 DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
@@ -818,23 +780,19 @@
                 TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob, Mark: Mark
             }
             $('#Save').prop('disabled', true);
-            $.post('MemberSave', data, function (json) {
-
+            $.post('MemberSave/', data, function (json) {
                 if (json.result == "t") {
-                    layer.msg('保存成功！', { icon: 1 }, function () { location.href = 'MemberList'; });
-
+                    layer.msg('保存成功！', { icon: 1 }, function () { location.href = 'MemberList/'; });
                 }
                 else {
                     layer.alert('保存失败。<br />' + json.msg, { icon: 5 });
                     $('#Save').prop('disabled', false);
                 }
 
-            });
+            }, "json");
         })
     });
 </script>
-
-
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->

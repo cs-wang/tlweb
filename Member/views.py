@@ -14,6 +14,16 @@ def DashBoard(request):
 	context = {}
 	return render(request, 'Member/DashBoard.html', context)
 
+def ReConsume(request):
+	context = {}
+	return render(request, 'Member/ReConsume.html', context)
+
+def ReConsumeSave(request):
+	context = {}
+	obj = {'result':'t'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
+
 def MsgList(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
