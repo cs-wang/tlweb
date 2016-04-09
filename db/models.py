@@ -176,60 +176,157 @@ class Member(models.Model):
     def activateMember(self,user_id_,service_id_):
         try:
             i = Member.objects.filter(user_id = user_id_).get()
-            i.status = MemberStatus(id = 2,status_id = '2')
+            i.status = MemberStatus(id = 3,status_id = '3')
             i.save()
             Message.objects.create(user_id = user_id_,message_title="您的帐号已激活",\
-                                   message_content=i.user_name+"您已经被激活了推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+                                   message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
                                    sent_time = timezone.now())
             return True
         except BaseException,e:
             print e
             return False
-    #会员页面中的我推荐的会员
+    #审核会员并且给会员发送已经审核消息
+    def confirmMember(self,user_id_,service_id_):
+        try:
+            i = Member.objects.filter(user_id = user_id_).get()
+            i.status = MemberStatus(id = 2,status_id = '2')
+            i.save()
+            Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
+                                   message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+                                   sent_time = timezone.now())
+            return True
+        except BaseException,e:
+            print e
+            return False
+    
+    #我直接推荐的会员(可用于我的推荐网络)
     def myReference(self,user_id_,pageNum=1):
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
         endPos = pageNum*ONE_PAGE_OF_DATA
-        args = []
         try:
-            myReferenceList = Member.objects.filter(reference_id = user_id_ ).all()
-            counts = Member.objects.filter(reference_id = user_id_ ).count()
-            for i in myReferenceList:
-                count = Member.objects.filter(reference_id = i.user_id ).count()
-                args.append({"nickname":i.nickname,"phone":i.bind_phone,"reg_time":i.register_time,"conf_time":i.confirm_time,"ref_count":count})
-                return args[startPos:endPos],(counts/ONE_PAGE_OF_DATA)+1
+            myReferenceList = Member.objects.filter(reference_id = user_id_ ).all()[startPos:endPos]
+            count = Member.objects.filter(reference_id = user_id_ ).count()
+            return myReferenceList,(count/ONE_PAGE_OF_DATA)+1
         except BaseException,e:
             print e
-    #会员页面中我推荐的网络
-    def myReferenceNet(self,user_id_,pageNum=1):
+    #我直接以及间接推荐的会员
+    def myIndirectRef(self,user_id_,pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        
         try:
-            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
-            endPos = pageNum*ONE_PAGE_OF_DATA
-            args=[]
-            myReferenceList = Member.objects.filter(reference_id = user_id_ ).all()
+            resultlist = []
+            #孩子
+            reflist_0 = Member.objects.filter(reference_id = user_id_ ).all()
+            count = Member.objects.filter(reference_id = user_id_ ).count()
+            if reflist_0 !=None:
+                #孙子
+                for i in reflist_0:
+                    resultlist.append(i)
+                    reflist_1 = Member.objects.filter(reference_id = i.user_id ).all()
+                    count = count + Member.objects.filter(reference_id = i.user_id ).count()
+                    if reflist_1 !=None:
+                        #曾孙
+                        for i1 in reflist_1:
+                            resultlist.append(i1)
+                            reflist_2 = Member.objects.filter(reference_id = i1.user_id ).all()
+                            count = count + Member.objects.filter(reference_id = i1.user_id ).count()
+                            if reflist_2 !=None:
+                                for i2 in reflist_2:
+                                    resultlist.append(i2)
+            return resultlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1
         except BaseException,e:
             print e
-    #会员的会员网络
+    #会员网络不需要分页全部显示
     #role = 0 为服务中心，= 1为会员默认为第一页
-#     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
-#         try:
-#             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
-#             endPos = pageNum*ONE_PAGE_OF_DATA
-#             if role_ == '0':
-#                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()[startPos:endPos]
-#                 count = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).count()
-#                 print count
-#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
-#             if role_ == '1':
-#                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()[startPos:endPos]
-#                 count = Member.objects.filter(reference_id = userOrServiceid_).count()
-#                 return memberlist,(count/ONE_PAGE_OF_DATA)+1
-#         except BaseException,e:
-#             print e
+    def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
+        try:
+            if role_ == '0':
+                memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()
+                return memberlist
+            if role_ == '1':
+                memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()
+                return memberlist
+        except BaseException,e:
+            print e
             
-            
-    def MemberList(self):
-        return Member.objects.all();
-
+    #service_id 查出对应服务点的会员信息
+    #user_or_phone_用户名或手机号
+    #member_status_ 1:未审核 2：已审核 3：已激活 4:已出局 5：服务中心锁定6：管理员锁定 7：申请加单
+    #time_order_ 0:注册时间倒序 1:注册时间正序 2:确认时间倒序 3:确认时间正序
+    #reg_way 0:所有注册点 1:服务中心注册 2.会员推荐
+    
+    def MemberList(self,service_id_,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
+                   reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=None,pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        args= {}
+        arg={}
+        orderlist = {'0':'-register_time','1':'register_time','2':'-confirm_time','3':'confirm_time'}
+        if member_status_ !=None:
+            args['status'] = MemberStatus(status_id = member_status_)
+        if reg_start_time_ !=None:
+            args['register_time__gt']=reg_start_time_
+        if conf_start_time_ !=None:
+            args['confirm_time__gt']=conf_start_time_
+        if reg_end_time_ !=None:
+            arg['register_time__gt']=reg_end_time_
+        if conf_end_time_ !=None:
+            arg['confirm_time__gt']=conf_end_time_
+        
+        if reg_way =='0':
+            if user_or_phone_ != None:
+                i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(service_id = service_id_).filter(**args).exclude(**arg)\
+                    .order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(service_id = service_id_).filter(**args).exclude(**arg)\
+                    .order_by(orderlist.get(time_order_)).count()
+            elif user_or_phone_ == None:
+                i = Member.objects.filter(service_id = service_id_).filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = Member.objects.filter(service_id = service_id_).filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).count()
+        elif reg_way =='1':
+            if user_or_phone_ != None:
+                i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg)\
+                    .order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg)\
+                    .order_by(orderlist.get(time_order_)).count()
+            elif user_or_phone_ == None:
+                i = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).count()
+        return i,(count/ONE_PAGE_OF_DATA)+1
+    #查看会员信息
+    def myInfo(self,user_id_):
+        try:
+            return Member.objects.filter(user_id = user_id_).get()
+        except BaseException,e:
+            print e
+    #修改会员资料 可修改有 密码，绑定手机号，微信号，开户银行,账户,持卡人,收货人,收货电话,收货地址
+    def fixInfo(self,user_id_,pwd_=None,bind_phone_=None,weixinId_=None,bank_=None,account_=None,card_holder_=None,\
+                receiver_=None,receiver_phone_=None,receiver_addr_=None):
+        try :
+            i = Member.objects.filter(user_id = user_id_).get()
+            if pwd_ !=None:
+                #需要换成MD5的hash值
+                i.password = pwd_
+            if bind_phone_ !=None:
+                i.bind_phone = bind_phone_
+            if weixinId_ !=None:
+                i.weixin_id =weixinId_
+            if bank_ !=None:
+                i.bank = bank_
+            if account_ != None:
+                i.account = account_
+            if card_holder_ !=None:
+                i.card_holder = card_holder_
+            if receiver_ !=None:
+                i.receiver = receiver_
+            if receiver_phone_ !=None:
+                i.receiver_phone = receiver_phone_
+            if receiver_addr_ !=None:
+                i.receiver_addr = receiver_addr_
+            i.save()
+            return True
+        except BaseException,e:
+            print e
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid
