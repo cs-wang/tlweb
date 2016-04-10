@@ -475,203 +475,22 @@
                 </thead>
 
                 <tbody>
+                        {% for order in orderlist %}
                         <tr>
                             <td>
-                                    <input id="" name="chk" type="checkbox" value="363" />
+                                    <input id="" name="chk" type="checkbox" value="{{order.order_id}}" />
                             </td>
-                            <td>刘文儿</td>
-                            <td data-name="mob" style="font-size:16px;">13957538728</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-17 12:38:10</td>
-                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="362" />
-                            </td>
-                            <td>陈佳佑</td>
-                            <td data-name="mob" style="font-size:16px;">15967599711</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 17:39:02</td>
-                            <td>亚麻籽益生菌水溶粉400元/提  + 亚麻全营养代餐棒400元/套  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="361" />
-                            </td>
-                            <td>吕铭燕</td>
-                            <td data-name="mob" style="font-size:16px;">13655752552</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 17:38:48</td>
-                            <td>亚麻全营养代餐棒400元/套  + 亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="360" />
-                            </td>
-                            <td>吕铭燕</td>
-                            <td data-name="mob" style="font-size:16px;">13575590190</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 17:38:43</td>
-                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="359" />
-                            </td>
-                            <td>鲍旭霞</td>
-                            <td data-name="mob" style="font-size:16px;">15372505629</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 16:12:38</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="358" />
-                            </td>
-                            <td>章大海</td>
-                            <td data-name="mob" style="font-size:16px;">18248607779</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 14:14:58</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="357" />
-                            </td>
-                            <td>屠加平</td>
-                            <td data-name="mob" style="font-size:16px;">18805850708</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 14:00:02</td>
-                            <td>亚麻营养膳食粉400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="356" />
-                            </td>
-                            <td>斯铭杰</td>
-                            <td data-name="mob" style="font-size:16px;">15925822678</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 13:54:30</td>
-                            <td>亚麻全营养代餐棒400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="355" />
-                            </td>
-                            <td>胡兰芳</td>
-                            <td data-name="mob" style="font-size:16px;">18258093408</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 12:25:27</td>
-                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="354" />
-                            </td>
-                            <td>陈天新</td>
-                            <td data-name="mob" style="font-size:16px;">13857555083</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-15 08:49:55</td>
-                            <td>亚麻全营养代餐棒400元/套x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="353" />
-                            </td>
-                            <td>夏新来</td>
-                            <td data-name="mob" style="font-size:16px;">15267593318</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-14 21:03:23</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="352" />
-                            </td>
-                            <td>蒋成丰</td>
-                            <td data-name="mob" style="font-size:16px;">13065580338</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-14 19:49:13</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="351" />
-                            </td>
-                            <td>陈雪君</td>
-                            <td data-name="mob" style="font-size:16px;">18268780885</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-14 16:03:13</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="350" />
-                            </td>
-                            <td>任少华</td>
-                            <td data-name="mob" style="font-size:16px;">18258588277</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-14 11:10:53</td>
-                            <td>亚麻籽益生菌水溶粉400元/提x 2  +  亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    <input id="" name="chk" type="checkbox" value="349" />
-                            </td>
-                            <td>郭漪</td>
-                            <td data-name="mob" style="font-size:16px;">15957585859</td>
-                            <td>1000</td>
-                            <td>报单</td>
-                            <td>2016-03-13 18:44:59</td>
-                            <td>亚麻营养膳食粉400元/套  + 亚麻籽有机冷榨油大礼盒400元/提  + 亚麻籽有机冷榨油小礼盒200元/提</td>
-                            <td>未发货</td>
+                            <td>{{order.user_id.user_name}}</td>
+                            <td data-name="mob" style="font-size:16px;">{{order.user_id.bind_phone}}</td>
+                            <td>{{order.order_price}}</td>
+                            <td>{{order.order_type}}报单</td>
+                            <td>{{order.order_created}}</td>
+                            <td>{{order.order_memo}}</td>
+                            <td>{{order.order_status}}</td>
                             <td></td>
                         </tr>
 
-
+                        {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -679,37 +498,47 @@
         
         <button class="btn btn-sm btn-pink" id="batDeliver">批量发货</button>
         
-
-
-
-
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 11 页 &nbsp; 共 151 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
-
                 <ul class="pagination">
-                   
-
-                        <li class="paginate_button previous disabled"><a href="?p=0">第一页</a></li>
-                        <li class="paginate_button previous disabled"><a href="?p=0">上一页</a></li>
-                    
-                                        <li class="paginate_button active"><a>1</a></li>
-                        <li class="paginate_button"><a href="?p=1">2</a> </li>
-                        <li class="paginate_button"><a href="?p=2">3</a> </li>
-                    
-                        <li class="paginate_button more"><a href="?p=5">...</a> </li>
-                        <li class="paginate_button"><a href="?p=10">11</a> </li>
-                                            <li class="paginate_button next"><a href="?p=1">下一页</a> </li>
-                        <li class="paginate_button next"><a href="?p=10">最末页</a> </li>
+                        {% if curpage == 1 %}
+                        <li class="paginate_button previous disabled"><a href="?p=1&sta={{sta}}">首页</a></li>
+                        <li class="paginate_button previous disabled"><a href="?p={{prevpage}}&sta={{sta}}">上一页</a></li>
+                        {% else %}
+                        <li class="paginate_button previous"><a href="?p=1&sta={{sta}}">首页</a></li>
+                        <li class="paginate_button previous"><a href="?p={{prevpage}}&sta={{sta}}">上一页</a></li>
+                        {% endif %}
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% if curpage == pagenum %} 
+                        <li class="paginate_button next disabled"><a href="?p={{nextpage}}&sta={{sta}}">下一页</a></li>
+                        <li class="paginate_button next disabled"><a href="?p={{pagenum}}&sta={{sta}}">末页</a></li>
+                        {% else %}
+                        <li class="paginate_button next"><a href="?p={{nextpage}}&sta={{sta}}">下一页</a></li>
+                        <li class="paginate_button next"><a href="?p={{pagenum}}&sta={{sta}}">末页</a></li>
+                        {% endif %}
                 </ul>
         </div>
     </div>
 </div>
+
     </div><!-- /.span -->
 </div><!-- /.row -->
 <script>
@@ -742,8 +571,8 @@
             layer.alert('您没有选择任何一条数据', { icon: 5 });
         }
         else {
-            // var _url = "Deliver?ids=" + ids.join(',');
-            var _url = "弹窗-确认发货.html";
+            var _url = "Deliver?ids=" + ids.join(',');
+            //var _url = "弹窗-确认发货.html";
             layer.open({
                 type: 2,
                 title: '确认发货',

@@ -13,7 +13,7 @@ FirstRatio = 0.05
 SecondRatio = 0.03
 ThirdRatio = 0.02
 tax = 0.05
-ONE_PAGE_OF_DATA = 15
+ONE_PAGE_OF_DATA = 2    
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -452,11 +452,18 @@ class Message(models.Model):
                 if message_status_ == "2":
                     msglist = Message.objects.filter(service_id = id_).all()[startPos:endPos]
                     count = Message.objects.filter(service_id = id_).count()
-                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+                    print "dawdwadwamsglist:",msglist
+                    if count%ONE_PAGE_OF_DATA == 0:
+                        return msglist,(count/ONE_PAGE_OF_DATA),count
+                    else:
+                        return msglist,(count/ONE_PAGE_OF_DATA)+1,count
                 else:
                     msglist = Message.objects.filter(service_id = id_,message_status = message_status_).all()[startPos:endPos]
                     count = Message.objects.filter(service_id = id_,message_status = message_status_).count()
-                    return msglist,(count/ONE_PAGE_OF_DATA)+1
+                    if count%ONE_PAGE_OF_DATA == 0:
+                        return msglist,(count/ONE_PAGE_OF_DATA),count
+                    else:
+                        return msglist,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e
     #服务中心审核订单后创建一条消息通知
@@ -552,11 +559,11 @@ class OrderForm(models.Model):
                 arg['order_created__gt']=end_time_
                 orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
                 count = OrderForm.objects.filter(**args).exclude(**arg).count()
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count
             elif end_time_ == None:
                 orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
                 count = OrderForm.objects.filter(**args).count()
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e
     

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/layer/layer.js"></script>
+
+    <title>Deliver</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei';
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .div {
+            margin: 20px auto;
+            text-align: left;
+            width: 98%;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom:20px;
+        }
+
+            .div p {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+
+        .title {
+            font-size: 22px;
+            text-align: center;
+        }
+
+        table {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            font-family: 'Microsoft YaHei';
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #dedede;
+                text-align: center;
+            }
+
+            table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+                text-align: center;
+            }
+    </style>
+
+</head>
+<body>
+
+    <div class="div">
+        <table>
+            <tr>
+                <th style="width:10%">购买人/收货人</th>
+                <th style="width:10%">账号/联系电话</th>
+                <th style="width:20%">收货地址</th>
+                <th style="width:20%">产品</th>
+                <th style="width:8%">金额</th>
+                <th style="width:10%">快递名称</th>
+                <th style="width:10%">快递单号</th>
+            </tr>
+
+                <tr data-id="472">
+                    <td>韩选录<br></td>
+                    <td>13065785338<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="471">
+                    <td>宣慧丽<br></td>
+                    <td>15988597506<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="465">
+                    <td><br></td>
+                    <td>13758583708<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="464">
+                    <td>张满佳<br></td>
+                    <td>13336195072<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="463">
+                    <td>徐姝敏<br></td>
+                    <td>13357501958<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="462">
+                    <td>郭建娣<br></td>
+                    <td>15158278425<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻籽有机冷榨油大礼盒500元/提  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="461">
+                    <td>赵坚佩<br></td>
+                    <td>15988285065<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="460">
+                    <td>徐玉慧<br></td>
+                    <td>15968565218<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻籽有机冷榨油大礼盒500元/提  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="459">
+                    <td>朱仙凤<br></td>
+                    <td>13588556629<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="458">
+                    <td>梁月红<br></td>
+                    <td>13185585021<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提x 2  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="457">
+                    <td>寿玉美<br></td>
+                    <td>13606563218<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻全营养代餐棒500元/套  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="456">
+                    <td>王竟川<br></td>
+                    <td>15957585737<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻全营养代餐棒500元/套  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="455">
+                    <td>郦满芳<br></td>
+                    <td>13157581206<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻全营养代餐棒500元/套  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="454">
+                    <td>张玉燕<br></td>
+                    <td>13767355918<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻全营养代餐棒500元/套  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+                <tr data-id="453">
+                    <td>李建勤<br></td>
+                    <td>18957119160<br></td>
+                    <td></td>
+                    <td>亚麻籽益生菌水溶粉500元/提  <br>亚麻全营养代餐棒500元/套  </td>
+                    <td>1000</td>
+                    <td><input name="expname" type="text" style="width:100%" /></td>
+                    <td><input name="expno"  type="text" style="width:100%" /></td>
+                </tr>
+        </table>
+        <div style="text-align:center;font-size:14px">
+            <p style="font-size:8px;text-align:left">(*)当您确定之后，系统将记录收货地址，之后无法再修改本次的发货单<br />(*)您可以不填写快递信息</p>
+            <input id="chk" type="checkbox" /><label for="chk">稍候请为我打印发货单</label><input id="sub" type="button" value="确定发货" />
+        </div>
+    </div>
+    <script>
+        $('#sub').click(function () {
+            var arr = new Array();
+            var go = true;
+            $('tr').each(function (x, y) {
+                var _id = $(this).attr('data-id');
+                if (_id != undefined && _id != "") {
+                    var _expname = $(this).find('input[name="expname"]').val();
+                    var _expno = $(this).find('input[name="expno"]').val();
+                    var _oil = '0';// $(this).find('input[name="oil"]').val();
+                    var _powder = '0';// $(this).find('input[name="pow"]').val();
+                    //if (_oil != '' && isNaN(_oil)) { $(this).find('input[name="oil"]').focus(); go = false;  return false; }
+                    //if (_powder != '' && isNaN(_powder)) { $(this).find('input[name="pow"]').focus(); go = false; return false; }
+                    //if ((_oil == '' && _powder=='')|| (parseInt(_oil)==0 && parseInt(_powder)==0))
+                    //{
+                    //    $(this).find('input[name="pow"]').focus();
+                    //    go = false;
+                    //}
+                    arr.push(_id + '|' + escape(_expname) + '|' + escape(_expno) + '|' + _oil + '|' + _powder);
+                }
+            });
+            if (go == false) { return; }
+            layer.confirm('您确定要发货吗？', { icon: 3 }, function (index) {
+                layer.close(index);
+                layer.msg('正在处理中...', { icon: 16 });
+                $.post('DeliverSub', { data: arr.join(',') }, function (json) {
+                    layer.closeAll('loading');
+                    if (json.result == "t") {
+                        if ($('#chk').prop('checked')) {
+                            location.href = 'DeliverPrint?ids=' + json.ids;
+                        }
+                        else {
+                            layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () { });
+                            parent.location.href = parent.location.href;
+                            parent.layer.closeAll();
+                        }
+                    }
+                    else {
+                        layer.alert('操作失败！' + json.msg, { icon: 5 });
+                    }
+                });
+            });
+        })
+    </script>
+</body>
+</html>

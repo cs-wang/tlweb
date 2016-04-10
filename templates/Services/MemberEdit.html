@@ -772,7 +772,11 @@
             //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
             //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
             //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
-
+            if (Mark == "")
+            {
+                layer.alert('请选择产品', { icon: 6 });
+                return false;
+            }
             var data = {
                 UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
                 DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,

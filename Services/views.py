@@ -28,10 +28,50 @@ def MsgList(request):
 	sta = request.GET.get('sta')
 	if sta==None:
 		sta="2"
+	curpage = request.GET.get('p')
+	if curpage==None:
+		curpage="1"
+	curpage = int(curpage)
 	msgobj = models.Message()
-	msgs = msgobj.myMessage(1, 1, sta)
-	context = { 'msglist':msgs,
-				'msgnum':0, }
+	msglist,pagenum,totalnum = msgobj.myMessage("1", "1", sta, curpage)
+	print "msglist:", msglist, pagenum, totalnum
+	######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+
+	
+	######################################################
+	context = { 'msglist':msglist,
+				'sta':sta,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage }
+
 #	msgobj = models.Message()
 # 	msgobj.readMessage(5)
 
@@ -209,30 +249,78 @@ def SetAudit(request):
 def MemberOrder(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	context = {}
-	naive = parse_datetime("2017-02-21 10:28:45")
- 	naive1 = parse_datetime("2016-04-01 10:28:45")
- 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
- 	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)	
-	order_ = models.OrderForm()
-	order_list,maxPage = order_.myServiceOrder(1,"123",'2',time_1,time_)
-	for i in order_list:
-		print i.order_id
-	print "最多", maxPage
+
+	curpage = request.GET.get('p')
+	if curpage == None or curpage == '':
+		curpage = "1"
+	curpage = int(curpage)
+
+	orderobj=models.OrderForm()
+	orderlist,pagenum,totalnum = orderobj.myServiceOrder(1, pageNum=curpage)
+	print "orderlist",orderlist,pagenum
+		######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+	
+	######################################################
+	context = { 'orderlist':orderlist,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage }
+
+#	naive = parse_datetime("2017-02-21 10:28:45")
+# 	naive1 = parse_datetime("2016-04-01 10:28:45")
+# 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
+# 	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)	
+#	order_ = models.OrderForm()
+#	order_list,maxPage = order_.myServiceOrder(1,"123",'2',time_1,time_)
+#	for i in order_list:
+#		print i.order_id
+#	print "最多", maxPage
 #  	order_.createOrder(1,1,1000,1,"A+B都是货物啊","未发货")
 #	order_.comfirmDelivery(1,"五环快递","1232131231232131231")
 # 	print order_.myMemberOrder(1,time_1,time_,2)
 	return render(request, 'Services/MemberOrder.html', context)
 
+def Deliver(request):
+	context = {}
+	return render(request, 'Services/Deliver.html', context)
+
+
 def UserMap(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
-	member_ = models.Member()
-	memlist ,PageMax= member_.myMemberNet(1,'0',1)
-	for i in memlist:
-		print i.user_id,i.user_name
-	print "最多",PageMax,"页"
+	#member_ = models.Member()
+	#memlist ,PageMax= member_.myMemberNet(1,'0',1)
+	#for i in memlist:
+	#	print i.user_id,i.user_name
+	#print "最多",PageMax,"页"
 	
 	return render(request, 'Services/UserMap.html', context)
 
@@ -271,7 +359,7 @@ def AdviceList(request):
 # 		print i.advice_id
 # 	print "最多",maxPage
 	advobj = models.Advice()
-	advlist = advobj.my_advice(1)
+	advlist, pagenum = advobj.my_advice(2)
 	print "my_advice:",advlist
 	context = {'advlist':advlist}
 
