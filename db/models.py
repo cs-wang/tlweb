@@ -356,6 +356,7 @@ class Member(models.Model):
             elif user_or_phone_ == None:
                 i = Member.objects.filter(service_id = service_id_).filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
                 count = Member.objects.filter(service_id = service_id_).filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).count()
+                print "i:",i
         elif reg_way =='1':
             if user_or_phone_ != None:
                 i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg)\
@@ -365,7 +366,10 @@ class Member(models.Model):
             elif user_or_phone_ == None:
                 i = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
                 count = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).count()
-        return i,(count/ONE_PAGE_OF_DATA)+1
+        if count%ONE_PAGE_OF_DATA == 0:
+            return i,(count/ONE_PAGE_OF_DATA),count
+        else:
+            return i,(count/ONE_PAGE_OF_DATA)+1,count
     #查看会员信息
     def myInfo(self,user_id_):
         try:

@@ -7,6 +7,7 @@ import json
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 import pytz
+
 # Create your views here.
 
 def DashBoard(request):
@@ -22,7 +23,6 @@ def NoticeList(request):
 	return render(request, 'Services/NoticeList.html', context)
 
 def MsgList(request):
-
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	sta = request.GET.get('sta')
@@ -134,11 +134,12 @@ def MemberSave(request):
 	return HttpResponse(code)
 
 def MemberList(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 # 	naive = parse_datetime("2017-02-21 10:28:45")
 #  	naive1 = parse_datetime("2016-04-01 10:28:45")
 #  	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
 #  	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
-  	member_ = models.Member()
 #  	memberlist,pageMax = member_.MemberList(1,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
 #                    reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=time_1,pageNum=1)
 #  	for i in memberlist:
@@ -154,15 +155,49 @@ def MemberList(request):
 
 # 	print list
 # 	print "最多",pageMax
-	print member_.myInfo(1).user_name
-	context = { }
-	if request.session['role'] != '1':
-		return HttpResponseRedirect('/')
+	#print member_.myInfo(1).user_name
+	#context = {}
+	curpage = request.GET.get('p')
+	if curpage == None or curpage == '':
+		curpage = "1"
+	curpage = int(curpage)
 	member_ = models.Member()
-	memberlist = member_.MemberList()
-	print "MemberList:",memberlist
-	context = { 'memberlist':memberlist, }
-	flag = member_.activateMember(3,1)
+	memberlist,pagenum,totalnum = member_.MemberList(1,pageNum=curpage)
+	######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+
+	
+	######################################################
+	context = { 'memberlist':memberlist,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage }
 	return render(request, 'Services/MemberList.html', context)
 
 def SetAudit(request):
@@ -186,8 +221,6 @@ def MemberOrder(request):
 	print "最多", maxPage
 #  	order_.createOrder(1,1,1000,1,"A+B都是货物啊","未发货")
 #	order_.comfirmDelivery(1,"五环快递","1232131231232131231")
-
-	
 # 	print order_.myMemberOrder(1,time_1,time_,2)
 	return render(request, 'Services/MemberOrder.html', context)
 

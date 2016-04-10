@@ -493,7 +493,7 @@
             </thead>
 
             <tbody>
-            		{% for member in memberlist %}           
+            		{% for member in memberlist %}
                     <tr>
                         <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
                        	{% if member.user_name != None %}
@@ -515,9 +515,13 @@
                         {%endif%}
                         
                         <td>{{member.register_time}}</td>
-                        <td>{{member.confirm_time}}</td>
                         <td>
-                                <a href="javascript:;" data-id="492" class="recome" title="点击查看推荐人">【丁凤英】</a>推荐
+                        {% if member.confirm_time != None %}
+                        {{member.confirm_time}}
+                        {% endif %}
+                        </td>
+                        <td>
+                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】</a>推荐
                         </td>
                         <td>0</td>
                         
@@ -536,28 +540,41 @@
         </div>
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 {{membernum}} 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
-
                 <ul class="pagination">
-                   
-
-                        <li class="paginate_button previous disabled"><a href="?p=0">第一页</a></li>
-                        <li class="paginate_button previous disabled"><a href="?p=0">上一页</a></li>
-                    
-                                        <li class="paginate_button active"><a>1</a></li>
-                        <li class="paginate_button"><a href="?p=1">2</a> </li>
-                        <li class="paginate_button"><a href="?p=2">3</a> </li>
-                    
-                        <li class="paginate_button more"><a href="?p=5">...</a> </li>
-                        <li class="paginate_button"><a href="?p=10">11</a> </li>
-                                            <li class="paginate_button next"><a href="?p=1">下一页</a> </li>
-                        <li class="paginate_button next"><a href="?p=10">最末页</a> </li>
+                        {% if curpage == 1 %}
+                        <li class="paginate_button previous disabled"><a href="">第一页</a></li>
+                        <li class="paginate_button previous disabled"><a href="">上一页</a></li>
+                        {% else %}
+                        <li class="paginate_button previous"><a href="?p=1">第一页</a></li>
+                        <li class="paginate_button previous"><a href="?p={{prevpage}}">上一页</a></li>
+                        {% endif %}
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}">...</a></li>
+                        {% endif %}
+                        {% if curpage == pagenum %} 
+                        <li class="paginate_button next disabled"><a href="">下一页</a></li>
+                        <li class="paginate_button next disabled"><a href="">最末页</a></li>
+                        {% else %}
+                        <li class="paginate_button next"><a href="?p={{nextpage}}">下一页</a></li>
+                        <li class="paginate_button next"><a href="?p={{pagenum}}">最末页</a></li>
+                        {% endif %}
                 </ul>
         </div>
     </div>
@@ -575,7 +592,6 @@
             //alert(json.count);
         });
     });
-
 
     $('.viewrecom').click(function () {
         var sign = $(this).attr('data-sign');
