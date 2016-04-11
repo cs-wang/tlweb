@@ -465,6 +465,7 @@
         </span>
       </span>
     </div>
+    <!--begin first child tree-->
     <ul class="tree-branch-children" role="group">
       <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
         <div class="tree-branch-header">
@@ -499,7 +500,6 @@
               </span>
             </div>
           </li>
-          
         </ul>
       </li>
 
@@ -536,21 +536,14 @@
               </span>
             </div>
           </li>
-          
         </ul>
       </li>
-
     </ul>
     
   </li>
 </ul>
     </div>
 </div>
-
-
-
-
-
 
 <style>
     
@@ -564,11 +557,9 @@
             if(sonList.hasClass("open")){
                 $(this).next("ul.tree-branch-children").css("display","block").slideDown().removeClass("open");    
             }else{
-                $(this).next("ul.tree-branch-children").slideUp().addClass("open");    
+                $(this).next("ul.tree-branch-children").slideUp().addClass("open");
             }
-            
         });
-           
         // $('#tree1').ace_tree({
         //     dataSource: GetData,
         //     multiSelect: false,
