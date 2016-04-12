@@ -254,7 +254,7 @@ class Member(models.Model):
             i = Member.objects.filter(user_id = user_id_).get()
             i.status = MemberStatus(id = 2,status_id = '2')
             i.save()
-            Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
+            Message.objects.create(user_id = user_id_, service_id = service_id_,message_title=i.user_name+"您的帐号通过审核",\
                                    message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
                                    sent_time = timezone.now())
 #             #给上级推广费
@@ -335,9 +335,12 @@ class Member(models.Model):
         endPos = pageNum*ONE_PAGE_OF_DATA
         args= {}
         arg={}
+        i = []
+        count = 0
         orderlist = {'0':'-register_time','1':'register_time','2':'-confirm_time','3':'confirm_time'}
         if member_status_ !=None:
-            args['status'] = MemberStatus(status_id = member_status_)
+            args['status'] = MemberStatus(id = int(member_status_) ,status_id = member_status_)
+            #args['status_id'] = member_status_
         if reg_start_time_ !=None:
             args['register_time__gt']=reg_start_time_
         if conf_start_time_ !=None:
@@ -366,6 +369,9 @@ class Member(models.Model):
             elif user_or_phone_ == None:
                 i = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
                 count = Member.objects.filter(service_id = service_id_,reference_id = '0').filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).count()
+                
+        print "count:",count   
+
         if count%ONE_PAGE_OF_DATA == 0:
             return i,(count/ONE_PAGE_OF_DATA),count
         else:
@@ -452,7 +458,6 @@ class Message(models.Model):
                 if message_status_ == "2":
                     msglist = Message.objects.filter(service_id = id_).all()[startPos:endPos]
                     count = Message.objects.filter(service_id = id_).count()
-                    print "dawdwadwamsglist:",msglist
                     if count%ONE_PAGE_OF_DATA == 0:
                         return msglist,(count/ONE_PAGE_OF_DATA),count
                     else:
@@ -530,11 +535,11 @@ class OrderForm(models.Model):
                 arg['order_created__gt']=end_time_
                 orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
                 count = OrderForm.objects.filter(**args).exclude(**arg).count()
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count
             elif end_time_ == None:
                 orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
                 count = OrderForm.objects.filter(**args).count()
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e 
     #服务中心的订单 #order_type 为0表示未发货的,1表示已发货的，2为所有
@@ -545,6 +550,7 @@ class OrderForm(models.Model):
             arg={}
             args={}
             args['service_id']=service_id_
+            print "user_or_phone_:",user_or_phone_
             if user_or_phone_ !=None:
                 #如果用户名或者绑定手机号给出
                 i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).all()

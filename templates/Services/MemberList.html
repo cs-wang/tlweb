@@ -54,6 +54,8 @@
 
 </head>
 
+<link rel="stylesheet" href="/assets/css/datepicker.css" />
+<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
 <body class="no-skin">
     <!-- #section:basics/navbar.layout -->
     <div id="navbar" class="navbar navbar-default">
@@ -438,34 +440,34 @@
 
                 <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
 
-                <select class="" id="UserStatus" name="UserStatus"><option value="-1">所有</option>
-<option value="1">已激活</option>
-<option value="2">已审核</option>
-<option value="4">未审核</option>
-<option value="3">服务中心锁定</option>
-<option value="5">管理员锁定</option>
-<option value="9">已出局</option>
-<option value="10">申请加单</option>
-</select>
+                <select class="" id="UserStatus" name="UserStatus">
+                <option value="0"{% if reqUserStatus == "0" %} selected="selected"{% endif %}>所有</option>
+                <option value="1"{% if reqUserStatus == "1" %} selected="selected"{% endif %}>未审核</option>
+                <option value="2"{% if reqUserStatus == "2" %} selected="selected"{% endif %}>已审核</option>
+                <option value="3"{% if reqUserStatus == "3" %} selected="selected"{% endif %}>已激活</option>
+                <option value="5"{% if reqUserStatus == "5" %} selected="selected"{% endif %}>服务中心锁定</option>
+                <option value="6"{% if reqUserStatus == "6" %} selected="selected"{% endif %}>管理员锁定</option>
+                <option value="4"{% if reqUserStatus == "4" %} selected="selected"{% endif %}>已出局</option>
+                <option value="7"{% if reqUserStatus == "7" %} selected="selected"{% endif %}>申请加单</option>
+                </select>
 
                 
 
-                <select class="" id="orderby" name="orderby"><option value="1">注册时间倒序</option>
-<option value="2">注册时间正序</option>
-<option value="3">确认时间倒序</option>
-<option value="4">确认时间正序</option>
+                <select class="" id="orderby" name="orderby"><option value="0">注册时间倒序</option>
+<option value="1">注册时间正序</option>
+<option value="2">确认时间倒序</option>
+<option value="3">确认时间正序</option>
 </select>
 
-                <select class="" id="regfrom" name="regfrom"><option value="-1">所有注册点</option>
+
+                <select class="" id="regfrom" name="regfrom"><option value="0">所有注册点</option>
 <option value="1">服务中心注册</option>
 <option value="2">会员推荐</option>
-<option value="3">推荐注册</option>
-<option value="4">副中心注册</option>
-<option value="0">未知</option>
 </select>
 
                 <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" />
                 <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" />
+                
                 <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" />
                 <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" />
 
@@ -507,11 +509,19 @@
                         <td>{{member.bind_phone}}</td>
 
                         {% if member.status.status_id == "1" %}
-                        	<td><span class="label label-success">已激活</span></td>
+                        	<td><span class="label label-success">未审核</span></td>
                         {% elif member.status.status_id == "2" %}
                         	<td><span class="label label-warning">已审核</span></td>
+                        {% elif member.status.status_id == "3" %}
+                            <td><span class="label label-success">已激活</span></td>
+                        {% elif member.status.status_id == "4" %}
+                            <td><span class="label label-inverse">已出局</span></td>
+                        {% elif member.status.status_id == "5" %}
+                            <td><span class="label label-warning">服务中心锁定</span></td>
+                        {% elif member.status.status_id == "6" %}
+                            <td><span class="label label-warning">管理员锁定</span></td>
                         {% else %}
-							<td><span class="label">未审核</span></td>
+							<td><span class="label">申请加单</span></td>
                         {%endif%}
                         
                         <td>{{member.register_time}}</td>
@@ -521,16 +531,20 @@
                         {% endif %}
                         </td>
                         <td>
-                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】</a>推荐
+                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】{{member.reference_id}}</a>推荐
                         </td>
                         <td>0</td>
                         
                         <td>
                             <div class=" btn-group">
-                                    <a class="btn btn-mini btn-warning audit" data-id="{{member.user_id}}">激活</a>
-                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看</a>
+                                    {% if member.status.status_id == "1" or member.status.status_id == "7" %}
+                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.user_id}}">审核</a>
+                                    {% elif member.status.status_id == "2" %}
+                                        <a class="btn btn-mini btn-warning audit" data-id="{{member.user_id}}">激活</a>
+                                    {% endif %}
+                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看{{member.user_id}}</a>
                                     <a class="btn btn-mini btn-purple" href="../MemberEdit?UserId={{member.user_id}}">修改</a>
-                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1CE92D4DDCE842C3F43CAF3878D48E0CA32AF6EB09D553D9A44300227892CA3F6B76779FED4773A8AAC2488C18DCE9E37E17BC41D222DF24EED5DD8BF671D9C16FFB8FA6B6EA8199A81E9E7BD4C22F344CD0BAEB6076B228FB7D052E3321A74094B82DE9E5FCD1B421695519D4F52870C01F5C5A16EA70145F0D6F729335A1AD" data-id="">查看推荐</button>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.user_id}}">查看推荐</button>
                             </div>
                         </td>
                     </tr>
@@ -549,31 +563,31 @@
         <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
                         {% if curpage == 1 %}
-                        <li class="paginate_button previous disabled"><a href="">首页</a></li>
-                        <li class="paginate_button previous disabled"><a href="">上一页</a></li>
+                        <li class="paginate_button previous disabled"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
+                        <li class="paginate_button previous disabled"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
                         {% else %}
-                        <li class="paginate_button previous"><a href="?p=1">首页</a></li>
-                        <li class="paginate_button previous"><a href="?p={{prevpage}}">上一页</a></li>
+                        <li class="paginate_button previous"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
+                        <li class="paginate_button previous"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
                         {% endif %}
                         {% if preomit == True %}
-                        <li class="paginate_button more"><a href="?p={{prevomitpage}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
                         {% endif %}
                         {% for pindex in pageshowlist %}
                         {% if pindex == curpage %}
                         <li class="paginate_button active"><a>{{curpage}}</a></li>
                         {% elif pindex  %}
-                        <li class="paginate_button"><a href="?p={{pindex}}">{{pindex}}</a></li>
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">{{pindex}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% if nextomit == True %}
-                        <li class="paginate_button more"><a href="?p={{nextomitpage}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
                         {% endif %}
                         {% if curpage == pagenum %} 
-                        <li class="paginate_button next disabled"><a href="">下一页</a></li>
-                        <li class="paginate_button next disabled"><a href="">末页</a></li>
+                        <li class="paginate_button next disabled"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
+                        <li class="paginate_button next disabled"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
                         {% else %}
-                        <li class="paginate_button next"><a href="?p={{nextpage}}">下一页</a></li>
-                        <li class="paginate_button next"><a href="?p={{pagenum}}">末页</a></li>
+                        <li class="paginate_button next"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
+                        <li class="paginate_button next"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
                         {% endif %}
                 </ul>
         </div>
@@ -583,6 +597,11 @@
 </div><!-- /.row -->
 
 <script>
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+
     var sW = $(window).width();
 
     $('td[data-name="counttd"]').each(function (x, y) {
@@ -594,9 +613,10 @@
     });
 
     $('.viewrecom').click(function () {
-        var sign = $(this).attr('data-sign');
-        // var _url = "ViewReCome?sign=" + sign;
-        var _url = "弹窗-查看推荐.html";
+        //var sign = $(this).attr('data-sign');
+        var id = $(this).attr('data-id');
+        var _url = "ViewReCome?UserId=" + id;
+        // var _url = "弹窗-查看推荐.html";
         layer.open({
             type: 2,
             title: '查看推荐',
@@ -610,7 +630,7 @@
 
     $('.view').click(function () {
         var id = $(this).attr('data-id');
-        //var _url = "ViewMember?UserId=" + id;
+        var _url = "ViewMemberSelf?UserId=" + id;
         //var _url = "弹窗-查看会员信息.html";
         layer.open({
             type: 2,
@@ -625,8 +645,8 @@
 
     $('.recome').click(function () {
         var id = $(this).attr('data-id');
-        // var _url = "ViewMember?UserId=" + id;
-        var _url = "弹窗-推荐人信息.html";
+        var _url = "ViewMember?UserId=" + id;
+        // var _url = "弹窗-推荐人信息.html";
         layer.open({
             type: 2,
             title: '查看推荐人信息',
@@ -691,7 +711,7 @@
         layer.confirm('您确定要审核吗？审核之后需要激活才能进入公排，请悉知', { icon: 3 }, function (index) {
             layer.close(index);
             layer.msg('正在处理中...', { icon: 16 });
-            $.post('SetAudit1', { UserId: id }, function (json) {
+            $.post('SetAudit1/', { UserId: id }, function (json) {
                 layer.closeAll('loading');
                 if (json.result == "t") {
                     layer.alert('操作成功!', { icon: 1 }, function () { location.href = location.href; })
@@ -699,7 +719,7 @@
                 else {
                     layer.alert('操作失败！' + json.msg, { icon: 5 });
                 }
-            });
+            }, "json");
         });
     })
 
