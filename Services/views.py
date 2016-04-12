@@ -33,7 +33,12 @@ def MsgList(request):
 		curpage="1"
 	curpage = int(curpage)
 	msgobj = models.Message()
-	msglist,pagenum,totalnum = msgobj.myMessage("1", "1", sta, curpage)
+	msglist,pagenum,totalnum = msgobj.myMessage( 
+		id_ = 1, # service_id
+		role_="1", # 服务中心
+		message_status_ = sta, 
+		pageNum = curpage
+		)
 	print "msglist:", msglist, pagenum, totalnum
 	######################################################
 	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
@@ -113,18 +118,19 @@ def MemberEdit(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
-#	 if request.method == 'GET':
-#		 return 
-#	 elif request.method == 'POST':
-#		 return
-
- 	member_ = models.Member()
-# 	flag = member_.register('zdg',"赵镇辉啊","delegation_phone_","delegation_info_",\
-# 		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
-# 		  "receiver_addr_","order_Memo",1,0)   
-	print member_.fixInfo(1,"改密码咯","新手机号码","新微信号码","新开户银行","新账户啊","新持卡人啊","新收货人啊","新收货电话啊","新收获地址啊")
-	
 	return render(request, 'Services/MemberEdit.html', context)
+
+def MemberEdit1(request):
+	if request.session['role'] != '1':
+		return HttpResponseRedirect('/')
+	reqUserId = request.GET.get('UserId')
+	print "reqUserId:",reqUserId
+	member_ = models.Member()
+	selfinfo = member_.myInfo(int(reqUserId))
+	print selfinfo.status.status_id
+	context = { 'selfinfo':selfinfo,
+				'UserId':reqUserId }
+	return render(request, 'Services/MemberEdit1.html', context)
 
 def MemberSave(request):
 	RegUserId = request.POST['UserId']
@@ -164,12 +170,89 @@ def MemberSave(request):
 	print "RegRecMob:",RegRecMob
 	print "RegMark:",RegMark
 	memberobj = models.Member()
-	if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
-		RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+	if memberobj.register(
+				user = RegUserName,
+				nickname_ = RegNickName,
+				delegation_phone_ = RegDepositMobile,
+				delegation_info_ = RegAlipay,
+				bind_phone_ = RegBindMob,
+				pwd = RegUserPwd,
+				weixinId = RegWeChat,
+				bank_ = RegBankName,
+				account_ = RegBankAccount,
+				cardHolder = RegTrueName,
+				receiver_ = RegRecName,
+				reciever_phone_ = RegRecMob,
+				receiver_addr_ = RegRecAdd,
+				order_Memo_ = RegMark,
+				serviceid = 1,
+				referenceid = 0
+				) == True:
 		obj = {'result':'t'}
 	else:
 		obj = {'result':'f',
 			'msg':'用户名已经被注册'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
+
+def MemberSave1(request):
+	RegUserId = request.POST['UserId']
+	RegUserName = request.POST['UserName']
+	RegNickName = request.POST['NickName']
+	RegIDCard = request.POST['IDCard']
+	RegUserStatus = request.POST['UserStatus']
+	RegBindMob = request.POST['BindMob']
+	RegDepositMobile = request.POST['DepositMobile']
+	RegUserPwd = request.POST['UserPwd']
+	RegUserPayPwd = request.POST['UserPayPwd']
+	RegWeChat = request.POST['WeChat']
+	RegAlipay = request.POST['Alipay']
+	RegBankName = request.POST['BankName']
+	RegBankAccount = request.POST['BankAccount']
+	RegTrueName = request.POST['TrueName']
+	RegRecName = request.POST['RecName']
+	RegRecAdd = request.POST['RecAdd']
+	RegRecMob = request.POST['RecMob']
+	#RegMark = request.POST['Mark']
+	print "RegUserId:",RegUserId
+	print "RegUserName:",RegUserName
+	print "RegNickName:",RegNickName
+	print "RegIDCard:",RegIDCard
+	print "RegUserStatus:",RegUserStatus
+	print "RegBindMob:",RegBindMob
+	print "RegDepositMobile:",RegDepositMobile
+	print "RegUserPwd:",RegUserPwd
+	print "RegUserPayPwd:",RegUserPayPwd
+	print "RegWeChat:",RegWeChat
+	print "RegAlipay:",RegAlipay
+	print "RegBankName:",RegBankName
+	print "RegBankAccount:",RegBankAccount
+	print "RegTrueName:",RegTrueName
+	print "RegRecName:",RegRecName
+	print "RegRecAdd:",RegRecAdd
+	print "RegRecMob:",RegRecMob
+	#print "RegMark:",RegMark
+	if RegUserPwd == "":
+		RegUserPwd = None
+
+	memberobj = models.Member()
+	if memberobj.fixInfo(
+				user_id_ = RegUserId,
+				pwd_ = RegUserPwd,
+				bind_phone_ = RegBindMob,
+				weixinId_ = RegWeChat,
+				bank_ = RegBankName,
+				account_ = RegBankAccount,
+				card_holder_ = RegTrueName,
+				receiver_ = RegRecName,
+				receiver_phone_ = RegRecMob,
+				receiver_addr_ = RegRecAdd,
+				member_status_ = RegUserStatus
+				) == True:
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f',
+			'msg':'请稍后再试！'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 

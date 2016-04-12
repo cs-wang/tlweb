@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>会员列表 - 天龙健康会员操作平台</title>
+    <title>编辑会员 - 天龙健康会员操作平台</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -43,7 +45,7 @@
     <!-- <![endif]-->
     <!--[if IE]>
     <script type="text/javascript">
-     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+     window.jQuery || document.write("<script src='/assets/js/jquery1x.js'>"+"<"+"/script>");
     </script>
     <![endif]-->
     <script type="text/javascript">
@@ -54,8 +56,6 @@
 
 </head>
 
-<link rel="stylesheet" href="/assets/css/datepicker.css" />
-<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
 <body class="no-skin">
     <!-- #section:basics/navbar.layout -->
     <div id="navbar" class="navbar navbar-default">
@@ -413,321 +413,404 @@
 <!-- /.ace-settings-container -->
 <!-- /section:settings.box -->
 
-                    <div class="row noMarginLR">
+                    <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
                             
-
 <!-- /section:settings.box -->
 <div class="page-header">
     <h1>
         会员中心
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            会员列表 
+            编辑会员
         </small>
     </h1>
 </div><!-- /.page-header -->
 
-<div class="row noMarginLR iUcAddNewMember">
-    <div class="col-xs-12">
-        <div class="alert alert-info">
-           会员出局之后需要加单的，请让会员登录之后在首页点击申请加单，然后在本页审核即可
-        </div>
-        <div>
-            <form class="form-inline hasBlockToolItem" action="../MemberList" method="Get"c>
-
-
-                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
-
-                <select class="" id="UserStatus" name="UserStatus">
-                <option value="0"{% if reqUserStatus == "0" %} selected="selected"{% endif %}>所有</option>
-                <option value="1"{% if reqUserStatus == "1" %} selected="selected"{% endif %}>未审核</option>
-                <option value="2"{% if reqUserStatus == "2" %} selected="selected"{% endif %}>已审核</option>
-                <option value="3"{% if reqUserStatus == "3" %} selected="selected"{% endif %}>已激活</option>
-                <option value="5"{% if reqUserStatus == "5" %} selected="selected"{% endif %}>服务中心锁定</option>
-                <option value="6"{% if reqUserStatus == "6" %} selected="selected"{% endif %}>管理员锁定</option>
-                <option value="4"{% if reqUserStatus == "4" %} selected="selected"{% endif %}>已出局</option>
-                <option value="7"{% if reqUserStatus == "7" %} selected="selected"{% endif %}>申请加单</option>
-                </select>
-
-                
-
-                <select class="" id="orderby" name="orderby"><option value="0">注册时间倒序</option>
-<option value="1">注册时间正序</option>
-<option value="2">确认时间倒序</option>
-<option value="3">确认时间正序</option>
-</select>
-
-
-                <select class="" id="regfrom" name="regfrom"><option value="0">所有注册点</option>
-<option value="1">服务中心注册</option>
-<option value="2">会员推荐</option>
-</select>
-
-                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" />
-                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" />
-                
-                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" />
-                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" />
-
-                <button type="submit" class="btn btn-info btn-sm">
-                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
-                </button>
-            </form>
-        </div>
-        
-        <div class="iWideTable cf">
-            <table id="simple-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th style="width:10%;">昵称或姓名</th>
-                    <th style="width:12%;">编号</th>
-                    <th style="width:8%;">托管手机</th>
-                    <th style="width:8%;">绑定手机</th>
-                    <th style="width:6%;">状态</th>
-                    <th style="width:10%;">注册时间</th>
-                    <th style="width:10%;">审核时间</th>
-                    <th style="width:12%;">注册来源</th>
-                    <th style="width:8%;">直推</th>
-                    <th style="width:220px;">操作</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            		{% for member in memberlist %}
-                    <tr>
-                        <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
-                       	{% if member.user_name != None %}
-                        {{member.user_name}}
-                        {% else %}
-                        {{member.nickname}}
-                        {% endif %}
-                        </a></td>
-                        <td data-name="mob" style="font-size:14px;">{{member.user_id}}</td>
-                        <td>{{member.delegation_phone}}</td>
-                        <td>{{member.bind_phone}}</td>
-
-                        {% if member.status.status_id == "1" %}
-                        	<td><span class="label label-success">未审核</span></td>
-                        {% elif member.status.status_id == "2" %}
-                        	<td><span class="label label-warning">已审核</span></td>
-                        {% elif member.status.status_id == "3" %}
-                            <td><span class="label label-success">已激活</span></td>
-                        {% elif member.status.status_id == "4" %}
-                            <td><span class="label label-inverse">已出局</span></td>
-                        {% elif member.status.status_id == "5" %}
-                            <td><span class="label label-warning">服务中心锁定</span></td>
-                        {% elif member.status.status_id == "6" %}
-                            <td><span class="label label-warning">管理员锁定</span></td>
-                        {% else %}
-							<td><span class="label">申请加单</span></td>
-                        {%endif%}
-                        
-                        <td>{{member.register_time}}</td>
-                        <td>
-                        {% if member.confirm_time != None %}
-                        {{member.confirm_time}}
-                        {% endif %}
-                        </td>
-                        <td>
-                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】{{member.reference_id}}</a>推荐
-                        </td>
-                        <td>0</td>
-                        
-                        <td>
-                            <div class=" btn-group">
-                                    {% if member.status.status_id == "1" or member.status.status_id == "7" %}
-                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.user_id}}">审核</a>
-                                    {% endif %}
-                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看{{member.user_id}}</a>
-                                    <a class="btn btn-mini btn-purple" href="../MemberEdit1/?UserId={{member.user_id}}">修改</a>
-                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.user_id}}">查看推荐</button>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-            </tbody>
-            </table>
-        </div>
 
 <div class="row">
-    <div class="col-xs-5 iPagesLeft">
-        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
-        </div> 
-    </div>
-    <div class="col-xs-7 iPagesRight">
-        <div class="dataTables_paginate paging_simple_numbers">
-                <ul class="pagination">
-                        {% if curpage == 1 %}
-                        <li class="paginate_button previous disabled"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
-                        <li class="paginate_button previous disabled"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
-                        {% else %}
-                        <li class="paginate_button previous"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
-                        <li class="paginate_button previous"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
-                        {% endif %}
-                        {% if preomit == True %}
-                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
-                        {% endif %}
-                        {% for pindex in pageshowlist %}
-                        {% if pindex == curpage %}
-                        <li class="paginate_button active"><a>{{curpage}}</a></li>
-                        {% elif pindex  %}
-                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">{{pindex}}</a></li>
-                        {% endif %}
-                        {% endfor %}
-                        {% if nextomit == True %}
-                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
-                        {% endif %}
-                        {% if curpage == pagenum %} 
-                        <li class="paginate_button next disabled"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
-                        <li class="paginate_button next disabled"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
-                        {% else %}
-                        <li class="paginate_button next"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
-                        <li class="paginate_button next"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
-                        {% endif %}
-                </ul>
-        </div>
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+            <input id="UserId" name="UserId" type="hidden" value="{{UserId}}" />
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 用户名 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="UserName" name="UserName" placeholder="用户名就是登录名" class="col-xs-10 col-sm-5" value="{{selfinfo.user_name}}" maxlength="12" disabled='disabled'/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 昵称或姓名 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" value="{{selfinfo.nickname}}" maxlength="20" disabled='disabled'/>
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.delegation_phone}}" disabled='disabled'/>
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">当汇款人非本人时请填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.delegation_info}}" disabled='disabled'/>
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">汇款人非本人时请填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="BindMob" name="BindMob" placeholder="不填写等于登陆账号" class="col-xs-10 col-sm-5" value="{{selfinfo.bind_phone}}" maxlength="12" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">系统短信将发送到您绑定的手机号码</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 登陆密码 </label>
+
+                <div class="col-sm-9">
+                    <!-- #section:elements.form.input-icon -->
+                    <span>
+                        <input type="password" id="UserPwd">
+                    </span>
+
+                    <span>
+                        <input type="password" id="UserRePwd" placeholder="重复登陆密码">
+                    </span>
+                        <span class="middle">如果您不修改密码，请留空</span>
+
+                    <!-- /section:elements.form.input-icon -->
+                </div>
+            </div>
+
+            
+
+            <div class="space-4"></div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 微信号 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" value="{{selfinfo.weixin_id}}" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">微信接受奖金和汇款的会员，必须填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 开户银行 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="BankName" name="BankName" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.bank}}" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">微信不填时您必须填完整开户行，如：农业银行浙江分行杭州西湖支行</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 银行账号 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.account}}" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">银行卡接收奖金和汇款的会员，微信不填时必须填写</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.card_holder}}" />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">绑定银行卡姓名</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货人 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.receiver}}" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货人电话 </label>
+
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.receiver_phone}}" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 收货地址 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" value="{{selfinfo.receiver_addr}}" />
+
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">外地需邮寄会员必填</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> 会员状态 </label>
+
+                    <div class="col-sm-9">
+                        <select class="" data-val="true" data-val-number="字段 UserStatus 必须是一个数字。" data-val-required="UserStatus 字段是必需的。" id="UserStatus" name="UserStatus">
+                            {% if selfinfo.status.status_id == "1" %}
+                            <option selected="selected" value="1">未审核</option>
+                            {% elif selfinfo.status.status_id == "2" %}
+                            <option selected="selected" value="2">已审核</option>
+                            {% elif selfinfo.status.status_id == "3" %}
+                            <option selected="selected" value="3">已激活</option>
+                            {% elif selfinfo.status.status_id == "4" %}
+                            <option selected="selected" value="4">已出局</option>
+                            {% endif %}
+                            <option value="5">服务中心锁定</option>
+                        </select>
+                    </div>
+                </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="button" id="Save">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a class="btn" href="../MemberList/">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        返回列表
+                    </a>
+                </div>
+            </div>
+
+
+        </form>
     </div>
 </div>
-    </div><!-- /.span -->
-</div><!-- /.row -->
-
+<style>
+    .js-max-input {
+        border: solid 1px #ffd2b2;
+        background: #fffae5;
+        padding: 0 10px 0 10px;
+        font-size: 20px;
+        color: #ff4400;
+    }
+</style>
 <script>
-    $('.date-picker').datepicker({
-        autoclose: true,
-        todayHighlight: true
-    })
+    $(document).ready(function () {
 
-    var sW = $(window).width();
+        new TextMagnifier({
+            inputElem: '#UserName',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4,1],
 
-    $('td[data-name="counttd"]').each(function (x, y) {
-        var id = $(y).attr('data-id');
-        $.getJSON("GetRecomeAllCount", { UserId: id }, function (json) {
-            $(y).text(json.count);
-            //alert(json.count);
         });
-    });
+        new TextMagnifier({
+            inputElem: '#DepositMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
 
-    $('.viewrecom').click(function () {
-        //var sign = $(this).attr('data-sign');
-        var id = $(this).attr('data-id');
-        var _url = "ViewReCome?UserId=" + id;
-        // var _url = "弹窗-查看推荐.html";
-        layer.open({
-            type: 2,
-            title: '查看推荐',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['85%', '90%'],
-            content: _url
         });
-    })
+        new TextMagnifier({
+            inputElem: '#BindMob',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
 
-
-    $('.view').click(function () {
-        var id = $(this).attr('data-id');
-        var _url = "ViewMemberSelf?UserId=" + id;
-        //var _url = "弹窗-查看会员信息.html";
-        layer.open({
-            type: 2,
-            title: '查看会员信息',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['85%', '90%'],
-            content: _url
         });
-    })
+        new TextMagnifier({
+            inputElem: '#FromMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
 
-
-    $('.recome').click(function () {
-        var id = $(this).attr('data-id');
-        var _url = "ViewMember?UserId=" + id;
-        // var _url = "弹窗-推荐人信息.html";
-        layer.open({
-            type: 2,
-            title: '查看推荐人信息',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['85%', '90%'],
-            content: _url
         });
-    })
-    // 激活
-    $('.audit').click(function () { //SetAuditReg
-        var id = $(this).attr('data-id');
-        // var _url = "SetAudit?UserId=" + id;
-        var _url = "SetAudit?UserId=" + id;
-        //var _url = "弹窗-审核会员信息.html";
-        layer.open({
-            type: 2,
-            title: '审核会员信息',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['85%', '90%'],
-            content: _url
+        new TextMagnifier({
+            inputElem: '#RecMob',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#BankAccount',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [4, 4, 4, 4, 3],
+
+        });
+        new TextMagnifier({
+            inputElem: '#IDCard',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 3, 4, 4, 4],
+
         });
 
-    })
 
-    $('.reconsume').click(function () { //SetAuditReg
-        var id = $(this).attr('data-id');
-        var _url = "reconsume?UserId=" + id;
-        layer.open({
-            type: 2,
-            title: '会员复消',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['600px', '550px'],
-            content: _url
-        });
 
-    })
-    
-    $('.child').click(function () { //SetAuditReg
 
-        var id = $(this).attr('data-id');
-        layer.confirm('您确定要生成该会员的子账号吗？<br><font color="red">注意：生成之后的子账号等同于新注册账号，仍然需要经过审核才能使用！登陆为在其原有账号之后加一字母，最多不超过26个子账号</font>', { icon: 3 }, function (index) {
-            layer.close(index);
-            layer.msg('正在处理中...', { icon: 16 });
-            $.post('CreateChild', { UserId: id }, function (json) {
-                layer.closeAll('loading');
+
+
+
+
+
+
+
+
+        $('#Save').click(function () {
+            var UserId = $('#UserId').val();
+            var UserName = $('#UserName').val();
+            var NickName = $('#NickName').val();
+            var IDCard = '';//$('#IDCard').val();
+            var DepositMobile = $('#DepositMobile').val();
+            var UserPwd = $('#UserPwd').val();
+            var UserRePwd = $('#UserRePwd').val();
+            var UserPayPwd = '1';//$('#UserPayPwd').val();
+            var UserRePayPwd = '1'; //$('#UserRePayPwd').val();
+            var WeChat = $('#WeChat').val();
+            var Alipay = $('#Alipay').val();
+            var BankName = $('#BankName').val();
+            var BankAccount = $('#BankAccount').val();
+            var TrueName = $('#TrueName').val();
+            var RecName = $('#RecName').val();
+            var RecAdd = $('#RecAdd').val();
+            var RecMob = $('#RecMob').val();
+            var Mark = $('#Mark').val();
+            // var UserStatus = 4;
+            var BindMob = $('#BindMob').val();
+
+            var UserStatus = $('#UserStatus').val();
+
+            if (UserName == "") { $('#UserName').focus(); layer.tips('用户名不能为空', '#UserName'); return false; }
+
+
+
+            if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
+            //if (IDCard == "") { $('#IDCard').focus(); layer.tips('身份证号不能为空', '#IDCard'); return false; }
+            //if (IDCard != "") {
+            //    if (IDCard.length != 18 || IdCardValidate(IDCard) == false) {
+            //$('#IDCard').focus(); layer.tips('身份证号码不正确', '#IDCard'); return false;
+            //    }
+            //}
+
+
+            if (UserId == '0') {
+                if (UserPwd == "") { $('#UserPwd').focus(); layer.tips('密码不能为空', '#UserPwd'); return false; }
+                if (UserPwd != UserRePwd) { $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false; }
+            }
+            else {
+                if (UserPwd != '' || UserRePwd != '') {
+                    if (UserPwd != UserRePwd) {
+                        $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false;
+                    }
+                }
+            }
+
+            if (UserId == '0') {
+                if (UserPayPwd == "") { $('#UserPayPwd').focus(); layer.tips('二级密码不能为空', '#UserPayPwd'); return false; }
+                if (UserPayPwd != UserRePayPwd) { $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false; }
+            }
+            else {
+                if (UserPayPwd != '' || UserRePayPwd != '') {
+                    if (UserPayPwd != UserRePayPwd) {
+                        $('#UserRePayPwd').focus(); layer.tips('两次密码输入不一致', '#UserRePayPwd'); return false;
+                    }
+                }
+            }
+
+            if (IsMobile(DepositMobile) == false) { $('#DepositMobile').focus(); layer.tips('手机号码格式不正确', '#DepositMobile'); return false; }
+            if (IsMobile(BindMob) == false) { $('#BindMob').focus(); layer.tips('手机号码格式不正确', '#BindMob'); return false; }
+            if (IsMobile(RecMob) == false) { $('#RecMob').focus(); layer.tips('手机号码格式不正确', '#RecMob'); return false; }
+
+            //if (BankName == "") { $('#BankName').focus(); layer.tips('银行开户行不能为空', '#BankName'); return false; }
+            //if (BankAccount == "") { $('#BankAccount').focus(); layer.tips('银行账号不能为空', '#BankAccount'); return false; }
+
+            //if (TrueName == "") { $('#TrueName').focus(); layer.tips('真实姓名不能为空', '#TrueName'); return false; }
+            //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
+            //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
+            //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
+
+            var data = {
+                UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
+                DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
+                WeChat: WeChat, Alipay: Alipay, BankName: BankName, BankAccount: BankAccount,
+                TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob
+            }
+            $('#Save').prop('disabled', true);
+            $.post('MemberSave1/', data, function (json) {
+
                 if (json.result == "t") {
-                    layer.alert('操作成功!<br />新生成的用户名为：' + json.msg,{ icon: 1 }, function () { location.href = location.href; })
+                    layer.msg('保存成功！', { icon: 1 }, function () { location.href = '../MemberList/'; });
+
                 }
                 else {
-                    layer.alert('操作失败！' + json.msg, { icon: 5 });
+                    layer.alert('保存失败。<br />' + json.msg, { icon: 5 });
+                    $('#Save').prop('disabled', false);
                 }
-            });
-        });
-    })
-    // 审核
-    $('.audit1').click(function () { 
 
-        var id = $(this).attr('data-id');
-        layer.confirm('您确定要审核吗？审核之后需要激活才能进入公排，请悉知', { icon: 3 }, function (index) {
-            layer.close(index);
-            layer.msg('正在处理中...', { icon: 16 });
-            $.post('SetAudit1/', { UserId: id }, function (json) {
-                layer.closeAll('loading');
-                if (json.result == "t") {
-                    layer.alert('操作成功!', { icon: 1 }, function () { location.href = location.href; })
-                }
-                else {
-                    layer.alert('操作失败！' + json.msg, { icon: 5 });
-                }
             }, "json");
-        });
-    })
-
-
-
-    $('td[data-name="mob"]').each(function (x,y) {
-        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
-        $(y).text(_n);
-    })
-
+        })
+    });
 </script>
 
 

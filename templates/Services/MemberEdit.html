@@ -610,17 +610,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right"> 会员状态 </label>
-
-                    <div class="col-sm-9">
-                        <select class="" data-val="true" data-val-number="字段 UserStatus 必须是一个数字。" data-val-required="UserStatus 字段是必需的。" id="UserStatus" name="UserStatus">
-                            <option selected="selected" value="2">已审核</option>
-                            <option value="3">服务中心锁定</option>
-                        </select>
-                    </div>
-                </div>
-
             <div class="clearfix form-actions">
                 <div class="col-md-offset-3 col-md-9">
                     <button class="btn btn-info" type="button" id="Save">
@@ -629,7 +618,7 @@
                     </button>
 
                     &nbsp; &nbsp; &nbsp;
-                    <a class="btn" href="../MemberList">
+                    <a class="btn" href="../MemberList/">
                         <i class="ace-icon fa fa-undo bigger-110"></i>
                         返回列表
                     </a>
@@ -660,6 +649,13 @@
         });
         new TextMagnifier({
             inputElem: '#DepositMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#BindMob',
             //parentCls: 'col-sm-9',
             align: 'top',
             splitType: [3, 4, 4],
@@ -743,7 +739,7 @@
             var UserStatus = 4;
             var BindMob = $('#BindMob').val();
 
-            if (UserName == "") { $('#UserName').focus(); layer.tips('手机号码不能为空', '#UserName'); return false; }
+            if (UserName == "") { $('#UserName').focus(); layer.tips('用户名不能为空', '#UserName'); return false; }
             if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
             //if (IDCard == "") { $('#IDCard').focus(); layer.tips('身份证号不能为空', '#IDCard'); return false; }
             //if (IDCard != "") {
@@ -776,6 +772,10 @@
                 }
             }
 
+            if (IsMobile(DepositMobile) == false) { $('#DepositMobile').focus(); layer.tips('手机号码格式不正确', '#DepositMobile'); return false; }
+            if (IsMobile(BindMob) == false) { $('#BindMob').focus(); layer.tips('手机号码格式不正确', '#BindMob'); return false; }
+            if (IsMobile(RecMob) == false) { $('#RecMob').focus(); layer.tips('手机号码格式不正确', '#RecMob'); return false; }
+            
             //if (BankName == "") { $('#BankName').focus(); layer.tips('银行开户行不能为空', '#BankName'); return false; }
             //if (BankAccount == "") { $('#BankAccount').focus(); layer.tips('银行账号不能为空', '#BankAccount'); return false; }
 

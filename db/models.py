@@ -384,7 +384,7 @@ class Member(models.Model):
             print e
     #修改会员资料 可修改有 密码，绑定手机号，微信号，开户银行,账户,持卡人,收货人,收货电话,收货地址
     def fixInfo(self,user_id_,pwd_=None,bind_phone_=None,weixinId_=None,bank_=None,account_=None,card_holder_=None,\
-                receiver_=None,receiver_phone_=None,receiver_addr_=None):
+                receiver_=None,receiver_phone_=None,receiver_addr_=None,member_status_ =None):
         try :
             i = Member.objects.filter(user_id = user_id_).get()
             if pwd_ !=None:
@@ -406,10 +406,13 @@ class Member(models.Model):
                 i.receiver_phone = receiver_phone_
             if receiver_addr_ !=None:
                 i.receiver_addr = receiver_addr_
+            if member_status_!=None:
+                i.status = MemberStatus(id = member_status_,status_id = member_status_)
             i.save()
             return True
         except BaseException,e:
             print e
+            return False
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid
@@ -441,7 +444,7 @@ class Message(models.Model):
             print e
             return False
     #message_status_ 为2表示所有消息 0表示未读，1表示为已读 role = 0 为会员,= 1为服务中心
-    def myMessage(self,id_,role_,message_status_ = 2,pageNum = 1):
+    def myMessage(self,id_,role_,message_status_ = "2",pageNum = 1):
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
