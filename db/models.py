@@ -778,7 +778,7 @@ class Service(models.Model):
     service_pwd = models.CharField(max_length=32, blank=True, null=True)
     service_area = models.CharField(max_length=20, blank=True, null=True)
     #上级服务中心 只有副中心才有
-    service_ref = models.CharField(max_length=10, blank=True, null=True)
+    service_ref = models.BigIntegerField(blank=True, null=True)
     #副中心负责人
     service_response = models.CharField(max_length=20, blank=True, null=True)
     #服务(副)中心备注
