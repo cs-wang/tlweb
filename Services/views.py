@@ -16,6 +16,10 @@ def DashBoard(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 # 	send_Short_Message(15757116149,"zzh")
+# 	time = timezone.now()
+#     	time_1 = timezone.now()-datetime.timedelta(days=30)
+# 	print time
+# 	print time_1
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
 
@@ -126,9 +130,15 @@ def MemberList(request):
 
 # 	co.getGreatOrSuper(1)
 
-  	flag = member_.confirmMember(35,1)
+#   	flag = member_.confirmMember(59,1)
+#   	flag = member_.confirmMember(60,1)
+#   	flag = member_.confirmMember(61,1)
+#   	flag = member_.confirmMember(62,1)
+	flag = member_.confirmMember(69,1)
+# 	flag = member_.confirmMember(63,1)
 # 	print timezone.localtime(timezone.now())
-
+# 	o = models.OrderForm()
+# 	o.createOrder(1,123,800,1,"order_memo_",order_status_="未发货")
 	return render(request, 'Services/MemberList.html', context)
 
 def SetAudit(request):
