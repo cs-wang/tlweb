@@ -3,15 +3,23 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from db import models
+import datetime
 import json
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 import pytz
-# Create your views here.
+import urllib2
+
+
 
 def DashBoard(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+# 	send_Short_Message(15757116149,"zzh")
+# 	time = timezone.now()
+#     	time_1 = timezone.now()-datetime.timedelta(days=30)
+# 	print time
+# 	print time_1
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
 
@@ -79,10 +87,10 @@ def MemberEdit(request):
 #		 return
 
  	member_ = models.Member()
-# 	flag = member_.register('zdg',"赵镇辉啊","delegation_phone_","delegation_info_",\
-# 		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
-# 		  "receiver_addr_","order_Memo",1,0)   
-	print member_.fixInfo(1,"改密码咯","新手机号码","新微信号码","新开户银行","新账户啊","新持卡人啊","新收货人啊","新收货电话啊","新收获地址啊")
+	flag = member_.register('35',"12","delegation_phone_","delegation_info_",\
+		  "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
+		  "receiver_addr_","order_Memo",1,1)   
+# 	print member_.fixInfo(1,"改密码咯","新手机号码","新微信号码","新开户银行","新账户啊","新持卡人啊","新收货人啊","新收货电话啊","新收获地址啊")
 	
 	return render(request, 'Services/MemberEdit.html', context)
 
@@ -134,13 +142,9 @@ def MemberSave(request):
 	return HttpResponse(code)
 
 def MemberList(request):
-# 	naive = parse_datetime("2017-02-21 10:28:45")
-#  	naive1 = parse_datetime("2016-04-01 10:28:45")
-#  	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-#  	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
-  	member_ = models.Member()
-#  	memberlist,pageMax = member_.MemberList(1,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
-#                    reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=time_1,pageNum=1)
+ 	member_ = models.Member()
+# 	memberlist,pageMax,i = member_.MemberList(1,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
+#                    reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_="1994-04-20",pageNum=1)
 #  	for i in memberlist:
 #  		print i.user_name
 # 	print "MemberList:",memberlist
@@ -154,15 +158,34 @@ def MemberList(request):
 
 # 	print list
 # 	print "最多",pageMax
-	print member_.myInfo(1).user_name
-	context = { }
-	if request.session['role'] != '1':
-		return HttpResponseRedirect('/')
-	member_ = models.Member()
-	memberlist = member_.MemberList()
-	print "MemberList:",memberlist
-	context = { 'memberlist':memberlist, }
-	flag = member_.activateMember(3,1)
+	#print member_.myInfo(1).user_name
+# 	if request.session['role'] != '1':
+# 		return HttpResponseRedirect('/')
+
+# 	memberlist,PageMax,count= member_.MemberList(1,user_or_phone_=123,member_status_=None,time_order_='0',reg_way='0',\
+# 				   reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=None,pageNum=1)
+# 	for i in memberlist:
+# 		print i.user_id
+# 	print "最多",PageMax
+# 	print count
+# 	context = { 'memberlist':memberlist, }
+	context = {}
+# 	co = models.CommissionOrder() 
+# 	name_list, ref_list = co.bestTenPeople(1)
+# 	for i in range(0,len(name_list)):
+# 		print name_list[i],ref_list[i]
+
+# 	co.getGreatOrSuper(1)
+
+#   	flag = member_.confirmMember(59,1)
+#   	flag = member_.confirmMember(60,1)
+#   	flag = member_.confirmMember(61,1)
+#   	flag = member_.confirmMember(62,1)
+	flag = member_.confirmMember(69,1)
+# 	flag = member_.confirmMember(63,1)
+# 	print timezone.localtime(timezone.now())
+# 	o = models.OrderForm()
+# 	o.createOrder(1,123,800,1,"order_memo_",order_status_="未发货")
 	return render(request, 'Services/MemberList.html', context)
 
 def SetAudit(request):
@@ -175,20 +198,20 @@ def MemberOrder(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
-	naive = parse_datetime("2017-02-21 10:28:45")
- 	naive1 = parse_datetime("2016-04-01 10:28:45")
- 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
- 	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)	
-	order_ = models.OrderForm()
-	order_list,maxPage = order_.myServiceOrder(1,"123",'2',time_1,time_)
-	for i in order_list:
-		print i.order_id
-	print "最多", maxPage
-#  	order_.createOrder(1,1,1000,1,"A+B都是货物啊","未发货")
+ 	order_ = models.OrderForm()
+# 	for i in order_list:
+# 		print i.order_id
+# 	print "最多", maxPage
+# 	order_.createOrder(1,1,800,1,"1的第2条订单","未发货")
 #	order_.comfirmDelivery(1,"五环快递","1232131231232131231")
 
-	
-# 	print order_.myMemberOrder(1,time_1,time_,2)
+    	list,pageMax,count = order_.myMemberOrder(user_id_=1,service_id_=1,\
+ 							 user_or_phone_=None,order_type_='2',start_time_="2016-04-11",end_time_="2016-04-13",pageNum=1)
+	for i in list:
+# 		for j in i :
+			print i.order_id
+# 	print "最多",pageMax
+# 	print "总数",count
 	return render(request, 'Services/MemberOrder.html', context)
 
 def UserMap(request):
@@ -214,10 +237,6 @@ def Promotion(request):
 		return HttpResponseRedirect('/')
 	context = {}
 	pro = models.CommissionOrder()
-# 	naive = parse_datetime("2017-02-21 10:28:45")
-#   	naive1 = parse_datetime("2016-04-01 10:28:45")
-#   	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-#   	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
 # 	list, pageMax = pro.commissionList(user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1)
 # 	for i in list :
 # 		print i.commission_type.commission_desc
@@ -231,8 +250,6 @@ def AdviceList(request):
 		return HttpResponseRedirect('/')
 # 	context = {}
 # 	advice_ = models.Advice()
-# 	naive = parse_datetime("2016-03-21 10:28:45")
-# 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)	
 # 	adlist,maxPage =  advice_.my_advice(1,"0",None,None,time_,timezone.now())
 # 	for i in adlist :
 # 		print i.advice_id

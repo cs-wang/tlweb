@@ -37,6 +37,7 @@ def login(request):
         elif flag == False:
             return HttpResponse(code1)
          
+
 def register(request, ReferenceId = None):
 
     if request.method == 'GET':
@@ -96,6 +97,4 @@ def register(request, ReferenceId = None):
                 'msg':'用户名已经被注册'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
-
-
 
