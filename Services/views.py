@@ -541,9 +541,37 @@ def MemberOrder(request):
 	return render(request, 'Services/MemberOrder.html', context)
 
 def Deliver(request):
-	context = {}
+	reqids = request.GET.get('ids')
+	orderidslist = reqids.split(',')
+	orderformobj = models.OrderForm()
+	orderinfolist = []
+	for orderid in orderidslist:
+		print "orderid:",orderid
+		orderinfo = orderformobj.myDeliverInfoByOrderId(orderid)
+		orderinfolist.append(orderinfo)
+	context = { 'orderinfolist':orderinfolist}
 	return render(request, 'Services/Deliver.html', context)
-
+import urllib
+def DeliverSub(request):
+	DeliverDatas = request.POST.get('data')
+	#print "DeliverDatas:",DeliverDatas
+	DeliverDataslist = DeliverDatas.split(',')
+	orderformobj = models.OrderForm()
+	for ddatas in DeliverDataslist:
+		ddataslist = ddatas.split('|')
+		expressname = ddataslist[1].replace('%','\\').decode('unicode-escape')
+		orderformobj.comfirmDelivery(
+					order_id_ = ddataslist[0],
+					express_name_ = expressname,#unicode
+					express_number_ = ddataslist[2]
+				)
+	if True:
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f',
+			'msg':'请稍后再试！'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
 
 def UserMap(request):
 	if request.session['role'] != '1':

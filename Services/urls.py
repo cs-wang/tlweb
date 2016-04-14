@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^MemberList/MemberEdit/$', views.MemberEdit),
     url(r'^MemberOrder/$', views.MemberOrder),
     url(r'^MemberOrder/Deliver/$', views.Deliver),
+    url(r'^MemberOrder/Deliver/DeliverSub/$', views.DeliverSub),
     url(r'^UserMap/$', views.UserMap),
     url(r'^ComBank/$', views.ComBank),
     url(r'^Promotion/$', views.Promotion),

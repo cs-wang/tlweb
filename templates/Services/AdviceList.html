@@ -498,13 +498,8 @@
     <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
-                        {% if curpage == 1 %}
-                        <li class="paginate_button previous disabled"><a href="">第一页</a></li>
-                        <li class="paginate_button previous disabled"><a href="">上一页</a></li>
-                        {% else %}
-                        <li class="paginate_button previous"><a href="?p=1">第一页</a></li>
-                        <li class="paginate_button previous"><a href="?p={{prevpage}}">上一页</a></li>
-                        {% endif %}
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1">第一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}">上一页</a></li>
                         {% if preomit == True %}
                         <li class="paginate_button more"><a href="?p={{prevomitpage}}">...</a></li>
                         {% endif %}
@@ -518,13 +513,9 @@
                         {% if nextomit == True %}
                         <li class="paginate_button more"><a href="?p={{nextomitpage}}">...</a></li>
                         {% endif %}
-                        {% if curpage == pagenum %} 
-                        <li class="paginate_button next disabled"><a href="">下一页</a></li>
-                        <li class="paginate_button next disabled"><a href="">最末页</a></li>
-                        {% else %}
-                        <li class="paginate_button next"><a href="?p={{nextpage}}">下一页</a></li>
-                        <li class="paginate_button next"><a href="?p={{pagenum}}">最末页</a></li>
-                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}">最末页</a></li>
+
                 </ul>
         </div>
     </div>

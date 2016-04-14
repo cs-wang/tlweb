@@ -575,7 +575,10 @@ class OrderForm(models.Model):
                 return orderlist,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e
-    
+    def myDeliverInfoByOrderId(self,order_id_):
+        orderinfo_by_orderid = OrderForm.objects.filter(order_id = order_id_).get()
+        return orderinfo_by_orderid
+
 class Product(models.Model):
     product_id = models.BigIntegerField(primary_key=True)
     product_name = models.CharField(max_length=100, blank=True, null=True)
