@@ -20,6 +20,8 @@ def DashBoard(request):
 #     	time_1 = timezone.now()-datetime.timedelta(days=30)
 # 	print time
 # 	print time_1
+   	oc = models.CommissionOrder()
+   	oc.leadercommission(1)
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
 
@@ -181,7 +183,7 @@ def MemberList(request):
 #   	flag = member_.confirmMember(60,1)
 #   	flag = member_.confirmMember(61,1)
 #   	flag = member_.confirmMember(62,1)
-	flag = member_.confirmMember(69,1)
+# 	flag = member_.confirmMember(69,1)
 # 	flag = member_.confirmMember(63,1)
 # 	print timezone.localtime(timezone.now())
 # 	o = models.OrderForm()
