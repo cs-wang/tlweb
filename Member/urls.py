@@ -4,6 +4,8 @@ import views
 
 urlpatterns = [
     url(r'^DashBoard/$', views.DashBoard),
+    url(r'^DashBoard/ReConsume/$', views.ReConsume),
+    url(r'^DashBoard/ReConsume/ReConsumeSave/$', views.ReConsumeSave),
     url(r'^MsgList/$', views.MsgList),
     url(r'^ShowModel/$', views.ShowModel),
     url(r'^ComBank/$', views.ComBank),
@@ -16,4 +18,5 @@ urlpatterns = [
     url(r'^MyData/$', views.MyData),
     url(r'^Advice/$', views.Advice),
     url(r'^AdviceList/$', views.AdviceList),
+    url(r'^QrCode/(?P<ReferenceId>(\d)*)/$', views.QrCode)
 ]

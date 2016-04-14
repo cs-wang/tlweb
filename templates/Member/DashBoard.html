@@ -479,7 +479,10 @@
                     <div class="profile-info-name"> 状态 </div>
 
                     <div class="profile-info-value">
-                        <span class="label label-success">已激活</span>
+	                    <!--span class="label label-success">已激活</span-->
+                        <span class="label label-inverse">已出局</span>
+						
+
                     </div>
                 </div>
                 <div class="profile-info-row">
@@ -516,19 +519,12 @@
         </div>
 
         <div style="margin:20px">&nbsp;</div>
-
-
-
-
-
-        
-
-
-
-
+		<div class="row">
+  			<div class="col-md-4 col-md-offset-5">
+  				<button type="button" class="btn btn-danger btn-lg reconsume" data-id="679">申请加单</button>
+  			</div>
+		</div>
         <div style="margin:20px">&nbsp;</div>
-
-
 
         <div class="col-xs-12 col-sm-12">
             <!-- /section:pages/profile.info -->
@@ -538,7 +534,6 @@
                         <i class="ace-icon fa fa-rss orange"></i>
                         最新公告
                     </h4>
-
                     
                 </div>
 
@@ -546,13 +541,7 @@
                     <div class="widget-main padding-8">
                         <!-- #section:pages/profile.feed -->
                         <div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
-
                         </div>
-                        
-
-
-
-
 <div class="row">
     <div class="col-xs-6">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
@@ -565,15 +554,10 @@
         </div>
     </div>
 </div>
-
-
                         <!-- /section:pages/profile.feed -->
                     </div>
                 </div>
             </div>
-
-
-            
         </div>
     </div>
 </div>
@@ -595,9 +579,31 @@
 
     //})
     $('.JD').click(function () {
-
         AddOrder();
+    })
 
+    $('.reconsume').click(function () { //SetAuditReg
+        var id = $(this).attr('data-id');
+        var _url = "ReConsume/?UserId=" + id;
+        layer.open({
+            type: 2,
+            title: '会员复消',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '550px'],
+            content: _url
+        });
+
+    })
+
+
+
+
+
+
+    $('td[data-name="mob"]').each(function (x,y) {
+        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        $(y).text(_n);
     })
 
 

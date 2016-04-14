@@ -3,16 +3,33 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from cStringIO import StringIO
+import qrcode
 import pytz
+
 # Create your views here.
 import json
 from db import models
 from urllib2 import Request
+
+site_dns = 'http://192.168.3.106:8000'
+
+
 def DashBoard(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/DashBoard.html', context)
+
+def ReConsume(request):
+	context = {}
+	return render(request, 'Member/ReConsume.html', context)
+
+def ReConsumeSave(request):
+	context = {}
+	obj = {'result':'t'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
 
 def MsgList(request):
 	if request.session['role'] != '0':
@@ -111,3 +128,10 @@ def AdviceList(request):
 		print i.advice_id
 	print "最多",maxPage
 	return render(request, 'Member/AdviceList.html', context)
+
+def QrCode(request, ReferenceId):
+	img = qrcode.make(site_dns + "/Account/Reg/" + str(ReferenceId)+"/");
+	buf = StringIO()
+  	img.save(buf)
+  	image_stream = buf.getvalue()
+	return HttpResponse(image_stream , content_type="image/png")

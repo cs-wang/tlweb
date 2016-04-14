@@ -267,12 +267,14 @@ class Member(models.Model):
          elif role == '1':
              try:
                  serviceEntity = Service.objects.filter(service_name = user).get()
+                 print serviceEntity
                  #副中心禁用时不行
                  if serviceEntity.service_pwd == pwd and serviceEntity.role !='3':
                      return True
                  else:
                      return False
              except BaseException, e:
+                 print e
                  return False
              
     #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
@@ -1045,10 +1047,6 @@ class ShortMessage(models.Model):
 
 def send_Short_Message(phone,content):
 #     print phone,user_name
-    str2 = "xx会员您好:你已经成为vip会员，将自动进入公司系统公排模式，同时获得推荐奖200元，自动扣税5%，推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】"
-    str3 = "XX会员您好:您已成为公司高级会员，享受公司特别优惠政策，只需继续加单800元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】"
-    str4 = "XX会员您好:恭喜您加单成功，推荐一个会员又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】"
-    str5 = "XX会员您好:由您推荐的会员XX 再次加单成功，你将获得推荐奖，自动扣税5%。咨询电话：0575-87755511.回复TD退订【天龙健康】"
     url = "http://sdk.shmyt.cn:8080/manyousms/sendsms?account=hztl&password=hztl2016&mobiles=%s&content=%s"%(phone,content)
     print url    
 #     res_data = urllib2.urlopen(url)
