@@ -453,24 +453,26 @@
 
                 
 
-                <select class="" id="orderby" name="orderby"><option value="0">注册时间倒序</option>
-<option value="1">注册时间正序</option>
-<option value="2">确认时间倒序</option>
-<option value="3">确认时间正序</option>
-</select>
+                <select class="" id="orderby" name="orderby">
+                    <option value="0" {% if reqorderby == "0" %} selected="selected" {% endif %}>注册时间倒序</option>
+                    <option value="1" {% if reqorderby == "1" %} selected="selected" {% endif %}>注册时间正序</option>
+                    <option value="2" {% if reqorderby == "2" %} selected="selected" {% endif %}>确认时间倒序</option>
+                    <option value="3" {% if reqorderby == "3" %} selected="selected" {% endif %}>确认时间正序</option>
+                </select>
 
 
-                <select class="" id="regfrom" name="regfrom"><option value="0">所有注册点</option>
-<option value="1">服务中心注册</option>
-<option value="2">会员推荐</option>
-</select>
+                <select class="" id="regfrom" name="regfrom">
+                    <option value="0" {% if reqregfrom == "0" %} selected="selected" {% endif %}>所有注册点</option>
+                    <option value="1" {% if reqregfrom == "1" %} selected="selected" {% endif %}>服务中心注册</option>
+                    <option value="2" {% if reqregfrom == "2" %} selected="selected" {% endif %}>会员推荐</option>
+                </select>
 
-                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" />
-                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" />
+                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" {% if reqregStart != None %} value="{{reqregStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" {% if reqregEnd != None %} value="{{reqregEnd}}" {% endif %}/>
                 
-                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" />
-                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" />
-
+                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" {% if reqsubStart != None %} value="{{reqsubStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" {% if reqsubEnd != None %} value="{{reqsubEnd}}" {% endif %}/>
+ 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
                 </button>

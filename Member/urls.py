@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^MyData/$', views.MyData),
     url(r'^Advice/$', views.Advice),
     url(r'^AdviceList/$', views.AdviceList),
+    url(r'^QrCode/(?P<ReferenceId>(\d)*)/$', views.QrCode)
 ]

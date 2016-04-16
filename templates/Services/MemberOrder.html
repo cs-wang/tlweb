@@ -439,18 +439,15 @@
             <form class="form-inline hasBlockToolItem" action="?" method="Get">
                 
 
-                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户姓名/手机号码" />
-                <select class="" id="OrderStatus" name="OrderStatus"><option value="2">所有</option>
-<option value="0">未发货</option>
-<option value="1">已发货</option>
-</select>
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户姓名/手机号码" {% if UserInfo != None %} value="{{UserInfo}}" {% endif %} />
+                <select class="" id="OrderStatus" name="OrderStatus">
+                    <option value="2" {% if OrderStatus == "2" %} selected="selected" {% endif %}>所有</option>
+                    <option value="0" {% if OrderStatus == "0" %} selected="selected" {% endif %}>未发货</option>
+                    <option value="1" {% if OrderStatus == "1" %} selected="selected" {% endif %}>已发货</option>
+                </select>
 
-
-                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 起" />
-                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 止" />
-
-
-
+                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 起" {% if start != None %} value="{{start}}" {% endif %}/>
+                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 止" {% if end != None %} value="{{end}}" {% endif %} />
 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
@@ -507,23 +504,23 @@
     <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&sta={{sta}}">首页</a></li>
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&sta={{sta}}">上一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">上一页</a></li>
                         {% if preomit == True %}
-                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">...</a></li>
                         {% endif %}
                         {% for pindex in pageshowlist %}
                         {% if pindex == curpage %}
                         <li class="paginate_button active"><a>{{curpage}}</a></li>
                         {% elif pindex  %}
-                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">{{pindex}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% if nextomit == True %}
-                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">...</a></li>
                         {% endif %}
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&sta={{sta}}">下一页</a></li>
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&sta={{sta}}">末页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">末页</a></li>
                 </ul>
         </div>
     </div>

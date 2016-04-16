@@ -3,16 +3,24 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from db import models
+import datetime
 import json
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 import pytz
 
 # Create your views here.
+import urllib2
+
 
 def DashBoard(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+# 	send_Short_Message(15757116149,"zzh")
+# 	time = timezone.now()
+#     	time_1 = timezone.now()-datetime.timedelta(days=30)
+# 	print time
+# 	print time_1
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
 
@@ -457,13 +465,13 @@ def MemberOrder(request):
 	kreqstart = reqstart
 	kreqend = reqend
 
-	if reqUserInfo=="":
+	if reqUserInfo=="" or reqUserInfo == "None":
 		reqUserInfo=None
 	if reqOrderStatus==None:
 		reqOrderStatus = "2"
-	if reqstart=="":
+	if reqstart=="" or reqstart == "None":
 		reqstart=None
-	if reqend=="":
+	if reqend=="" or reqend == "None":
 		reqend=None
 	if curpage == None or curpage == "":
 		curpage = "1"
@@ -474,20 +482,13 @@ def MemberOrder(request):
 	print "reqOrderStatus:",reqOrderStatus
 
 	orderobj=models.OrderForm()
-	if reqUserId==None:
-		orderlist,pagenum,totalnum = orderobj.myServiceOrder(
+	orderlist,pagenum,totalnum = orderobj.myMemberOrder(
+			user_id_= reqUserId,
 			service_id_=1,
 			user_or_phone_=reqUserInfo,
 			order_type_=reqOrderStatus,
 			start_time_=reqstart,
 			end_time_=reqend,
-			pageNum=curpage)
-	else:
-		orderlist,pagenum,totalnum = orderobj.myMemberOrder(
-			user_id_=reqUserId,
-			start_time_=reqstart,
-			end_time_=reqend,
-			order_type_=reqOrderStatus,
 			pageNum=curpage)
 
 	print "orderlist",orderlist,pagenum
@@ -515,6 +516,10 @@ def MemberOrder(request):
 	
 	######################################################
 	context = { 'orderlist':orderlist,
+				'UserInfo':kreqUserInfo,
+				'start':reqstart,
+				'end':reqend,
+				'OrderStatus':reqOrderStatus,
 				'pagenum':pagenum,
 				'totalnum':totalnum,
 				'pageshowlist':pageshowlist,
@@ -596,10 +601,6 @@ def Promotion(request):
 		return HttpResponseRedirect('/')
 	context = {}
 	pro = models.CommissionOrder()
-# 	naive = parse_datetime("2017-02-21 10:28:45")
-#   	naive1 = parse_datetime("2016-04-01 10:28:45")
-#   	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-#   	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
 # 	list, pageMax = pro.commissionList(user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1)
 # 	for i in list :
 # 		print i.commission_type.commission_desc
@@ -613,8 +614,6 @@ def AdviceList(request):
 		return HttpResponseRedirect('/')
 # 	context = {}
 # 	advice_ = models.Advice()
-# 	naive = parse_datetime("2016-03-21 10:28:45")
-# 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)	
 # 	adlist,maxPage =  advice_.my_advice(1,"0",None,None,time_,timezone.now())
 # 	for i in adlist :
 # 		print i.advice_id

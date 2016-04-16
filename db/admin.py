@@ -14,9 +14,9 @@ class CommissionDetails(admin.ModelAdmin):
     search_fields=('commission_type','commission_desc')
 class CommissionOrders(admin.ModelAdmin):
     list_display=('commission_id','user_id','commission_price','commission_type','commission_memo','commission_created',\
-                  'commission_sent','commission_status')
+                  'commission_sent','commission_status','service_id')
     search_fields=('commission_id','user_id','commission_price','commission_type','commission_memo','commission_created',\
-                   'commission_sent','commission_status')
+                   'commission_sent','commission_status','service_id')
 class Members(admin.ModelAdmin):
     list_display=('user_name','password','nickname','status','service_id','reference_id','user_id','delegation_phone',\
                   'delegation_info','bind_phone','weixin_id','bank','account','card_holder','receiver',\
