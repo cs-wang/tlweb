@@ -443,39 +443,23 @@
             </thead>
 
             <tbody>
+                {% for account in accountlist %}
                     <tr>
-                        
-                        
-                        <td>微信支付(浙江区域）</td>
+                        <td>{{account.bank}}</td>
 
-                        <td>ymz005599</td>
-                        <td>天龙健康</td>
-                        <td>18368583552（浙江区域）</td>
+                        <td>{{account.bank_account}}</td>
+                        <td>{{account.card_holder}}</td>
+                        <td>{{account.phone}}</td>
                     </tr>
-                    <tr>
-                        
-                        
-                        <td>招商银行绍兴诸暨支行（浙江区域）</td>
-
-                        <td>6214855751739091</td>
-                        <td>赵岩忠</td>
-                        <td>18368583552（浙江区域）</td>
-                    </tr>
-
-
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
-        
-
-
-
-
 <div class="row">
     <div class="col-xs-6 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 2 条记录
+            第 1 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
         </div> 
     </div>
     <div class="col-xs-6 iPagesRight">
@@ -486,11 +470,6 @@
 </div>
     </div><!-- /.span -->
 </div>
-
-
-
-
-
 
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->

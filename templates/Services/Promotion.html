@@ -241,14 +241,14 @@
                                         <b class="arrow"></b>
                                     </li>
                                     <li class="">
-                                        <a href="/Services/Promotion?GiftStatus=1">
+                                        <a href="/Services/Promotion?GiftStatus=0">
                                             <i class="menu-icon fa  fa-list"></i>
                                             推广费审核
                                         </a>
                                         <b class="arrow"></b>
                                     </li>
                                     <li class="">
-                                        <a href="/Services/Promotion?GiftStatus=2">
+                                        <a href="/Services/Promotion?GiftStatus=1">
                                             <i class="menu-icon fa  fa-list"></i>
                                             推广费发放
                                         </a>
@@ -437,37 +437,34 @@
 
         <div>
             <form class="form-inline hasBlockToolItem" action="?" method="Get">
-
-                
-                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="登陆名" />
-
-                <select class="" id="GiftStatus" name="GiftStatus"><option value="0">所有</option>
-<option value="1">暂审核</option>
-<option selected="selected" value="2">待发放</option>
-<option value="4">已发放</option>
-</select>
-                <select class="" id="GiftFrom" name="GiftFrom"><option value="-1">所有奖</option>
-<option value="2">广告费</option>
-<option value="3">推荐奖</option>
-</select>
-
-
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="登陆名" {% if UserInfo != None %} value = "{{UserInfo}} {% endif %}"/>
+                <select class="" id="GiftStatus" name="GiftStatus">
+                    <option value="3" {% if GiftStatus == "3" %} selected="selected" {% endif %}>所有</option>
+                    <option value="0" {% if GiftStatus == "0" %} selected="selected" {% endif %}>暂审核</option>
+                    <option value="1" {% if GiftStatus == "1" %} selected="selected" {% endif %}>待发放</option>
+                    <option value="2" {% if GiftStatus == "2" %} selected="selected" {% endif %}>已发放</option>
+                </select>
+                <select class="" id="GiftFrom" name="GiftFrom">
+                    <option value="6" {% if GiftFrom == "6" %} selected="selected" {% endif %}>所有奖</option>
+                    <option value="0" {% if GiftFrom == "0" %} selected="selected" {% endif %}>推荐奖</option>
+                    <option value="1" {% if GiftFrom == "1" %} selected="selected" {% endif %}>优秀推荐奖</option>
+                    <option value="2" {% if GiftFrom == "2" %} selected="selected" {% endif %}>超级推荐奖</option>
+                    <option value="3" {% if GiftFrom == "3" %} selected="selected" {% endif %}>广告费(层奖)</option>
+                    <option value="4" {% if GiftFrom == "4" %} selected="selected" {% endif %}>网络推荐奖</option>
+                    <option value="5" {% if GiftFrom == "5" %} selected="selected" {% endif %}>优秀人才奖</option>
+                </select>
                 <input class="form-control date-picker" id="AddStart" name="AddStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 起" />
                 <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 止" />
 
                 <input class="form-control date-picker" id="SubStart" name="SubStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 起" />
                 <input class="form-control date-picker" id="SubEnd" name="SubEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 止" />
 
-                <select class="" id="orderby" name="orderby"><option value="1">生成时间正序</option>
-<option value="2">生成时间倒序</option>
-<option value="3">发放时间正序</option>
-<option value="4">发放时间倒序</option>
-</select>
-
-
-
-
-
+                <select class="" id="orderby" name="orderby">
+                    <option value="1" {% if orderby == "1" %} selected="selected" {% endif %}>生成时间正序</option>
+                    <option value="2" {% if orderby == "2" %} selected="selected" {% endif %}>生成时间倒序</option>
+                    <option value="3" {% if orderby == "3" %} selected="selected" {% endif %}>发放时间正序</option>
+                    <option value="4" {% if orderby == "4" %} selected="selected" {% endif %}>发放时间倒序</option>
+                </select>
 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
@@ -497,30 +494,96 @@
                 </thead>
 
                 <tbody>
-
-
+                    {% for coms in comslist %}
+                        <tr title="推荐会员【】获得推荐奖">
+                        <td>
+                            {% if GiftStatus == "0" or GiftStatus == "1"%}
+                            <input id="" name="chk" type="checkbox" value="{{coms.commission_id}}" data-ms="1">
+                            {% endif %}
+                        </td>
+                        <td>{{coms.user_id.user_name}}</td>
+                        <td data-name="mob" style="font-size:14px;">{{coms.user_id.bind_phone}}</td>
+                        <td style="text-align:right">{{coms.commission_price}}</td>
+                        <td>
+                        {% if coms.commission_type.commission_type == "1" %}
+                        优秀推荐奖
+                        {% elif coms.commission_type.commission_type == "2" %}
+                        超级推荐奖
+                        {% elif coms.commission_type.commission_type == "3" %}
+                        广告费(层奖)
+                        {% elif coms.commission_type.commission_type == "4" %}
+                        网络推荐奖
+                        {% elif coms.commission_type.commission_type == "5" %}
+                        优秀人才奖
+                        {% endif %}
+                        </td>
+                        <td>{{coms.user_id.bank}}</td>
+                        <td>{{coms.user_id.card_holder}}</td>
+                        <td data-name="BankAccount" style="font-size:14px;">{{coms.user_id.account}}</td>
+                        <td>
+                        {% if coms.commission_created != None %}
+                        {{coms.commission_created}}
+                        {% endif %}
+                        </td>
+                        <td>
+                        {% if coms.commission_sent != None %}
+                        {{coms.commission_sent}}
+                        {% endif %}
+                        </td>
+                        <td>
+                        {% if coms.commission_status == "2" %}
+                        已发放
+                        {% else %}
+                        未发放
+                        {% endif %}
+                        </td>
+                        <td>
+                            {% if GiftStatus == "0" %}
+                            <button class="btn btn-minier btn-pink Audit" data-id="{{coms.commission_id}}">审核</button>
+                            {% elif GiftStatus == "1" %}
+                            <button class="btn btn-minier btn-pink Deliver" data-id="{{coms.commission_id}}">发放</button>
+                            {% endif %}
+                        </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>    
 
+        {% if GiftStatus == "0" %}
+        <button class="btn btn-sm btn-pink" id="batAudit">批量审核</button>
+        {% elif GiftStatus == "1" %}
         <button class="btn btn-sm btn-pink" id="batDeliver">批量发放</button>
-
+        {% endif %}
     <div>金额合计：0</div>
         
-        
-
-
-
-
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 0 页 &nbsp; 共 0 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
-
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserInfo={{UserInfo}}&GiftStatus={{GiftStatus}}&GiftFrom={{GiftFrom}}&AddStart={{AddStart}}&AddEnd={{AddEnd}}&SubStart={{SubStart}}&SubEnd={{SubEnd}}&orderby={{orderby}}">末页</a></li>
+                </ul>
         </div>
     </div>
 </div>
@@ -533,10 +596,10 @@
     })
 
     $('#GiftStatus').click(function () {
-        if ($('#GiftStatus').val() == "0" || $('#GiftStatus').val() == "1" || $('#GiftStatus').val() == "2" || $('#GiftStatus').val() == "3") {
+        if ($('#GiftStatus').val() == "0" || $('#GiftStatus').val() == "1" || $('#GiftStatus').val() == "3") {
             $('#SubStart,#SubEnd').val('').prop('disabled', true);
         }
-        else if ($('#GiftStatus').val() == "4") {
+        else if ($('#GiftStatus').val() == "2") {
             $('#SubStart,#SubEnd').prop('disabled', false);
         }
     })
@@ -566,7 +629,7 @@
         } ,function (index) {
             layer.close(index);
             layer.msg('正在处理中...', { icon: 16 });
-            $.post('MoneySub', { ids: id,msg:1 }, function (json) {
+            $.post('MoneySub/', { ids: id,msg:1 }, function (json) {
                 layer.closeAll('loading');
                 if (json.result == "t") {
                     layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () {
@@ -582,7 +645,7 @@
                 else {
                     layer.alert('处理失败！' + json.msg, { icon: 5 });
                 }
-            });
+            }, "json");
         },function (index) {
             layer.close(index);
             layer.msg('正在处理中...', { icon: 16 });
@@ -596,7 +659,7 @@
                 else {
                     layer.alert('处理失败！' + json.msg, { icon: 5 });
                 }
-            });
+            }, "json");
         })
     });
 
@@ -606,7 +669,7 @@
         layer.confirm('你确定审核通过吗？', { icon: 3 }, function (index) {
             layer.close(index);
             layer.msg('正在处理中...', { icon: 16 });
-            $.post('MoneyAudit', { ids: id }, function (json) {
+            $.post('MoneyAudit/', { ids: id }, function (json) {
                 layer.closeAll('loading');
                 if (json.result == "t") {
                     layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () {
@@ -616,7 +679,7 @@
                 else {
                     layer.alert('处理失败！' + json.msg, { icon: 5 });
                 }
-            });
+            }, "json");
         });
     });
 
@@ -639,7 +702,7 @@
             }, function () {
                 layer.closeAll();
                 layer.msg('正在处理中...', { icon: 16 });
-                $.post('MoneySub', { ids: ids.join(','),msg:1 }, function (json) {
+                $.post('MoneySub/', { ids: ids.join(','),msg:1 }, function (json) {
                     layer.closeAll('loading');
                     if (json.result == "t") {
                         layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () {
@@ -655,7 +718,7 @@
                     else {
                         layer.alert('批量审核失败！' + json.msg, { icon: 5 });
                     }
-                });
+                }, "json");
 
 
             }, function () {
@@ -671,7 +734,7 @@
                     else {
                         layer.alert('批量审核失败！' + json.msg, { icon: 5 });
                     }
-                });
+                }, "json");
 
 
             });
@@ -695,7 +758,7 @@
             }, function () {
                 layer.closeAll();
                 layer.msg('正在处理中...', { icon: 16 });
-                $.post('MoneyAudit', { ids: ids.join(',') }, function (json) {
+                $.post('MoneyAudit/', { ids: ids.join(',') }, function (json) {
                     layer.closeAll('loading');
                     if (json.result == "t") {
                         layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () {
@@ -705,7 +768,7 @@
                     else {
                         layer.alert('批量审核失败！' + json.msg, { icon: 5 });
                     }
-                });
+                }, "json");
 
             }, function () {
 
@@ -714,7 +777,7 @@
     });
 
     $('td[data-name="mob"]').each(function (x, y) {
-        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        var _n = formatStr($(y).text(), [3, 4, 4, 1], ' ');
         $(y).text(_n);
     })
     $('td[data-name="BankAccount"]').each(function (x, y) {
