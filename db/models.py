@@ -15,7 +15,7 @@ FirstRatio = 0.05
 SecondRatio = 0.03
 ThirdRatio = 0.02
 tax = 0.05
-ONE_PAGE_OF_DATA = 2    
+ONE_PAGE_OF_DATA = 15    
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -111,6 +111,7 @@ class CommissionOrder(models.Model):
         orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
         endPos = pageNum*ONE_PAGE_OF_DATA
+        money = 0
         if user_name_ !=None:
             i = Member.objects.filter(user_name = user_name_).get()
             args['user_id'] = i.user_id
@@ -124,17 +125,21 @@ class CommissionOrder(models.Model):
             arg['commission_created__gt'] = commision_created_end_
             comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
+            for i in comlist:
+                money = money + i.commission_price
             if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count
+                return comlist,(count/ONE_PAGE_OF_DATA),count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
         else:
             comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).count()
+            for i in comlist:
+                money = money + i.commission_price
             if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count
+                return comlist,(count/ONE_PAGE_OF_DATA),count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
     
     #审核佣金单
     def confirmComm(self,commission_id_):
@@ -979,6 +984,7 @@ class OrderForm(models.Model):
             args={}
             count = 0
             orderlist = []
+            money = 0
             if user_id_!=None:
                 args['user_id']=user_id_
             if service_id_ !=None:
@@ -998,9 +1004,13 @@ class OrderForm(models.Model):
                     for i in users:
                         orderlist.append(OrderForm.objects.filter(**args).filter(user_id = i.user_id).exclude(**arg).all())
                         count = count + OrderForm.objects.filter(**args).filter(user_id = i.user_id).exclude(**arg).count()
+                    for j in orderlist:
+                        money = money +j.order_price
                 elif user_or_phone_ ==None:
                     orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
                     count = OrderForm.objects.filter(**args).exclude(**arg).count()
+                    for j in orderlist:
+                        money = money +j.order_price
             elif end_time_ == None:
                 #如果用户名或者绑定手机号给出
                 if user_or_phone_ !=None:
@@ -1008,18 +1018,21 @@ class OrderForm(models.Model):
                     for i in users:
                         orderlist.append(OrderForm.objects.filter(**args).filter(user_id = i.user_id).all())
                         count = count + OrderForm.objects.filter(**args).filter(user_id = i.user_id).count()
+                    for j in orderlist:
+                        money = money +j.order_price
                 elif user_or_phone_ ==None:
                         orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
                         count = OrderForm.objects.filter(**args).count()
-            
+                        for j in orderlist:
+                            money = money +j.order_price
             if count%ONE_PAGE_OF_DATA == 0 and user_or_phone_==None:
-                return orderlist,(count/ONE_PAGE_OF_DATA),count
+                return orderlist,(count/ONE_PAGE_OF_DATA),count,money
             elif count%ONE_PAGE_OF_DATA != 0 and user_or_phone_==None:
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count    
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count,money    
             elif count%ONE_PAGE_OF_DATA == 0 and user_or_phone_!=None:
-                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA),count
+                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA),count,money
             elif count%ONE_PAGE_OF_DATA != 0 and user_or_phone_!=None:
-                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1,count
+                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1,count,money
         except BaseException,e:
             print e
 
