@@ -589,13 +589,13 @@ def UserMap(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
-	#member_ = models.Member()
-	#memlist ,PageMax= member_.myMemberNet(1,'0',1)
-	#for i in memlist:
-	#	print i.user_id,i.user_name
-	#print "最多",PageMax,"页"
-	
 	return render(request, 'Services/UserMap.html', context)
+
+def GetMap(request):
+	res = [{"UserId":394,"text":"诸暨服务中心","parentId":0,"type":"folder","step":1,"Level":1,"Sort":0,"UserName":"ZJ001"}]
+	obj = {'data':res}
+	code = str(json.dumps(res))
+	return HttpResponse(code)
 
 def ComBank(request):
 	if request.session['role'] != '1':
