@@ -27,7 +27,7 @@ class Advice(models.Model):
     reply_time = models.DateTimeField(blank=True, null=True)
     advice_status = models.CharField(max_length=1, blank=True, null=True)
     service = models.ForeignKey('Service', models.DO_NOTHING)
-    #发送意见 advice_status = 0 为未阅读，1为已阅读
+    #发送意见 advice_status = 0 为未阅读，1为已阅读2为所有
     def send_advice(self,user_id_,title_,content_,service_id_):
         try:
             time_ = timezone.now()
@@ -61,7 +61,7 @@ class Advice(models.Model):
             args1 = {}
             if title_ != None:
                 args['advice_title'] = title_
-            if advice_status_ != None:
+            if advice_status_ != None or advice_status_ !=2:
                 args['advice_status'] = advice_status_
             if time_start_ !=None:
                 args['advice_created__gt'] = time_start_
