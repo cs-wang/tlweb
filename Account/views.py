@@ -6,7 +6,7 @@ import json
 from db import models
 from urllib2 import Request
 import hashlib
-md5_used = False
+md5_used = True
 def login(request):
     if request.method == 'GET':
         it = models.ShortMessage.objects.all()
@@ -33,6 +33,7 @@ def login(request):
                 request.session['role'] = '0'
             elif role_ == '1':
                 request.session['role'] = '1'
+            request.session['user_id'] = member_.getUser(user_).user_id
             return HttpResponse(code)
         elif flag == False:
             return HttpResponse(code1)

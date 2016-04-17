@@ -278,10 +278,10 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #获取用户Id
-    def getUserId(self,username_):
+    def getUser(self,username_):
         try :
-            user_id = Member.objects.filter(user_name = username_).get()
-            return user_id
+            user = Member.objects.filter(user_name = username_).get()
+            return user
         except BaseException,e:
             print e
     #我直接以及间接推荐的会员
