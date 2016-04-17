@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>查看消息</title>
+    <title>推荐的会员</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -55,64 +55,81 @@
 </head>
 
 <body class="no-skin">
+
     <div class="main-container" id="main-container">
         <div class="main-content">
             <div class="main-content-inner">
                 <!-- #section:basics/content.breadcrumbs -->
                 <div class="page-content">
-                    <div class="row">
+                    <div class="row noMarginLR">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-                            <!--div class="page-content"-->
-                                <div class="row col-sm-offset-1">
-                                    <div class="col-xs-11">
-                                        <!-- PAGE CONTENT BEGINS -->
 
-                                        <h3 class="header smaller lighter blue">
-                                            <small>{{msgtitle}}</small>
-                                        </h3>
 
-                                        <div class="row" style="text-align:left;margin:0 auto">
-                                           服务中心：<br>
-                                           {{msgcontent}}
-                                           <br><a target='_blank' href="/Services/MemberList/?UserInfo=&UserStatus=0&orderby=0&regfrom=0&regStart=&regEnd=&subStart=&subEnd=">请点击此处审核</a>
-                                        </div>
-                                        <hr>
-                                        <div style="text-align:center">
-                                            <button class="btn btn-success" id="read">我已阅读</button>
-                                            <button class="btn btn-light" id="close">关闭</button>
-                                        </div>
-                                    </div><!-- /.col -->
-                                </div>
-                            <!--/div-->
+                            
+
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        <font color="Blue">{{selfinfo.user_name}}</font> 推荐的会员
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row noMarginLR">
+    <div class="col-xs-12">
+
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:11%;">昵称或姓名</th>
+                    
+                    <th style="width:11%;">手机</th>
+
+                    
+                    
+                    <th style="width:11%;">注册时间</th>
+                    <th style="width:11%;">确认时间</th>
+                    
+                    <th style="width:11%;">TA的推荐</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+            </tbody>
+        </table>
+
+        
+
+
+
+
+<div class="row" style="margin-left:0px;">
+    <div class="col-xs-12">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 1 页 共 0 页 &nbsp; 共 0 条记录
+        </div> 
+    </div>
+</div>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+
+
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.page-content -->
             </div>
         </div><!-- /.main-content -->
+
+
     </div>
+
     <script src="/assets/js/layer/layer.js"></script>
+
 </body>
-
-<script>
-    $(document).ready(function () {
-        $('#read').click(function () {
-            parent.layer.msg('确认中...', { icon: 16 });
-            $.post('MsgRead/',{ MsgId:{{msgid}} }, function (json) {
-                if (json.result == "t") {
-                    parent.location.href=parent.location.href;
-                    parent.layer.closeAll();
-                }
-                else {
-                    parent.layer.alert('请刷新后再试', { icon: 5 });
-                }
-            }, "json");
-        });
-
-        $('#close').click(function () {
-            parent.layer.closeAll();
-        });
-    });
-</script>
 </html>

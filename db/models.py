@@ -15,7 +15,7 @@ FirstRatio = 0.05
 SecondRatio = 0.03
 ThirdRatio = 0.02
 tax = 0.05
-ONE_PAGE_OF_DATA = 15
+ONE_PAGE_OF_DATA = 2    
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -756,9 +756,12 @@ class Member(models.Model):
         endPos = pageNum*ONE_PAGE_OF_DATA
         args= {}
         arg={}
+        i = []
+        count = 0
         orderlist = {'0':'-register_time','1':'register_time','2':'-confirm_time','3':'confirm_time'}
         if member_status_ !=None:
-            args['status'] = MemberStatus(status_id = member_status_)
+            args['status'] = MemberStatus(id = int(member_status_) ,status_id = member_status_)
+            #args['status_id'] = member_status_
         if reg_start_time_ !=None:
             args['register_time__gt']=reg_start_time_
         if conf_start_time_ !=None:
@@ -806,7 +809,7 @@ class Member(models.Model):
             print e
     #修改会员资料 可修改有 密码，绑定手机号，微信号，开户银行,账户,持卡人,收货人,收货电话,收货地址
     def fixInfo(self,user_id_,pwd_=None,bind_phone_=None,weixinId_=None,bank_=None,account_=None,card_holder_=None,\
-                receiver_=None,receiver_phone_=None,receiver_addr_=None):
+                receiver_=None,receiver_phone_=None,receiver_addr_=None,member_status_ =None):
         try :
             i = Member.objects.filter(user_id = user_id_).get()
             if pwd_ !=None:
@@ -828,10 +831,13 @@ class Member(models.Model):
                 i.receiver_phone = receiver_phone_
             if receiver_addr_ !=None:
                 i.receiver_addr = receiver_addr_
+            if member_status_!=None:
+                i.status = MemberStatus(id = member_status_,status_id = member_status_)
             i.save()
             return True
         except BaseException,e:
             print e
+            return False
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     #id可以是userid或者是serviceid
@@ -862,7 +868,7 @@ class Message(models.Model):
             print e
             return False
     #message_status_ 为2表示所有消息 0表示未读，1表示为已读 role = 0 为会员,= 1为服务中心
-    def myMessage(self,id_,role_,message_status_ = 2,pageNum = 1):
+    def myMessage(self,id_,role_,message_status_ = "2",pageNum = 1):
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
@@ -1003,6 +1009,11 @@ class OrderForm(models.Model):
                 return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e
+
+    def myDeliverInfoByOrderId(self,order_id_):
+        orderinfo_by_orderid = OrderForm.objects.filter(order_id = order_id_).get()
+        return orderinfo_by_orderid
+
 class Product(models.Model):
     product_id = models.BigIntegerField(primary_key=True)
     product_name = models.CharField(max_length=100, blank=True, null=True)

@@ -178,8 +178,10 @@
                                 <i class="menu-icon fa  fa-info-circle"></i>
                                 <span class="menu-text">
                                     消息中心
-
                                 </span>
+                                    <span class="badge badge-danger">
+                                        100000
+                                    </span>
                             </a>
                             <b class="arrow"></b> 
                     </li>
@@ -189,7 +191,7 @@
                                 <span class="menu-text">
                                     会员中心
                                 </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
+                                <b class="arrow fa fa-angle-down"></b>
                             </a>
                             <b class="arrow"></b>
                             <ul class="submenu">
@@ -272,7 +274,7 @@
                                     <span class="badge badge-danger">
                                         1
                                     </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
+                                    <b class="arrow fa fa-angle-down"></b>
                             </a>
                             <b class="arrow"></b>
                             <ul class="submenu">
@@ -488,17 +490,37 @@
     </div>
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 5 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1">第一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}">最末页</a></li>
 
+                </ul>
         </div>
     </div>
 </div>
+
     </div><!-- /.span -->
 </div><!-- /.row -->
 <script>
