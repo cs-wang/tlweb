@@ -21,6 +21,8 @@ def DashBoard(request):
 #     	time_1 = timezone.now()-datetime.timedelta(days=30)
 # 	print time
 # 	print time_1
+   	oc = models.CommissionOrder()
+   	oc.leadercommission(1)
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
 
