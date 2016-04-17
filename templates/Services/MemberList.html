@@ -54,82 +54,11 @@
 
 </head>
 
+<link rel="stylesheet" href="/assets/css/datepicker.css" />
+<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
 <body class="no-skin">
     <!-- #section:basics/navbar.layout -->
-    <div id="navbar" class="navbar navbar-default">
-        <script type="text/javascript">
-            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
-        </script>
-
-        <div class="navbar-container" id="navbar-container">
-            <!-- #section:basics/sidebar.mobile.toggle -->
-            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-                <span class="sr-only">Toggle sidebar</span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-            </button>
-
-            <!-- /section:basics/sidebar.mobile.toggle -->
-            <div class="navbar-header pull-left">
-                <!-- #section:basics/navbar.layout.brand -->
-                <a href="#" class="navbar-brand">
-                    <small>
-                        <i class="fa fa-leaf"></i>
-                        天龙健康会员操作平台
-                    </small>
-                </a>
-
-                <!-- /section:basics/navbar.layout.brand -->
-                <!-- #section:basics/navbar.toggle -->
-                <!-- /section:basics/navbar.toggle -->
-            </div>
-
-            <!-- #section:basics/navbar.dropdown -->
-            <div class="navbar-buttons navbar-header pull-right" role="navigation">
-                <ul class="nav ace-nav">
-                    <!-- #section:basics/navbar.user_menu -->
-                    <li class="light-blue">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
-                            <span class="user-info">
-                                <small>欢迎,</small>
-                                ZJ001
-                            </span>
-
-                            <i class="ace-icon fa fa-caret-down"></i>
-                        </a>
-
-                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#" id="chpwd">
-                                    <i class="ace-icon fa fa-cog"></i>
-                                    修改密码
-                                </a>
-                            </li>
-
-
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="/Account/Login">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    退出
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!-- /section:basics/navbar.user_menu -->
-                </ul>
-            </div>
-
-            <!-- /section:basics/navbar.dropdown -->
-        </div><!-- /.navbar-container -->
-    </div>
+    {% include 'Services/CommonNavBar.html' %}
 
     <!-- /section:basics/navbar.layout -->
     <div class="main-container" id="main-container">
@@ -138,187 +67,7 @@
         </script>
 
         <!-- #section:basics/sidebar -->
-        <div id="sidebar" class="sidebar                  responsive">
-            <script type="text/javascript">
-                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
-            </script>
-
-            <!-- /.sidebar-shortcuts -->
-
-            <ul class="nav nav-list">
-
-
-
-
-
-                    <li class="">
-                            <a href="/Services/DashBoard">
-                                <i class="menu-icon fa  fa-tachometer"></i>
-                                <span class="menu-text">
-                                    管理首页
-
-                                </span>
-                            </a>
-                            <b class="arrow"></b> 
-                    </li>
-                    <li class="">
-                            <a href="/Services/NoticeList">
-                                <i class="menu-icon fa  fa-info-circle"></i>
-                                <span class="menu-text">
-                                    查看公告
-
-                                </span>
-                            </a>
-                            <b class="arrow"></b> 
-                    </li>
-                    <li class="">
-                            <a href="/Services/MsgList">
-                                <i class="menu-icon fa  fa-info-circle"></i>
-                                <span class="menu-text">
-                                    消息中心
-
-                                </span>
-                            </a>
-                            <b class="arrow"></b> 
-                    </li>
-                    <li class="">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="menu-icon fa  fa-desktop"></i>
-                                <span class="menu-text">
-                                    会员中心
-                                </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
-                            </a>
-                            <b class="arrow"></b>
-                            <ul class="submenu">
-                                    <li class="">
-                                        <a href="/Services/MemberEdit">
-                                            <i class="menu-icon fa  fa-edit"></i>
-                                            新增会员
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/MemberList">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            会员列表
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/MemberOrder">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            会员订单
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/UserMap">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            会员网格
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                            </ul>
-                    </li>
-                    <li class="">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="menu-icon fa   fa-history"></i>
-                                <span class="menu-text">
-                                    费用中心
-                                </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
-                            </a>
-                            <b class="arrow"></b>
-                            <ul class="submenu">
-                                    <li class="">
-                                        <a href="/Services/ComBank">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            公司收款账户
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/Promotion?GiftStatus=1">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            推广费审核
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/Promotion?GiftStatus=2">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            推广费发放
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                                    <li class="">
-                                        <a href="/Services/Promotion">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            推广费发放列表
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                            </ul>
-                    </li>
-                    <li class="">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="menu-icon fa   fa-comments"></i>
-                                <span class="menu-text">
-                                    意见建议
-                                </span>
-                                    <span class="badge badge-danger">
-                                        1
-                                    </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
-                            </a>
-                            <b class="arrow"></b>
-                            <ul class="submenu">
-                                    <li class="">
-                                        <a href="/Services/AdviceList">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            意见列表
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                            </ul>
-                    </li>
-                    <li class="">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="menu-icon fa   fa-comments"></i>
-                                <span class="menu-text">
-                                    副中心管理
-                                </span>
-                                                                    <b class="arrow fa fa-angle-down"></b>
-                            </a>
-                            <b class="arrow"></b>
-                            <ul class="submenu">
-                                    <li class="">
-                                        <a href="/Services/SubService">
-                                            <i class="menu-icon fa  fa-list"></i>
-                                            副中心设置
-                                        </a>
-                                        <b class="arrow"></b>
-                                    </li>
-                            </ul>
-                    </li>
-            </ul>
-
-
-
-
-
-
-            <!-- #section:basics/sidebar.layout.minimize -->
-            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-            </div>
-
-            <!-- /section:basics/sidebar.layout.minimize -->
-            <script type="text/javascript">
-                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
-            </script>
-        </div>
+        {% include 'Services/CommonList.html' %}
 
         <!-- /section:basics/sidebar -->
         <div class="main-content">
@@ -327,87 +76,7 @@
                 <div class="page-content">
 
                     <!-- #section:settings.box -->
-<div class="ace-settings-container" id="ace-settings-container">
-    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-        <i class="ace-icon fa fa-cog bigger-130"></i>
-    </div>
-
-    <div class="ace-settings-box clearfix" id="ace-settings-box">
-        <div class="pull-left width-50">
-            <!-- #section:settings.skins -->
-            <div class="ace-settings-item">
-                <div class="pull-left">
-                    <select id="skin-colorpicker" class="hide">
-                        <option data-skin="no-skin" value="#438EB9">#438EB9</option>
-                        <option data-skin="skin-1" value="#222A2D">#222A2D</option>
-                        <option data-skin="skin-2" value="#C6487E">#C6487E</option>
-                        <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
-                    </select>
-                </div>
-                <span>&nbsp; 更换颜色</span>
-            </div>
-
-            <!-- /section:settings.skins -->
-            <!-- #section:settings.navbar -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
-                <label class="lbl" for="ace-settings-navbar"> 导航固定 </label>
-            </div>
-
-            <!-- /section:settings.navbar -->
-            <!-- #section:settings.sidebar -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
-                <label class="lbl" for="ace-settings-sidebar"> 菜单固定 </label>
-            </div>
-
-            <!-- /section:settings.sidebar -->
-            <!-- #section:settings.breadcrumbs -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
-                <label class="lbl" for="ace-settings-breadcrumbs"> 当前位置固定 </label>
-            </div>
-
-            <!-- /section:settings.breadcrumbs -->
-            <!-- #section:settings.rtl -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
-                <label class="lbl" for="ace-settings-rtl"> 右侧视图 </label>
-            </div>
-
-            <!-- /section:settings.rtl -->
-            <!-- #section:settings.container -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
-                <label class="lbl" for="ace-settings-add-container">
-                    标准容器视图
-                </label>
-            </div>
-
-            <!-- /section:settings.container -->
-        </div><!-- /.pull-left -->
-
-        <div class="pull-left width-50">
-            <!-- #section:basics/sidebar.options -->
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
-                <label class="lbl" for="ace-settings-hover"> 移动显示二级菜单 </label>
-            </div>
-
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
-                <label class="lbl" for="ace-settings-compact"> 更改菜单视图 </label>
-            </div>
-
-            <div class="ace-settings-item">
-                <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
-                <label class="lbl" for="ace-settings-highlight"> 更换当前菜单显示 </label>
-            </div>
-
-            <!-- /section:basics/sidebar.options -->
-        </div><!-- /.pull-left -->
-    </div><!-- /.ace-settings-box -->
-</div>
+{% include 'Services/CommonSetting.html' %}
 <!-- /.ace-settings-container -->
 <!-- /section:settings.box -->
 
@@ -438,37 +107,39 @@
 
                 <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
 
-                <select class="" id="UserStatus" name="UserStatus"><option value="-1">所有</option>
-<option value="1">已激活</option>
-<option value="2">已审核</option>
-<option value="4">未审核</option>
-<option value="3">服务中心锁定</option>
-<option value="5">管理员锁定</option>
-<option value="9">已出局</option>
-<option value="10">申请加单</option>
-</select>
+                <select class="" id="UserStatus" name="UserStatus">
+                <option value="0"{% if reqUserStatus == "0" %} selected="selected"{% endif %}>所有</option>
+                <option value="1"{% if reqUserStatus == "1" %} selected="selected"{% endif %}>未审核</option>
+                <option value="2"{% if reqUserStatus == "2" %} selected="selected"{% endif %}>已审核</option>
+                <option value="3"{% if reqUserStatus == "3" %} selected="selected"{% endif %}>已激活</option>
+                <option value="5"{% if reqUserStatus == "5" %} selected="selected"{% endif %}>服务中心锁定</option>
+                <option value="6"{% if reqUserStatus == "6" %} selected="selected"{% endif %}>管理员锁定</option>
+                <option value="4"{% if reqUserStatus == "4" %} selected="selected"{% endif %}>已出局</option>
+                <option value="7"{% if reqUserStatus == "7" %} selected="selected"{% endif %}>申请加单</option>
+                </select>
 
                 
 
-                <select class="" id="orderby" name="orderby"><option value="1">注册时间倒序</option>
-<option value="2">注册时间正序</option>
-<option value="3">确认时间倒序</option>
-<option value="4">确认时间正序</option>
-</select>
+                <select class="" id="orderby" name="orderby">
+                    <option value="0" {% if reqorderby == "0" %} selected="selected" {% endif %}>注册时间倒序</option>
+                    <option value="1" {% if reqorderby == "1" %} selected="selected" {% endif %}>注册时间正序</option>
+                    <option value="2" {% if reqorderby == "2" %} selected="selected" {% endif %}>确认时间倒序</option>
+                    <option value="3" {% if reqorderby == "3" %} selected="selected" {% endif %}>确认时间正序</option>
+                </select>
 
-                <select class="" id="regfrom" name="regfrom"><option value="-1">所有注册点</option>
-<option value="1">服务中心注册</option>
-<option value="2">会员推荐</option>
-<option value="3">推荐注册</option>
-<option value="4">副中心注册</option>
-<option value="0">未知</option>
-</select>
 
-                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" />
-                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" />
-                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" />
-                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" />
+                <select class="" id="regfrom" name="regfrom">
+                    <option value="0" {% if reqregfrom == "0" %} selected="selected" {% endif %}>所有注册点</option>
+                    <option value="1" {% if reqregfrom == "1" %} selected="selected" {% endif %}>服务中心注册</option>
+                    <option value="2" {% if reqregfrom == "2" %} selected="selected" {% endif %}>会员推荐</option>
+                </select>
 
+                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" {% if reqregStart != None %} value="{{reqregStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" {% if reqregEnd != None %} value="{{reqregEnd}}" {% endif %}/>
+                
+                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" {% if reqsubStart != None %} value="{{reqsubStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" {% if reqsubEnd != None %} value="{{reqsubEnd}}" {% endif %}/>
+ 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
                 </button>
@@ -493,7 +164,7 @@
             </thead>
 
             <tbody>
-            		{% for member in memberlist %}           
+            		{% for member in memberlist %}
                     <tr>
                         <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
                        	{% if member.user_name != None %}
@@ -507,26 +178,40 @@
                         <td>{{member.bind_phone}}</td>
 
                         {% if member.status.status_id == "1" %}
-                        	<td><span class="label label-success">已激活</span></td>
+                        	<td><span class="label label-success">未审核</span></td>
                         {% elif member.status.status_id == "2" %}
                         	<td><span class="label label-warning">已审核</span></td>
+                        {% elif member.status.status_id == "3" %}
+                            <td><span class="label label-success">已激活</span></td>
+                        {% elif member.status.status_id == "4" %}
+                            <td><span class="label label-inverse">已出局</span></td>
+                        {% elif member.status.status_id == "5" %}
+                            <td><span class="label label-warning">服务中心锁定</span></td>
+                        {% elif member.status.status_id == "6" %}
+                            <td><span class="label label-warning">管理员锁定</span></td>
                         {% else %}
-							<td><span class="label">未审核</span></td>
+							<td><span class="label">申请加单</span></td>
                         {%endif%}
                         
                         <td>{{member.register_time}}</td>
-                        <td>{{member.confirm_time}}</td>
                         <td>
-                                <a href="javascript:;" data-id="492" class="recome" title="点击查看推荐人">【丁凤英】</a>推荐
+                        {% if member.confirm_time != None %}
+                        {{member.confirm_time}}
+                        {% endif %}
+                        </td>
+                        <td>
+                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】{{member.reference_id}}</a>推荐
                         </td>
                         <td>0</td>
                         
                         <td>
                             <div class=" btn-group">
-                                    <a class="btn btn-mini btn-warning audit" data-id="{{member.user_id}}">激活</a>
-                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看</a>
-                                    <a class="btn btn-mini btn-purple" href="../MemberEdit?UserId={{member.user_id}}">修改</a>
-                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="1CE92D4DDCE842C3F43CAF3878D48E0CA32AF6EB09D553D9A44300227892CA3F6B76779FED4773A8AAC2488C18DCE9E37E17BC41D222DF24EED5DD8BF671D9C16FFB8FA6B6EA8199A81E9E7BD4C22F344CD0BAEB6076B228FB7D052E3321A74094B82DE9E5FCD1B421695519D4F52870C01F5C5A16EA70145F0D6F729335A1AD" data-id="">查看推荐</button>
+                                    {% if member.status.status_id == "1" or member.status.status_id == "7" %}
+                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.user_id}}">审核</a>
+                                    {% endif %}
+                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看{{member.user_id}}</a>
+                                    <a class="btn btn-mini btn-purple" href="../MemberEdit1/?UserId={{member.user_id}}">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.user_id}}">查看推荐</button>
                             </div>
                         </td>
                     </tr>
@@ -536,28 +221,31 @@
         </div>
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 {{membernum}} 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
-
                 <ul class="pagination">
-                   
-
-                        <li class="paginate_button previous disabled"><a href="?p=0">第一页</a></li>
-                        <li class="paginate_button previous disabled"><a href="?p=0">上一页</a></li>
-                    
-                                        <li class="paginate_button active"><a>1</a></li>
-                        <li class="paginate_button"><a href="?p=1">2</a> </li>
-                        <li class="paginate_button"><a href="?p=2">3</a> </li>
-                    
-                        <li class="paginate_button more"><a href="?p=5">...</a> </li>
-                        <li class="paginate_button"><a href="?p=10">11</a> </li>
-                                            <li class="paginate_button next"><a href="?p=1">下一页</a> </li>
-                        <li class="paginate_button next"><a href="?p=10">最末页</a> </li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
                 </ul>
         </div>
     </div>
@@ -566,6 +254,11 @@
 </div><!-- /.row -->
 
 <script>
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+
     var sW = $(window).width();
 
     $('td[data-name="counttd"]').each(function (x, y) {
@@ -576,11 +269,11 @@
         });
     });
 
-
     $('.viewrecom').click(function () {
-        var sign = $(this).attr('data-sign');
-        // var _url = "ViewReCome?sign=" + sign;
-        var _url = "弹窗-查看推荐.html";
+        //var sign = $(this).attr('data-sign');
+        var id = $(this).attr('data-id');
+        var _url = "ViewReCome?UserId=" + id;
+        // var _url = "弹窗-查看推荐.html";
         layer.open({
             type: 2,
             title: '查看推荐',
@@ -594,7 +287,7 @@
 
     $('.view').click(function () {
         var id = $(this).attr('data-id');
-        //var _url = "ViewMember?UserId=" + id;
+        var _url = "ViewMemberSelf?UserId=" + id;
         //var _url = "弹窗-查看会员信息.html";
         layer.open({
             type: 2,
@@ -609,8 +302,8 @@
 
     $('.recome').click(function () {
         var id = $(this).attr('data-id');
-        // var _url = "ViewMember?UserId=" + id;
-        var _url = "弹窗-推荐人信息.html";
+        var _url = "ViewMember?UserId=" + id;
+        // var _url = "弹窗-推荐人信息.html";
         layer.open({
             type: 2,
             title: '查看推荐人信息',
@@ -675,7 +368,7 @@
         layer.confirm('您确定要审核吗？审核之后需要激活才能进入公排，请悉知', { icon: 3 }, function (index) {
             layer.close(index);
             layer.msg('正在处理中...', { icon: 16 });
-            $.post('SetAudit1', { UserId: id }, function (json) {
+            $.post('SetAudit1/', { UserId: id }, function (json) {
                 layer.closeAll('loading');
                 if (json.result == "t") {
                     layer.alert('操作成功!', { icon: 1 }, function () { location.href = location.href; })
@@ -683,7 +376,7 @@
                 else {
                     layer.alert('操作失败！' + json.msg, { icon: 5 });
                 }
-            });
+            }, "json");
         });
     })
 
@@ -704,95 +397,10 @@
             </div>
         </div><!-- /.main-content -->
 
-        <div class="footer">
-            <div class="footer-inner">
-                <!-- #section:basics/footer -->
-                <div class="footer-content">
-                    <span class="bigger-120">
-                        <span class="blue bolder">天龙健康会员操作平台</span>
-                        Mrisy &copy; 2015 &nbsp;&nbsp;<a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备15041019号-1</a>
-                    </span>
-
-                    &nbsp; &nbsp;
-                    
-                </div>
-
-                <!-- /section:basics/footer -->
-            </div>
-        </div>
-
-        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-        </a>
+        {% include 'Services/CommonFooter.html' %}
     </div><!-- /.main-container -->
     <!-- page specific plugin scripts -->
     <!-- ace scripts -->
-    <script src="/assets/js/ace/elements.scroller.js"></script>
-    <script src="/assets/js/ace/elements.colorpicker.js"></script>
-    <script src="/assets/js/ace/elements.fileinput.js"></script>
-    <script src="/assets/js/ace/elements.typeahead.js"></script>
-    <script src="/assets/js/ace/elements.wysiwyg.js"></script>
-    <script src="/assets/js/ace/elements.spinner.js"></script>
-    <script src="/assets/js/ace/elements.treeview.js"></script>
-    <script src="/assets/js/ace/elements.wizard.js"></script>
-    <script src="/assets/js/ace/elements.aside.js"></script>
-    <script src="/assets/js/ace/ace.js"></script>
-    <script src="/assets/js/ace/ace.ajax-content.js"></script>
-    <script src="/assets/js/ace/ace.touch-drag.js"></script>
-    <script src="/assets/js/ace/ace.sidebar.js"></script>
-    <script src="/assets/js/ace/ace.sidebar-scroll-1.js"></script>
-    <script src="/assets/js/ace/ace.submenu-hover.js"></script>
-    <script src="/assets/js/ace/ace.widget-box.js"></script>
-    <script src="/assets/js/ace/ace.settings.js"></script>
-    <script src="/assets/js/ace/ace.settings-rtl.js"></script>
-    <script src="/assets/js/ace/ace.settings-skin.js"></script>
-    <script src="/assets/js/ace/ace.widget-on-reload.js"></script>
-    <script src="/assets/js/ace/ace.searchbox-autocomplete.js"></script>
-
-    <script src="/assets/js/layer/layer.js"></script>
-
-    <script>
-        var haveFound = false;
-        $('ul.nav-list li a').each(function () {
-            if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).split('?')[0]) {
-                $(this).parent().addClass('active').show();
-                haveFound = true;
-                if ($(this).parent().parent().hasClass('submenu')) {
-                    $(this).parent().parent().parent().addClass('active');
-                    $(this).parent().parent().parent().addClass('open');
-                }
-                else {
-                    $(this).parent().addClass('open');
-                }
-            }
-        });
-        if (haveFound == false) {
-            $('ul.nav-list li a').each(function () {
-                if (($($(this))[0].href).toLowerCase() == (String(window.location).toLowerCase()).substr(0, (String(window.location)).lastIndexOf('/'))) {
-                    $(this).parent().addClass('active').show();
-                    if ($(this).parent().parent().hasClass('submenu')) {
-                        $(this).parent().parent().parent().addClass('active');
-                        $(this).parent().parent().parent().addClass('open');
-                    }
-                    else {
-                        $(this).parent().addClass('open');
-                    }
-                }
-            });
-        }
-
-
-        $('#chpwd').click(function () {
-            layer.open({
-                type: 2,
-                title: '修改账户密码',
-                shadeClose: false,
-                shade: 0.8,
-                area: ['400px', '500px'],
-                content: '/Account/ChangePwd' //iframe的url
-            });
-
-        })
-    </script>
+    {% include 'Services/CommonScripts.html' %}
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>查看消息</title>
+    <title>ViewMember</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -55,6 +55,7 @@
 </head>
 
 <body class="no-skin">
+
     <div class="main-container" id="main-container">
         <div class="main-content">
             <div class="main-content-inner">
@@ -63,56 +64,102 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-                            <!--div class="page-content"-->
-                                <div class="row col-sm-offset-1">
-                                    <div class="col-xs-11">
-                                        <!-- PAGE CONTENT BEGINS -->
 
-                                        <h3 class="header smaller lighter blue">
-                                            <small>{{msgtitle}}</small>
-                                        </h3>
 
-                                        <div class="row" style="text-align:left;margin:0 auto">
-                                           服务中心：<br>
-                                           {{msgcontent}}
-                                           <br><a target='_blank' href="/Services/MemberList/?UserInfo=&UserStatus=0&orderby=0&regfrom=0&regStart=&regEnd=&subStart=&subEnd=">请点击此处审核</a>
-                                        </div>
-                                        <hr>
-                                        <div style="text-align:center">
-                                            <button class="btn btn-success" id="read">我已阅读</button>
-                                            <button class="btn btn-light" id="close">关闭</button>
-                                        </div>
-                                    </div><!-- /.col -->
-                                </div>
-                            <!--/div-->
+                            
+
+
+<table class="table table-striped table-bordered table-hover">
+    <tbody>
+        <tr>
+            <td data-name="mob">手机号码</td>
+            <td>{{selfinfo.bind_phone}}</td>
+            <td>昵称或姓名</td>
+            <td>{{selfinfo.nickname}}</td>
+            
+        </tr>
+       
+
+        <tr>
+            <td>委托汇款信息</td>
+            <td>{{selfinfo.delegation_info}}</td>
+            <td>委托汇款人电话</td>
+            <td>{{selfinfo.delegation_phone}}</td>
+        </tr>
+
+
+        <tr>
+            <td>微信号</td>
+            <td>{{selfinfo.weixin_id}}</td>
+            <td>姓名</td>
+            <td>{{selfinfo.user_name}}</td>
+            
+          
+        </tr>
+        <tr>
+            <td>开户行</td>
+            <td>{{selfinfo.bank}}</td>
+            <td>账号</td>
+            <td data-name="BankAccount">{{selfinfo.account}}</td>
+        </tr>
+
+        <tr>
+            <td>收货人</td>
+            <td>{{selfinfo.receiver}}</td>
+            <td>收货人电话</td>
+            <td>{{selfinfo.receiver_phone}}</td>
+        </tr>
+
+        <tr>
+            <td>收货地址</td>
+            <td colspan="3">{{selfinfo.receiver_addr}}</td>
+        </tr>
+        <tr>
+            <td>注册时间</td>
+            <td>{{selfinfo.register_time}}</td>
+            <td>确认时间</td>
+            <td>{{selfinfo.confirm_time}}</td>
+        </tr>
+        <tr>
+            <td>直推人数</td>
+            <td>0</td>
+            <td>绑定手机号</td>
+            <td>{{selfinfo.bind_phone}}</td>
+            
+        </tr>
+
+        <tr>
+            <td>审核档次</td>
+            <td colspan="3">大哥档次</td>
+        </tr>
+
+
+    </tbody>
+</table>
+<script>
+
+    $('td[data-name="mob"]').each(function (x, y) {
+        var _n = formatStr($(y).text(), [3, 4, 4, 1], ' ');
+        $(y).text(_n);
+    })
+    $('td[data-name="BankAccount"]').each(function (x, y) {
+        var _n = formatStr($(y).text(), [4, 4, 4, 4, 3], ' ');
+        $(y).text(_n);
+    });
+</script>
+
+
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.page-content -->
             </div>
         </div><!-- /.main-content -->
+
+
     </div>
+
     <script src="/assets/js/layer/layer.js"></script>
+
 </body>
-
-<script>
-    $(document).ready(function () {
-        $('#read').click(function () {
-            parent.layer.msg('确认中...', { icon: 16 });
-            $.post('MsgRead/',{ MsgId:{{msgid}} }, function (json) {
-                if (json.result == "t") {
-                    parent.location.href=parent.location.href;
-                    parent.layer.closeAll();
-                }
-                else {
-                    parent.layer.alert('请刷新后再试', { icon: 5 });
-                }
-            }, "json");
-        });
-
-        $('#close').click(function () {
-            parent.layer.closeAll();
-        });
-    });
-</script>
 </html>

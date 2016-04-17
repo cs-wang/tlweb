@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title></title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+</head>
+
+<body class="no-skin">
+
+    <div class="main-container" id="main-container">
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+
+                            
+
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        修改密码
+       
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right"> 旧密码 </label>
+                <div class="col-sm-10">
+                    <input type="password" id="OldPwd" name="OldPwd" placeholder="" class="col-xs-10 col-sm-10" value="" maxlength="50" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right"> 新密码 </label>
+                <div class="col-sm-10">
+                    <input type="password" id="NewPwd" name="NewPwd" placeholder="" class="col-xs-10 col-sm-10" value="" maxlength="50" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right"> 重  复 </label>
+                <div class="col-sm-10">
+                    <input type="password" id="RePwd" name="RePwd" placeholder="" class="col-xs-10 col-sm-10" value="" maxlength="50" />
+                </div>
+            </div>
+
+
+
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-6">
+                    <button class="btn btn-info" type="button" id="Save">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" id="cancle">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        取消
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#cancle').click(function () {
+            parent.layer.closeAll();
+        })
+
+
+        $('#Save').click(function () {
+            var OldPwd = $('#OldPwd').val();
+            var NewPwd = $('#NewPwd').val();
+            var RePwd = $('#RePwd').val();
+
+
+
+
+            if (OldPwd == "") { $('#OldPwd').focus(); layer.msg('旧密码不能为空', { icon: 5 }); return false; }
+            if (NewPwd == "") { $('#NewPwd').focus(); layer.msg('新密码不能为空', { icon: 5 }); return false; }
+            if (OldPwd == NewPwd) { $('#NewPwd').focus(); layer.msg('新密码不能与旧密码一样', { icon: 5 }); return false; }
+            if (NewPwd != RePwd) { $('#RePwd').focus(); layer.msg('两次密码输入不正确', { icon: 5 });  return false; }
+
+            var data = { OldPwd: OldPwd, NewPwd: NewPwd}
+
+            $.post('/Account/ChangePwd', data, function (json) {
+                if (json.result == "t") {
+                    layer.msg('修改成功，请牢记新密码！', { icon: 1 }, function () { parent.layer.closeAll();});
+                   parent.location.href = parent.location.href;
+
+                }
+                else {
+                    layer.alert('密码修改失败，<br>' + json.msg, { icon: 5 });
+                }
+
+            });
+        })
+
+
+
+
+    });
+</script>
+
+
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+
+    </div>
+
+    <script src="/assets/js/layer/layer.js"></script>
+
+</body>
+</html>

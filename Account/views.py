@@ -38,6 +38,7 @@ def login(request):
         elif flag == False:
             return HttpResponse(code1)
          
+
 def register(request, ReferenceId = None):
 
     if request.method == 'GET':
@@ -98,5 +99,6 @@ def register(request, ReferenceId = None):
         code = str(json.dumps(obj))
         return HttpResponse(code)
 
-
-
+def ChangePwd(request):
+    context = {}
+    return render(request, 'Account/ChangePwd.html', context)
