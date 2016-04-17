@@ -61,7 +61,7 @@ class Advice(models.Model):
             args1 = {}
             if title_ != None:
                 args['advice_title'] = title_
-            if advice_status_ != None or advice_status_ !=2:
+            if advice_status_ != None and advice_status_ !='2':
                 args['advice_status'] = advice_status_
             if time_start_ !=None:
                 args['advice_created__gt'] = time_start_
