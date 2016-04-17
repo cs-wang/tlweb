@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^UserMap/$', views.UserMap),
     url(r'^ComBank/$', views.ComBank),
     url(r'^Promotion/$', views.Promotion),
+    url(r'^Promotion/MoneyAudit/$', views.MoneyAudit),
+    url(r'^Promotion/MoneySub/$', views.MoneySub),
     url(r'^AdviceList/$', views.AdviceList),
     url(r'^AdviceList/AdviceView/$', views.AdviceView),
     url(r'^AdviceList/AdviceView/AdviceSub/$', views.AdviceSub),

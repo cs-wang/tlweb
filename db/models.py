@@ -69,14 +69,20 @@ class Advice(models.Model):
                 args1['advice_created__gt'] = time_end_
                 adviceList = Advice.objects.filter(**args).exclude(**args1).all()[startPos:endPos]
                 count = Advice.objects.filter(**args).exclude(**args1).count()
-                return adviceList,(count/ONE_PAGE_OF_DATA)+1
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return adviceList,(count/ONE_PAGE_OF_DATA),count
+                else:
+                    return adviceList,(count/ONE_PAGE_OF_DATA)+1,count
             else:
                 adviceList = Advice.objects.filter(**args).all()[startPos:endPos]
                 count = Advice.objects.filter(**args).count()
-                return adviceList,(count/ONE_PAGE_OF_DATA)+1
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return adviceList,(count/ONE_PAGE_OF_DATA),count
+                else:
+                    return adviceList,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException, e:
             print e
-            return False
+            return [],0,0
 
     def one_advice(self, adv_id_):
     	advice = Advice.objects.filter(advice_id = adv_id_).get()
@@ -101,6 +107,7 @@ class CommissionOrder(models.Model):
     def commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1):
         args = {}
         arg ={}
+        comlist = []
         orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
         endPos = pageNum*ONE_PAGE_OF_DATA
@@ -117,11 +124,17 @@ class CommissionOrder(models.Model):
             arg['commission_created__gt'] = commision_created_end_
             comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
-            return comlist,(count/ONE_PAGE_OF_DATA)+1
+            if count%ONE_PAGE_OF_DATA == 0:
+                return comlist,(count/ONE_PAGE_OF_DATA),count
+            else:
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
         else:
             comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).count()
-            return comlist,(count/ONE_PAGE_OF_DATA)+1
+            if count%ONE_PAGE_OF_DATA == 0:
+                return comlist,(count/ONE_PAGE_OF_DATA),count
+            else:
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
     
     #审核佣金单
     def confirmComm(self,commission_id_):
@@ -1085,7 +1098,10 @@ class ServiceAccount(models.Model):
         try:
             account_list = ServiceAccount.objects.filter(service = Service(service_id = service_id_)).all()[startPos:endPos]
             count = ServiceAccount.objects.filter(service = Service(service_id = service_id_)).count()
-            return account_list,(count/ONE_PAGE_OF_DATA)+1
+            if count%ONE_PAGE_OF_DATA == 0:
+                return account_list,(count/ONE_PAGE_OF_DATA),count
+            else:
+                return account_list,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e 
     

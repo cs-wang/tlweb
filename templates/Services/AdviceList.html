@@ -438,20 +438,22 @@
 
         <div>
             <form class="form-inline hasBlockToolItem" action="?" method="Get">
-                <input id="title" name="title" type="text" class="input-sm" placeholder="意见标题" />
+                <input id="title" name="title" type="text" class="input-sm" placeholder="意见标题" {% if title != None %} value = "{{title}}" {% endif %}/>
 
 
-                服务中心 <select class="" id="serviceReadStatus" name="serviceReadStatus"><option value="2">所有</option>
-<option value="0">未阅读</option>
-<option value="1">已阅读</option>
-</select>
-                管理员 <select class="" id="adminReadStatus" name="adminReadStatus"><option value="2">所有</option>
-<option value="0">未阅读</option>
-<option value="1">已阅读</option>
-</select>
+                服务中心 <select class="" id="serviceReadStatus" name="serviceReadStatus">
+                            <option value="2" {% if serviceReadStatus == "2" %} selected="selected" {% endif %}>所有</option>
+                            <option value="0" {% if serviceReadStatus == "0" %} selected="selected" {% endif %}>未阅读</option>
+                            <option value="1" {% if serviceReadStatus == "1" %} selected="selected" {% endif %}>已阅读</option>
+                        </select>
+                管理员 <select class="" id="adminReadStatus" name="adminReadStatus">
+                            <option value="2" {% if adminReadStatus == "2" %} selected="selected" {% endif %}>所有</option>
+                            <option value="0" {% if adminReadStatus == "0" %} selected="selected" {% endif %}>未阅读</option>
+                            <option value="1" {% if adminReadStatus == "1" %} selected="selected" {% endif %}>已阅读</option>
+                        </select>
 
-                <input class="form-control date-picker" id="addStart" name="addStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 起" />
-                <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 止" />
+                <input class="form-control date-picker" id="addStart" name="addStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 起" {% if addStart != None %} value = "{{addStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 止" {% if AddEnd != None %} value = "{{AddEnd}}" {% endif %}/>
 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
@@ -498,23 +500,23 @@
     <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1">第一页</a></li>
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}">上一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">第一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">上一页</a></li>
                         {% if preomit == True %}
-                        <li class="paginate_button more"><a href="?p={{prevomitpage}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">...</a></li>
                         {% endif %}
                         {% for pindex in pageshowlist %}
                         {% if pindex == curpage %}
                         <li class="paginate_button active"><a>{{curpage}}</a></li>
                         {% elif pindex  %}
-                        <li class="paginate_button"><a href="?p={{pindex}}">{{pindex}}</a></li>
+                        <li class="paginate_button"><a href="?p={{pindex}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">{{pindex}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% if nextomit == True %}
-                        <li class="paginate_button more"><a href="?p={{nextomitpage}}">...</a></li>
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">...</a></li>
                         {% endif %}
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}">下一页</a></li>
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}">最末页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&title={{title}}&serviceReadStatus={{serviceReadStatus}}&addStart={{addStart}}&AddEnd={{AddEnd}}">最末页</a></li>
 
                 </ul>
         </div>

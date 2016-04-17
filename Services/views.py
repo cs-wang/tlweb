@@ -42,6 +42,9 @@ def MsgList(request):
 	if curpage==None:
 		curpage="1"
 	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
+
 	msgobj = models.Message()
 	msglist,pagenum,totalnum = msgobj.myMessage( 
 		id_ = 1, # service_id
@@ -333,6 +336,9 @@ def MemberList(request):
 	else:
 		kreqUserStatus = reqUserStatus
 	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
+
 	print "sesserviceid:",sesserviceid
 	print "reqUserInfo:",reqUserInfo
 	print "reqUserStatus:",kreqUserStatus
@@ -478,6 +484,8 @@ def MemberOrder(request):
 	if curpage == None or curpage == "":
 		curpage = "1"
 	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
 
 	print "reqUserId:",reqUserId
 	print "reqUserInfo:",reqUserInfo
@@ -494,7 +502,7 @@ def MemberOrder(request):
 			pageNum=curpage)
 
 	print "orderlist",orderlist,pagenum
-		######################################################
+	######################################################
 	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
 	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
 	interval = 5
@@ -515,7 +523,6 @@ def MemberOrder(request):
 	else:
 		nextomit = True
 		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
-	
 	######################################################
 	context = { 'orderlist':orderlist,
 				'UserInfo':kreqUserInfo,
@@ -595,35 +602,226 @@ def UserMap(request):
 def ComBank(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	context = {}
+	serviceid = 1;
+	saobj = models.ServiceAccount()
+	accountlist,pagenum,totalnum= saobj.comBank(
+			service_id_=1, 
+			pageNum=1
+			)
+	print accountlist, pagenum, totalnum
+	context = {
+			'accountlist':accountlist,
+			'pagenum':pagenum,
+			'totalnum':totalnum
+	}
 	return render(request, 'Services/ComBank.html', context)
 
 def Promotion(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	context = {}
-	pro = models.CommissionOrder()
-# 	list, pageMax = pro.commissionList(user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1)
-# 	for i in list :
-# 		print i.commission_type.commission_desc
-# 	print "最多",pageMax
-# 	pro.deliverComm(1)
-# 	pro.confirmComm(1)
+	# UserInfo=&GiftStatus=4&GiftFrom=-1&AddStart=&AddEnd=&SubStart=&SubEnd=&orderby=1
+	reqUserInfo = request.GET.get('UserInfo')
+	reqGiftStatus = request.GET.get('GiftStatus')
+	reqGiftFrom = request.GET.get('GiftFrom')
+	reqAddStart = request.GET.get('AddStart')
+	reqAddEnd = request.GET.get('AddEnd')
+	reqSubStart = request.GET.get('SubStart')
+	reqSubEnd = request.GET.get('SubEnd')
+	reqorderby = request.GET.get('orderby')
+	curpage = request.GET.get('p')
+
+	print "reqUserInfo:",reqUserInfo
+	print "reqGiftStatus:",reqGiftStatus
+	print "reqGiftFrom:",reqGiftFrom
+	print "reqAddStart:",reqAddStart
+	print "reqAddEnd:",reqAddEnd
+	print "reqorderby:",reqorderby
+	if reqUserInfo == "" or reqUserInfo == "None":
+		reqUserInfo = None
+	if reqGiftStatus == "3" or reqGiftStatus == "None":
+		reqGiftStatus =  None
+	if reqGiftFrom == "6" or reqGiftFrom == "None":
+		reqGiftFrom = None
+	if reqAddStart == "" or reqAddStart == "None":
+		reqAddStart = None
+	if reqAddEnd == "" or reqAddEnd == "None":
+		reqAddEnd = None
+	if reqorderby == None:
+		reqorderby = "0"
+	if curpage == None or curpage == "":
+		curpage = "1"
+	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
+	
+	comsobj = models.CommissionOrder()
+	comslist,pagenum,totalnum = comsobj.commissionList(
+		user_name_=reqUserInfo,
+		commission_status_=reqGiftStatus,
+		commission_type_=reqGiftFrom,
+		commision_created_start_=reqAddStart,
+		commision_created_end_=reqAddEnd,
+		time_order_=reqorderby,
+		pageNum=curpage)
+	#for coms in comslist:
+		#print "comstye:",coms.commission_type
+		#print "time:",coms.commission_created
+
+	######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+	######################################################
+	context = {	'comslist':comslist,
+				'UserInfo':reqUserInfo,
+				'GiftStatus':reqGiftStatus,
+				'GiftFrom':reqGiftFrom,
+				'AddStart':reqAddStart,
+				'AddEnd':reqAddEnd,
+				'SubStart':reqSubStart,
+				'SubEnd':reqSubEnd,
+				'orderby':reqorderby,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage
+				 }
 	return render(request, 'Services/Promotion.html', context)
+
+def MoneyAudit(request):
+	reqids = request.POST.get('ids')
+	comsidlist = reqids.split(',')
+	print comsidlist
+	comsobj = models.CommissionOrder()
+	for comsid in comsidlist:
+		print comsid
+		comsobj.confirmComm(commission_id_ = comsid)
+
+	obj = {'result':'t'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
+
+def MoneySub(request):
+	reqids = request.POST.get('ids')
+	comsidlist = reqids.split(',')
+	print comsidlist
+	comsobj = models.CommissionOrder()
+	for comsid in comsidlist:
+		print comsid
+		comsobj.deliverComm(commission_id_ = comsid)
+	
+	obj = {'result':'t'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
 
 def AdviceList(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-# 	context = {}
-# 	advice_ = models.Advice()
-# 	adlist,maxPage =  advice_.my_advice(1,"0",None,None,time_,timezone.now())
-# 	for i in adlist :
-# 		print i.advice_id
-# 	print "最多",maxPage
+	
+	reqtitle = request.GET.get('title')
+	reqserviceReadStatus = request.GET.get('serviceReadStatus')
+	reqadminReadStatus = request.GET.get('adminReadStatus')
+	reqaddStart = request.GET.get('addStart')
+	reqAddEnd = request.GET.get('AddEnd')
+	curpage = request.GET.get('p')
+
+	print "reqtitle:",reqtitle
+	print "reqserviceReadStatus:",reqserviceReadStatus
+	print "reqadminReadStatus:",reqadminReadStatus
+	print "reqaddStart:",reqaddStart
+	print "reqAddEnd:",reqAddEnd
+	print "curpage:",curpage
+
+	if reqtitle == "" or reqtitle == "None":
+		reqtitle = None
+	if reqserviceReadStatus == "2" or reqserviceReadStatus == "None":
+		reqserviceReadStatus = None
+	if reqadminReadStatus == "2" or reqadminReadStatus == "None":
+		reqadminReadStatus = None
+	if reqaddStart == "" or reqaddStart == "None":
+		reqaddStart = None
+	if reqAddEnd == "" or reqAddEnd == "None":
+		reqAddEnd = None
+	if curpage == None or curpage == "":
+		curpage = "1"
+	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
+
 	advobj = models.Advice()
-	advlist, pagenum = advobj.my_advice(2)
+	advlist,pagenum,totalnum = advobj.my_advice(
+							user_or_service_id_= 1,
+							role_="0",
+							title_ = reqtitle,
+							advice_status_ = reqserviceReadStatus,
+                  			time_start_ = reqaddStart,
+                  			time_end_ = reqAddEnd,
+                  			pageNum=curpage
+                  			)
+
+	######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+	######################################################
 	print "my_advice:",advlist
-	context = {'advlist':advlist}
+	context = {	'advlist':advlist,
+				'title':reqtitle,
+				'serviceReadStatus':reqserviceReadStatus,
+				'adminReadStatus':reqadminReadStatus,
+				'addStart':reqaddStart,
+				'AddEnd':reqAddEnd,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage
+						}
 
 	return render(request, 'Services/AdviceList.html', context)
 
