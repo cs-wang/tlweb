@@ -711,14 +711,26 @@ def Promotion(request):
 
 def MoneyAudit(request):
 	reqids = request.POST.get('ids')
-	print reqids
+	comsidlist = reqids.split(',')
+	print comsidlist
+	comsobj = models.CommissionOrder()
+	for comsid in comsidlist:
+		print comsid
+		comsobj.confirmComm(commission_id_ = comsid)
+
 	obj = {'result':'t'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 
 def MoneySub(request):
 	reqids = request.POST.get('ids')
-	print reqids
+	comsidlist = reqids.split(',')
+	print comsidlist
+	comsobj = models.CommissionOrder()
+	for comsid in comsidlist:
+		print comsid
+		comsobj.deliverComm(commission_id_ = comsid)
+	
 	obj = {'result':'t'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
