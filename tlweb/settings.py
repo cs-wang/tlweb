@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tldb',
+        'NAME': 'test',
         'USER': 'root',
         'PASSWORD':'123456',
         'HOST':'127.0.0.1',

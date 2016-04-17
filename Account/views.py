@@ -6,7 +6,7 @@ import json
 from db import models
 from urllib2 import Request
 import hashlib
-md5_used = True
+md5_used = False
 def login(request):
     if request.method == 'GET':
         it = models.ShortMessage.objects.all()
