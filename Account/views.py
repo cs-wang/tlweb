@@ -98,3 +98,6 @@ def register(request, ReferenceId = None):
         code = str(json.dumps(obj))
         return HttpResponse(code)
 
+def ChangePwd(request):
+    context = {}
+    return render(request, 'Account/ChangePwd.html', context)
