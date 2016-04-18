@@ -15,7 +15,7 @@ FirstRatio = 0.05
 SecondRatio = 0.03
 ThirdRatio = 0.02
 tax = 0.05
-ONE_PAGE_OF_DATA = 2    
+ONE_PAGE_OF_DATA = 15    
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -27,7 +27,7 @@ class Advice(models.Model):
     reply_time = models.DateTimeField(blank=True, null=True)
     advice_status = models.CharField(max_length=1, blank=True, null=True)
     service = models.ForeignKey('Service', models.DO_NOTHING)
-    #发送意见 advice_status = 0 为未阅读，1为已阅读
+    #发送意见 advice_status = 0 为未阅读，1为已阅读2为所有
     def send_advice(self,user_id_,title_,content_,service_id_):
         try:
             time_ = timezone.now()
@@ -61,7 +61,7 @@ class Advice(models.Model):
             args1 = {}
             if title_ != None:
                 args['advice_title'] = title_
-            if advice_status_ != None:
+            if advice_status_ != None and advice_status_ !='2':
                 args['advice_status'] = advice_status_
             if time_start_ !=None:
                 args['advice_created__gt'] = time_start_
@@ -111,6 +111,7 @@ class CommissionOrder(models.Model):
         orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
         endPos = pageNum*ONE_PAGE_OF_DATA
+        money = 0
         if user_name_ !=None:
             i = Member.objects.filter(user_name = user_name_).get()
             args['user_id'] = i.user_id
@@ -124,17 +125,21 @@ class CommissionOrder(models.Model):
             arg['commission_created__gt'] = commision_created_end_
             comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
+            for i in comlist:
+                money = money + i.commission_price
             if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count
+                return comlist,(count/ONE_PAGE_OF_DATA),count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
         else:
             comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
             count = CommissionOrder.objects.filter(**args).count()
+            for i in comlist:
+                money = money + i.commission_price
             if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count
+                return comlist,(count/ONE_PAGE_OF_DATA),count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count
+                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
     
     #审核佣金单
     def confirmComm(self,commission_id_):
@@ -159,7 +164,44 @@ class CommissionOrder(models.Model):
         except BaseException,e:
             print e
             return False
-        
+    #领导奖获得所有下级上个月所得
+    def leadercommission(self,service_id_):
+        #获取当前时间
+#         time = timezone.now()
+        time = datetime.datetime(2016,5,20)
+        time_1 = datetime.datetime(time.year,time.month,01)
+        if time.month == 1:
+            time_2 = datetime.datetime(time.year-1,12,01)
+        else:
+            time_2 = datetime.datetime(time.year,time.month-1,01)
+        #查询上个月是否已经生成领导奖订单
+        if CommissionOrder.objects.filter(service_id = service_id_).filter(commission_type = CommissionDetail(commission_type = '7')).filter(commission_created__gt =time_2).exclude(commission_created__gt =time_1).count() == 0:            
+            list = Member.objects.filter(service_id = service_id_).all()
+            for i in list:
+                count = Member.objects.filter(reference_id = i.user_id ).count()
+                if count >0:
+                    myReferenceList = Member.objects.filter(reference_id = i.user_id ).all()
+                    money = 0
+                    #对所有孩子的上月推荐奖订单
+                    for j in myReferenceList:
+                        commissionlists = CommissionOrder.objects.filter(user_id = j.user_id).\
+                                filter(commission_created__gt =time_2).\
+                                filter(Q(commission_type = CommissionDetail(commission_type = '0'))\
+                                       |Q(commission_type = CommissionDetail(commission_type = '1'))\
+                                       |Q(commission_type = CommissionDetail(commission_type = '2')))\
+                                       .exclude(commission_created__gt =time_1).all()
+                        if commissionlists.count() >0:
+                            for k in commissionlists:
+                                money = money +k.commission_price
+#                     print i.user_id,"获得",money
+                    if money >0:
+                        CommissionOrder.objects.create(user_id = Member(user_id = i.user_id),commission_price = money*0.1,\
+                                               commission_created = timezone.now(),commission_status = '0',\
+                                               commission_type = CommissionDetail(commission_type = '7'),service_id =i.service_id)
+                else:
+                    pass
+        else:
+            print "已经生成"
     # 服务点上个月最优秀10人
     # 暂时不需要
     #传入当前时间 timezone.now()
@@ -400,7 +442,7 @@ class Member(models.Model):
 #                             print list[(index-1)/2].user_id.user_id,"拿380广告费"
 #                             CommissionOrder.objects.create(user_id = list[(index-1)/2].user_id,commission_price = 400*(1-tax),\
 #                                                        commission_created = timezone.now(),commission_status = '0',\
-#                                                        commission_type = CommissionDetail(commission_type = '3'))
+#                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/2].user_id.service_id)
 #                             if(index %2 == 0):
 #                                 print list[(index-1)/2].user_id.user_id,"发送短信 第一层拿满了"
 #                                 pass
@@ -408,7 +450,7 @@ class Member(models.Model):
 #                             print list[(index-3)/4].user_id.user_id,"拿190广告费"
 #                             CommissionOrder.objects.create(user_id = list[(index-3)/4].user_id,commission_price = 200*(1-tax),\
 #                                                        commission_created = timezone.now(),commission_status = '0',\
-#                                                        commission_type = CommissionDetail(commission_type = '3'))
+#                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-3)/4].user_id.service_id)
 #                             if((index + 2)%4 == 0):
 #                                 print "发送短信 第二层拿满了"
 #                                 #把爷爷变成出局了
@@ -420,21 +462,21 @@ class Member(models.Model):
 #                     #上级先添加网络推荐奖
 #                     CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*FirstRatio,\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '4'))     
+#                                             commission_type = CommissionDetail(commission_type = '4'),service_id = i.service_id)     
 #                     print i.reference_id,"拿到10元 网络推荐奖"
 #                     #上级的上级添加网络推荐奖
 #                     j = Member.objects.filter(user_id = i.reference_id).get()
 #                     if j.reference_id != 0:
 #                         CommissionOrder.objects.create(user_id = Member(user_id = j.reference_id),commission_price = 200*SecondRatio,\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '4')) 
+#                                             commission_type = CommissionDetail(commission_type = '4'),service_id = j.service_id) 
 #                         print j.reference_id,"拿到6元 网络推荐奖"
 #                         #上级的上级的上级网络推荐奖
 #                         k = Member.objects.filter(user_id = j.reference_id).get()
 #                         if k.reference_id != 0:
 #                             CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = 200*ThirdRatio,\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '4'))   
+#                                             commission_type = CommissionDetail(commission_type = '4'),service_id = k.service_id)   
 #                             print k.reference_id,"拿到4元 网络推荐奖"
 #                             #网络推荐奖结束开始直推荐奖励
 #                             #判断当月上级推荐人已经推荐几个 0~9为200元 10~19 300元 20及以上400元
@@ -454,17 +496,17 @@ class Member(models.Model):
 #                     print i.reference_id,"获得380元超级推荐奖"
 #                     CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '2'))
+#                                             commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
 #                 elif count > 9:
 #                     print i.reference_id,"获得285优秀推荐奖"
 #                     CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 300*(1-tax),\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '1'))
+#                                             commission_type = CommissionDetail(commission_type = '1'),service_id = i.service)
 #                 else:
 #                     print i.reference_id,"获得190元推荐奖"
 #                     CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
 #                                             commission_created = timezone.now(),commission_status = '0',\
-#                                             commission_type = CommissionDetail(commission_type = '0'))    
+#                                             commission_type = CommissionDetail(commission_type = '0'),service_id = i.service)    
 #                 return True
 #             else:
 #                 print "该会员状态不是申请加单或未审核，不能被审核"
@@ -508,7 +550,7 @@ class Member(models.Model):
                             print i.reference_id,'获得190元推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '0'))
+                                                        commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖",\
                                             message_content="您已经获得190元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
@@ -516,7 +558,7 @@ class Member(models.Model):
                             print i.reference_id,'获得475元推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '0'))
+                                                        commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖,第三单另奖200元",\
                                             message_content="您已经获得475元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
@@ -524,7 +566,7 @@ class Member(models.Model):
                             print i.reference_id,'获得285元优秀推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 300*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '1'))
+                                                        commission_type = CommissionDetail(commission_type = '1'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得优秀推荐奖",\
                                             message_content="您已经获得285元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
@@ -532,7 +574,7 @@ class Member(models.Model):
                             print i.reference_id,'获得380元超级推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '2'))
+                                                        commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖",\
                                             message_content="您已经获得380元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
@@ -563,7 +605,7 @@ class Member(models.Model):
                                 print list[(index-1)/3].user_id.user_id,"拿285广告费"
                                 CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'))
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
                                 Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
                                             message_content="您已经获得285元广告费",message_status = 0,\
                                             sent_time = timezone.now())
@@ -573,7 +615,7 @@ class Member(models.Model):
                                 print list[(index-4)/9].user_id.user_id,"拿95广告费"
                                 CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'))
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
                                 Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
                                             message_content="您已经获得第二层广告费95元",message_status = 0,\
                                             sent_time = timezone.now())
@@ -617,7 +659,7 @@ class Member(models.Model):
                          print list[(index-1)/3].user_id.user_id,"拿285广告费"
                          CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'))
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
                          Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
                                             message_content="您已经获得285元广告费",message_status = 0,\
                                             sent_time = timezone.now())
@@ -627,7 +669,7 @@ class Member(models.Model):
                          print list[(index-4)/9].user_id.user_id,"拿95广告费"
                          CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'))
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
                          Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
                                             message_content="您已经获得第二层广告费95元",message_status = 0,\
                                             sent_time = timezone.now())
@@ -642,7 +684,7 @@ class Member(models.Model):
                          print i.reference_id,'获得190元复投推荐奖'
                          CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '6'))
+                                                        commission_type = CommissionDetail(commission_type = '6'),service_id = i.service_id)
                          Message.objects.create(user_id = i.reference_id,message_title="获得复投推荐奖",\
                                             message_content="您已经获得190元复投推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
@@ -669,10 +711,10 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #获取用户Id
-    def getUserId(self,username_):
+    def getUser(self,username_):
         try :
-            user_id = Member.objects.filter(user_name = username_).get()
-            return user_id
+            user = Member.objects.filter(user_name = username_).get()
+            return user
         except BaseException,e:
             print e
     #我间接推荐的会员
@@ -942,6 +984,7 @@ class OrderForm(models.Model):
             args={}
             count = 0
             orderlist = []
+            money = 0
             if user_id_!=None:
                 args['user_id']=user_id_
             if service_id_ !=None:
@@ -961,9 +1004,13 @@ class OrderForm(models.Model):
                     for i in users:
                         orderlist.append(OrderForm.objects.filter(**args).filter(user_id = i.user_id).exclude(**arg).all())
                         count = count + OrderForm.objects.filter(**args).filter(user_id = i.user_id).exclude(**arg).count()
+                    for j in orderlist:
+                        money = money +j.order_price
                 elif user_or_phone_ ==None:
                     orderlist = OrderForm.objects.filter(**args).exclude(**arg).all()[startPos:endPos]
                     count = OrderForm.objects.filter(**args).exclude(**arg).count()
+                    for j in orderlist:
+                        money = money +j.order_price
             elif end_time_ == None:
                 #如果用户名或者绑定手机号给出
                 if user_or_phone_ !=None:
@@ -971,18 +1018,21 @@ class OrderForm(models.Model):
                     for i in users:
                         orderlist.append(OrderForm.objects.filter(**args).filter(user_id = i.user_id).all())
                         count = count + OrderForm.objects.filter(**args).filter(user_id = i.user_id).count()
+                    for j in orderlist:
+                        money = money +j.order_price
                 elif user_or_phone_ ==None:
                         orderlist = OrderForm.objects.filter(**args).all()[startPos:endPos]
                         count = OrderForm.objects.filter(**args).count()
-            
+                        for j in orderlist:
+                            money = money +j.order_price
             if count%ONE_PAGE_OF_DATA == 0 and user_or_phone_==None:
-                return orderlist,(count/ONE_PAGE_OF_DATA),count
+                return orderlist,(count/ONE_PAGE_OF_DATA),count,money
             elif count%ONE_PAGE_OF_DATA != 0 and user_or_phone_==None:
-                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count    
+                return orderlist,(count/ONE_PAGE_OF_DATA)+1,count,money    
             elif count%ONE_PAGE_OF_DATA == 0 and user_or_phone_!=None:
-                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA),count
+                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA),count,money
             elif count%ONE_PAGE_OF_DATA != 0 and user_or_phone_!=None:
-                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1,count
+                return orderlist[startPos:endPos],(count/ONE_PAGE_OF_DATA)+1,count,money
         except BaseException,e:
             print e
 

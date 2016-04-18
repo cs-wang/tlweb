@@ -12,7 +12,7 @@ import json
 from db import models
 from urllib2 import Request
 
-site_dns = 'http://192.168.3.106:8000'
+site_dns = 'http://192.168.3.108:8000'
 
 
 def DashBoard(request):
@@ -40,7 +40,12 @@ def MsgList(request):
 def ShowModel(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
-	context = {}
+	user_id = int(request.session['user_id']) 
+	user = models.Member().getUser(user_id)
+	global site_dns
+	context = {'reference_id':0}
+	if user!= None:
+		context['reference_id'] = reference_id 
 	return render(request, 'Member/ShowModel.html', context)
 
 def ComBank(request):
@@ -130,7 +135,10 @@ def AdviceList(request):
 	return render(request, 'Member/AdviceList.html', context)
 
 def QrCode(request, ReferenceId):
-	img = qrcode.make(site_dns + "/Account/Reg/" + str(ReferenceId)+"/");
+	global dns_site
+	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
+	print url
+	img = qrcode.make(url);
 	buf = StringIO()
   	img.save(buf)
   	image_stream = buf.getvalue()
