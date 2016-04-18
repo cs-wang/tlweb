@@ -592,8 +592,36 @@ def UserMap(request):
 	return render(request, 'Services/UserMap.html', context)
 
 def GetMap(request):
-	res = [{"UserId":394,"text":"诸暨服务中心","parentId":0,"type":"folder","step":1,"Level":1,"Sort":0,"UserName":"ZJ001"}]
-	obj = {'data':res}
+	reqUid = request.POST.get('Uid')
+	reqstep = request.POST.get('step')
+
+	print "reqUid:", reqUid
+	print "reqstep:", reqstep
+	memlist = []
+	res = []
+	memobj = models.Member()
+	serviceid = 1;
+	if reqUid == None:
+		memlist = memobj.myMemberNet(
+			userOrServiceid_=serviceid,
+			role_="0",
+			pageNum=1
+			)
+	else:
+		memlist = memobj.myMemberNet(
+			userOrServiceid_=reqUid,
+			role_="1",
+			pageNum=1
+			)
+	for member in memlist:
+		# print "================="
+		# print member.user_id
+		# print member.user_name
+		# print member.reference_id
+		# print member.service_id
+		resmem =  {"UserId":member.user_id, "text":member.nickname, "parentId":member.reference_id,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":member.user_name}
+		res.append(resmem)
+
 	code = str(json.dumps(res))
 	return HttpResponse(code)
 
