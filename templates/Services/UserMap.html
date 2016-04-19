@@ -56,80 +56,7 @@
 
 <body class="no-skin">
     <!-- #section:basics/navbar.layout -->
-    <div id="navbar" class="navbar navbar-default">
-        <script type="text/javascript">
-            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
-        </script>
-
-        <div class="navbar-container" id="navbar-container">
-            <!-- #section:basics/sidebar.mobile.toggle -->
-            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-                <span class="sr-only">Toggle sidebar</span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-            </button>
-
-            <!-- /section:basics/sidebar.mobile.toggle -->
-            <div class="navbar-header pull-left">
-                <!-- #section:basics/navbar.layout.brand -->
-                <a href="#" class="navbar-brand">
-                    <small>
-                        <i class="fa fa-leaf"></i>
-                        天龙健康会员操作平台
-                    </small>
-                </a>
-
-                <!-- /section:basics/navbar.layout.brand -->
-                <!-- #section:basics/navbar.toggle -->
-                <!-- /section:basics/navbar.toggle -->
-            </div>
-
-            <!-- #section:basics/navbar.dropdown -->
-            <div class="navbar-buttons navbar-header pull-right" role="navigation">
-                <ul class="nav ace-nav">
-                    <!-- #section:basics/navbar.user_menu -->
-                    <li class="light-blue">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
-                            <span class="user-info">
-                                <small>欢迎,</small>
-                                ZJ001
-                            </span>
-
-                            <i class="ace-icon fa fa-caret-down"></i>
-                        </a>
-
-                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#" id="chpwd">
-                                    <i class="ace-icon fa fa-cog"></i>
-                                    修改密码
-                                </a>
-                            </li>
-
-
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="/Account/Login">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    退出
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!-- /section:basics/navbar.user_menu -->
-                </ul>
-            </div>
-
-            <!-- /section:basics/navbar.dropdown -->
-        </div><!-- /.navbar-container -->
-    </div>
+    {% include 'Services/CommonNavBar.html' %}
 
     <!-- /section:basics/navbar.layout -->
     <div class="main-container" id="main-container">
@@ -155,10 +82,8 @@
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
                             
-
-
-
-
+<script src="/assets/js/fuelux/fuelux.tree.js"></script>
+<script src="/assets/js/ace/elements.treeview.js"></script>
 <div class="page-header">
     <h1>
         会员中心
@@ -170,116 +95,9 @@
 </div>
 
 <div class="widget-body">
-    <div class="widget-main padding-8">
-        <ul id="tree1" class="tree tree-unselectable" role="tree">
-  <li class="tree-branch hide" data-template="treebranch" role="treeitem"
-  aria-expanded="false">
-    <div class="tree-branch-header">
-      <span class="tree-branch-name">
-        <i class=" icon-folder ace-icon fa fa-users">
-        </i>
-        <span class="tree-label">
-        </span>
-      </span>
-    </div>
-    <ul class="tree-branch-children" role="group">
-    </ul>
-  </li>
-  <li class="tree-item hide" data-template="treeitem" role="treeitem">
-    <span class="tree-item-name">
-      <i class=" icon-item ace-icon fa fa-user">
-      </i>
-      <span class="tree-label">
-      </span>
-    </span>
-  </li>
-  <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-    <div class="tree-branch-header">
-      <span class="tree-branch-name" data-id="394">
-        <i class="icon-folder ace-icon fa fa-eye">
-        </i>
-        <span class="tree-label">
-          诸暨服务中心
-        </span>
-      </span>
-    </div>
-    <!--begin first child tree-->
-    <ul class="tree-branch-children" role="group">
-      <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-        <div class="tree-branch-header">
-          <span class="tree-branch-name" data-id="441">
-            <i class="icon-folder ace-icon fa fa-eye">
-            </i>
-            <span class="tree-label">
-              王萍[13515752198]
-            </span>
-          </span>
-        </div>
-        <ul class="tree-branch-children" role="group">
-          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-            <div class="tree-branch-header">
-              <span class="tree-branch-name" data-id="445">
-                <i class="icon-folder ace-icon fa fa-eye">
-                </i>
-                <span class="tree-label">
-                  朱国英[15157596370]
-                </span>
-              </span>
-            </div>
-          </li>
-          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-            <div class="tree-branch-header">
-              <span class="tree-branch-name" data-id="449">
-                <i class="icon-folder ace-icon fa fa-eye">
-                </i>
-                <span class="tree-label">
-                  张燏琼[18268208081]
-                </span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-        <div class="tree-branch-header">
-          <span class="tree-branch-name" data-id="441">
-            <i class="icon-folder ace-icon fa fa-eye">
-            </i>
-            <span class="tree-label">
-              王萍[13515752198]
-            </span>
-          </span>
-        </div>
-        <ul class="tree-branch-children" role="group">
-          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-            <div class="tree-branch-header">
-              <span class="tree-branch-name" data-id="445">
-                <i class="icon-folder ace-icon fa fa-eye">
-                </i>
-                <span class="tree-label">
-                  朱国英[15157596370]
-                </span>
-              </span>
-            </div>
-          </li>
-          <li class="tree-branch tree-open" role="treeitem" aria-expanded="false">
-            <div class="tree-branch-header">
-              <span class="tree-branch-name" data-id="449">
-                <i class="icon-folder ace-icon fa fa-eye">
-                </i>
-                <span class="tree-label">
-                  张燏琼[18268208081]
-                </span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    
-  </li>
-</ul>
+	<div class="widget-main padding-8">
+    	<ul id="tree1" class="tree tree-unselectable" role="tree">
+    	</ul>
     </div>
 </div>
 
@@ -288,45 +106,40 @@
 </style>
 <script type="text/javascript">
     jQuery(function ($) {
-        // 这是写死的效果，上线后如需要动态获取的话，请去使用fuelux.tree.js
-        $(".tree-branch-header").click(function(e){
-            e.stopPropagation();
-            var sonList = $(this).next("ul.tree-branch-children");
-            if(sonList.hasClass("open")){
-                $(this).next("ul.tree-branch-children").css("display","block").slideDown().removeClass("open");    
-            }else{
-                $(this).next("ul.tree-branch-children").slideUp().addClass("open");
-            }
+
+        $('#tree1').ace_tree({
+            dataSource: GetData,
+            multiSelect: false,
+            cacheItems: true,
+            'open-icon': 'ace-icon fa  fa-eye',
+            'close-icon': 'ace-icon fa fa-users',
+            'selectable' : false,
+            'selected-icon' : 'ace-icon fa fa-user',
+            'unselected-icon' : 'ace-icon fa fa-user',
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
         });
-        // $('#tree1').ace_tree({
-        //     dataSource: GetData,
-        //     multiSelect: false,
-        //     cacheItems: true,
-        //     'open-icon': 'ace-icon fa  fa-eye',
-        //     'close-icon': 'ace-icon fa fa-users',
-        //     'selectable' : false,
-        //     'selected-icon' : 'ace-icon fa fa-user',
-        //     'unselected-icon' : 'ace-icon fa fa-user',
-        //     loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
-        // });
 
+        function GetData(a, callback) {
+            var uid = 0;
+            var step = 0;
+            if (a != null) { uid = a.UserId, step = a.step; }
 
+            $.post('GetMap/', { Uid: uid, step: step }, function (json) {
+                callback({ data: json });
+            }, "json");
+        }
 
+        //$('.tree-item-name , .tree-branch-name').on('click', function () { alert('')})
 
+        //$("#tree1").delegate(".tree-item-name , .tree-branch-name", {
+        //    "mouseover": function () {
+        //        alert("这是mouseover 事件!");
+        //    }
+        //});
 
-        // function GetData(a, callback) {
-        //     var uid = 0;
-        //     var step = 0;
-        //     if (a != null) { uid = a.UserId, step = a.step; }
-        //     $.post('yourJSON', { Uid: uid, step: step }, function (json) {
-        //         callback({ data: json });
-        //     });
-        // }
-
-
-       
 });
 </script>
+
 
 
 

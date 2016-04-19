@@ -14,6 +14,7 @@ def product(request):
     return render(request, 'Index/product.html', context)
 def page(request):
     context = {}
+    
     return render(request, 'Index/pageTest.html', context)
 
 def page404(request):
