@@ -17,6 +17,31 @@ ThirdRatio = 0.02
 tax = 0.05
 ONE_PAGE_OF_DATA = 2    
 
+#user用户名 pwd密码 role角色 0为会员1为服务点
+def Login(user,pwd,role):
+    if role == '0':
+         try:
+             userEntity = Member.objects.filter(user_name = user).get()
+             if userEntity.password == pwd and role !='5':
+                 return True
+             else:
+                 return False
+         except BaseException, e:
+             print e
+             return False
+    elif role == '1':
+         try:
+             serviceEntity = Service.objects.filter(service_name = user).get()
+             print serviceEntity
+             #副中心禁用时不行
+             if serviceEntity.service_pwd == pwd and serviceEntity.role !='3':
+                 return True
+             else:
+                 return False
+         except BaseException, e:
+             print e
+             return False
+
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey('Member', models.DO_NOTHING, db_column='user_id', blank=True, null=True)
@@ -266,29 +291,29 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #user用户名 pwd密码 role角色 0为会员1为服务点
-    def login(self,user,pwd,role):
-         if role == '0':
-             try:
-                 userEntity = Member.objects.filter(user_name = user).get()
-                 if userEntity.password == pwd and role !='5':
-                     return True
-                 else:
-                     return False
-             except BaseException, e:
-                 print e
-                 return False
-         elif role == '1':
-             try:
-                 serviceEntity = Service.objects.filter(service_name = user).get()
-                 print serviceEntity
-                 #副中心禁用时不行
-                 if serviceEntity.service_pwd == pwd and serviceEntity.role !='3':
-                     return True
-                 else:
-                     return False
-             except BaseException, e:
-                 print e
-                 return False
+#     def login(self,user,pwd,role):
+#          if role == '0':
+#              try:
+#                  userEntity = Member.objects.filter(user_name = user).get()
+#                  if userEntity.password == pwd and role !='5':
+#                      return True
+#                  else:
+#                      return False
+#              except BaseException, e:
+#                  print e
+#                  return False
+#          elif role == '1':
+#              try:
+#                  serviceEntity = Service.objects.filter(service_name = user).get()
+#                  print serviceEntity
+#                  #副中心禁用时不行
+#                  if serviceEntity.service_pwd == pwd and serviceEntity.role !='3':
+#                      return True
+#                  else:
+#                      return False
+#              except BaseException, e:
+#                  print e
+#                  return False
              
     #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
     #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
@@ -669,6 +694,13 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #获取用户Id
+    @staticmethod 
+    def GetUser(username_):
+        try :
+            user = Member.objects.filter(user_name = username_).get()
+            return user
+        except BaseException,e:
+            print e
     def getUser(self,username_):
         try :
             user = Member.objects.filter(user_name = username_).get()
@@ -1048,6 +1080,14 @@ class Service(models.Model):
         except BaseException,e:
             print e
             return False
+            #获取用户Id
+    @staticmethod 
+    def GetService(service_name_):
+        try :
+            service = Service.objects.filter(service_name = service_name_).get()
+            return service
+        except BaseException,e:
+            print e
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)
     bank = models.CharField(primary_key=True, max_length=255)
