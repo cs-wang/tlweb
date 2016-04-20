@@ -492,7 +492,7 @@ def MemberOrder(request):
 	print "reqOrderStatus:",reqOrderStatus
 
 	orderobj=models.OrderForm()
-	orderlist,pagenum,totalnum = orderobj.myMemberOrder(
+	orderlist,pagenum,totalnum, totalmoney = orderobj.myMemberOrder(
 			user_id_= reqUserId,
 			service_id_=1,
 			user_or_phone_=reqUserInfo,
@@ -531,6 +531,7 @@ def MemberOrder(request):
 				'OrderStatus':reqOrderStatus,
 				'pagenum':pagenum,
 				'totalnum':totalnum,
+				'totalmoney':totalmoney,
 				'pageshowlist':pageshowlist,
 				'prevpage':prevpage,
 				'curpage':curpage,
@@ -540,18 +541,6 @@ def MemberOrder(request):
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage }
 
-#	naive = parse_datetime("2017-02-21 10:28:45")
-# 	naive1 = parse_datetime("2016-04-01 10:28:45")
-# 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-# 	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)	
-#	order_ = models.OrderForm()
-#	order_list,maxPage = order_.myServiceOrder(1,"123",'2',time_1,time_)
-#	for i in order_list:
-#		print i.order_id
-#	print "最多", maxPage
-#  	order_.createOrder(1,1,1000,1,"A+B都是货物啊","未发货")
-#	order_.comfirmDelivery(1,"五环快递","1232131231232131231")
-# 	print order_.myMemberOrder(1,time_1,time_,2)
 	return render(request, 'Services/MemberOrder.html', context)
 
 def Deliver(request):
@@ -604,11 +593,14 @@ def GetMap(request):
 	memobj = models.Member()
 	serviceid = 1;
 	if reqUid == None:
-		memlist = memobj.myMemberNet(
-			userOrServiceid_=serviceid,
-			role_="0",
-			pageNum=1
-			)
+		# memlist = memobj.myMemberNet(
+		# 	userOrServiceid_=serviceid,
+		# 	role_="0",
+		# 	pageNum=1
+		# 	)
+		servicemem = models.Service.GetServiceName(servcie_id_ = serviceid)
+		resmem =  {"UserId":0, "text":servicemem.service_name, "parentId":0,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":""}
+		res.append(resmem)
 	else:
 		memlist = memobj.myMemberNet(
 			userOrServiceid_=reqUid,
@@ -621,7 +613,7 @@ def GetMap(request):
 		# print member.user_name
 		# print member.reference_id
 		# print member.service_id
-		resmem =  {"UserId":member.user_id, "text":member.nickname, "parentId":member.reference_id,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":member.user_name}
+		resmem =  {"UserId":member.user_id, "text":member.user_name, "parentId":member.reference_id,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":member.user_name}
 		res.append(resmem)
 
 	code = str(json.dumps(res))
@@ -683,7 +675,7 @@ def Promotion(request):
 		curpage = 1
 	
 	comsobj = models.CommissionOrder()
-	comslist,pagenum,totalnum = comsobj.commissionList(
+	comslist,pagenum,totalnum,totalmoney = comsobj.commissionList(
 		user_name_=reqUserInfo,
 		commission_status_=reqGiftStatus,
 		commission_type_=reqGiftFrom,
@@ -728,6 +720,7 @@ def Promotion(request):
 				'orderby':reqorderby,
 				'pagenum':pagenum,
 				'totalnum':totalnum,
+				'totalmoney':totalmoney,
 				'pageshowlist':pageshowlist,
 				'prevpage':prevpage,
 				'curpage':curpage,
