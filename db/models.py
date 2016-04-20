@@ -72,16 +72,16 @@ class Advice(models.Model):
         except BaseException, e:
             print e
             return False
-    #我的意见role = 0为服务中心，=1为会员
+    #我的意见role = 1为服务中心，=0为会员
     def my_advice(self,user_or_service_id_,role_="1",title_ = None,advice_status_ = None,\
                   time_start_ = None,time_end_ = None,pageNum=1):
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
             args = {}
-            if role_ =="1":
-                args['user_id'] = user_or_service_id_
             if role_ =="0":
+                args['user_id'] = user_or_service_id_
+            if role_ =="1":
                 args['service_id'] = user_or_service_id_
             args1 = {}
             if title_ != None:
@@ -130,41 +130,45 @@ class CommissionOrder(models.Model):
     commission_status = models.CharField(max_length=1, blank=True, null=True)
     #佣金发放查询列表
     def commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1):
-        args = {}
-        arg ={}
-        comlist = []
-        orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
-        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
-        endPos = pageNum*ONE_PAGE_OF_DATA
-        money = 0
-        if user_name_ !=None:
-            i = Member.objects.filter(user_name = user_name_).get()
-            args['user_id'] = i.user_id
-        if commission_status_ !=None:
-            args['commission_status'] = commission_status_
-        if commission_type_ != None:
-            args['commission_type'] = commission_type_
-        if commision_created_start_ != None:
-            args['commission_created__gt'] = commision_created_start_
-        if commision_created_end_ != None:
-            arg['commission_created__gt'] = commision_created_end_
-            comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
-            count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
-            for i in comlist:
-                money = money + i.commission_price
-            if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count,money
+        try:
+            args = {}
+            arg ={}
+            comlist = []
+            orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
+            money = 0
+            if user_name_ !=None:
+                i = Member.objects.filter(user_name = user_name_).get()
+                args['user_id'] = i.user_id
+            if commission_status_ !=None:
+                args['commission_status'] = commission_status_
+            if commission_type_ != None:
+                args['commission_type'] = commission_type_
+            if commision_created_start_ != None:
+                args['commission_created__gt'] = commision_created_start_
+            if commision_created_end_ != None:
+                arg['commission_created__gt'] = commision_created_end_
+                comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
+                for i in comlist:
+                    money = money + i.commission_price
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return comlist,(count/ONE_PAGE_OF_DATA),count,money
+                else:
+                    return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
-        else:
-            comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
-            count = CommissionOrder.objects.filter(**args).count()
-            for i in comlist:
-                money = money + i.commission_price
-            if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count,money
-            else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
+                comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = CommissionOrder.objects.filter(**args).count()
+                for i in comlist:
+                    money = money + i.commission_price
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return comlist,(count/ONE_PAGE_OF_DATA),count,money
+                else:
+                    return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
+        except BaseException, e:
+            print e
+            return [],1,0,0
     
     #审核佣金单
     def confirmComm(self,commission_id_):
@@ -782,13 +786,13 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #会员网络不需要分页全部显示
-    #role = 0 为服务中心，= 1为会员默认为第一页
+    #role = 1 为服务中心，= 0为会员默认为第一页
     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
         try:
-            if role_ == '0':
+            if role_ == '1':
                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()
                 return memberlist
-            if role_ == '1':
+            if role_ == '0':
                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()
                 return memberlist
         except BaseException,e:
@@ -1137,6 +1141,13 @@ class Service(models.Model):
             service = Service.objects.filter(service_name = service_name_).get()
             return service
         except BaseException,e:
+            print e
+    @staticmethod 
+    def GetServiceName(servcie_id_):
+        try:
+            servicename = Service.objects.filter(service_id = servcie_id_).get()
+            return servicename
+        except Exception, e:
             print e
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)

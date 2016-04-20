@@ -14,7 +14,7 @@ import urllib2
 
 
 def DashBoard(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 # 	send_Short_Message(15757116149,"zzh")
 # 	time = timezone.now()
@@ -27,14 +27,15 @@ def DashBoard(request):
 	return render(request, 'Services/DashBoard.html', context)
 
 def NoticeList(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Services/NoticeList.html', context)
 
 def MsgList(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	sta = request.GET.get('sta')
 	if sta==None:
 		sta="2"
@@ -47,7 +48,7 @@ def MsgList(request):
 
 	msgobj = models.Message()
 	msglist,pagenum,totalnum = msgobj.myMessage( 
-		id_ = 1, # service_id
+		id_ = serviceid, # service_id
 		role_="1", # 服务中心
 		message_status_ = sta, 
 		pageNum = curpage
@@ -102,7 +103,7 @@ def MsgList(request):
 	return render(request, 'Services/MsgList.html', context)
 
 def ViewMsg(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	msgid = request.GET.get('MsgId')
 	msg_ = models.Message()
@@ -113,7 +114,7 @@ def ViewMsg(request):
 	return render(request, 'Services/ViewMsg.html', context)
 
 def MsgRead(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	msgid = request.POST.get('MsgId')
 	msg_ = models.Message()
@@ -128,13 +129,13 @@ def MsgRead(request):
 	return HttpResponse(code)
 
 def MemberEdit(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Services/MemberEdit.html', context)
 
 def MemberEdit1(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	reqUserId = request.GET.get('UserId')
 	print "reqUserId:",reqUserId
@@ -146,6 +147,9 @@ def MemberEdit1(request):
 	return render(request, 'Services/MemberEdit1.html', context)
 
 def MemberSave(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	RegUserId = request.POST['UserId']
 	RegUserName = request.POST['UserName']
 	RegNickName = request.POST['NickName']
@@ -198,7 +202,7 @@ def MemberSave(request):
 				reciever_phone_ = RegRecMob,
 				receiver_addr_ = RegRecAdd,
 				order_Memo_ = RegMark,
-				serviceid = 1,
+				serviceid = serviceid,
 				referenceid = 0
 				) == True:
 		obj = {'result':'t'}
@@ -209,6 +213,8 @@ def MemberSave(request):
 	return HttpResponse(code)
 
 def MemberSave1(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	RegUserId = request.POST['UserId']
 	RegUserName = request.POST['UserName']
 	RegNickName = request.POST['NickName']
@@ -272,27 +278,7 @@ def MemberSave1(request):
 def MemberList(request):
 	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-# 	naive = parse_datetime("2017-02-21 10:28:45")
-#  	naive1 = parse_datetime("2016-04-01 10:28:45")
-#  	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-#  	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)
-#  	memberlist,pageMax = member_.MemberList(1,user_or_phone_=None,member_status_=None,time_order_='0',reg_way='0',\
-#                    reg_start_time_=None,reg_end_time_=None,conf_start_time_=None,conf_end_time_=time_1,pageNum=1)
-#  	for i in memberlist:
-#  		print i.user_name
-# 	print "MemberList:",memberlist
-#  	context = { 'memberlist':memberlist, }
-# 	flag = member_.activateMember(3,1)
-# 	list , pageMax = member_.myReference('1',1)
-# 	print list.count()
-	#print "最多",pageMax
-	#list_1,list_2,list_3, pageMax = 
-# 	list, pageMax = member_.myIndirectRef('1',1)
-
-# 	print list
-# 	print "最多",pageMax
-	#print member_.myInfo(1).user_name
-	#context = {}
+	serviceid = request.session['service_id']
 	sesserviceid = request.session.get('service_id')
 	reqUserInfo = request.GET.get('UserInfo')
 	reqUserStatus = request.GET.get('UserStatus')
@@ -351,7 +337,7 @@ def MemberList(request):
 	
 	member_ = models.Member()
 	memberlist,pagenum,totalnum = member_.MemberList(
-		service_id_=1,
+		service_id_=serviceid,
 		user_or_phone_=reqUserInfo,
 		member_status_=kreqUserStatus,
 		time_order_=reqorderby,
@@ -393,7 +379,7 @@ def MemberList(request):
 				'reqregEnd':reqregEnd,
 				'reqsubStart':reqsubStart,
 				'reqsubEnd':reqsubEnd,
-				'reference_name':"张大爷",
+				'reference_name':"",
 				'pagenum':pagenum,
 				'totalnum':totalnum,
 				'pageshowlist':pageshowlist,
@@ -407,12 +393,16 @@ def MemberList(request):
 	return render(request, 'Services/MemberList.html', context)
 
 def ViewMember(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqUserId = request.GET.get('UserId')
 	print "reqUserId:",reqUserId
 	context = {}
 	return render(request, 'Services/ViewMember.html', context)
 
 def ViewMemberSelf(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqUserId = request.GET.get('UserId')
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
@@ -424,6 +414,8 @@ def ViewMemberSelf(request):
 	return render(request, 'Services/ViewMemberSelf.html', context)
 
 def ViewReCome(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqUserId = request.GET.get('UserId')
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
@@ -435,20 +427,21 @@ def ViewReCome(request):
 	return render(request, 'Services/ViewReCome.html', context)
 # 激活
 def SetAudit(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Services/SetAudit.html', context)
 # 审核
 def SetAudit1(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	reqUserId = request.POST.get('UserId')
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
 	if member_.confirmMember(
 		user_id_ = reqUserId, 
-		service_id_ = 1
+		service_id_ = serviceid
 		)==True:
 	
 		obj = {'result':'t'}
@@ -459,8 +452,9 @@ def SetAudit1(request):
 	return HttpResponse(code)
 
 def MemberOrder(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	reqUserId = request.GET.get('UserId')
 	reqUserInfo = request.GET.get('UserInfo')
 	reqOrderStatus = request.GET.get('OrderStatus')
@@ -492,9 +486,9 @@ def MemberOrder(request):
 	print "reqOrderStatus:",reqOrderStatus
 
 	orderobj=models.OrderForm()
-	orderlist,pagenum,totalnum = orderobj.myMemberOrder(
+	orderlist,pagenum,totalnum, totalmoney = orderobj.myMemberOrder(
 			user_id_= reqUserId,
-			service_id_=1,
+			service_id_=serviceid,
 			user_or_phone_=reqUserInfo,
 			order_type_=reqOrderStatus,
 			start_time_=reqstart,
@@ -531,6 +525,7 @@ def MemberOrder(request):
 				'OrderStatus':reqOrderStatus,
 				'pagenum':pagenum,
 				'totalnum':totalnum,
+				'totalmoney':totalmoney,
 				'pageshowlist':pageshowlist,
 				'prevpage':prevpage,
 				'curpage':curpage,
@@ -540,21 +535,11 @@ def MemberOrder(request):
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage }
 
-#	naive = parse_datetime("2017-02-21 10:28:45")
-# 	naive1 = parse_datetime("2016-04-01 10:28:45")
-# 	time_ = pytz.timezone("UTC").localize(naive, is_dst=None)
-# 	time_1 = pytz.timezone("UTC").localize(naive1, is_dst=None)	
-#	order_ = models.OrderForm()
-#	order_list,maxPage = order_.myServiceOrder(1,"123",'2',time_1,time_)
-#	for i in order_list:
-#		print i.order_id
-#	print "最多", maxPage
-#  	order_.createOrder(1,1,1000,1,"A+B都是货物啊","未发货")
-#	order_.comfirmDelivery(1,"五环快递","1232131231232131231")
-# 	print order_.myMemberOrder(1,time_1,time_,2)
 	return render(request, 'Services/MemberOrder.html', context)
 
 def Deliver(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqids = request.GET.get('ids')
 	orderidslist = reqids.split(',')
 	orderformobj = models.OrderForm()
@@ -567,6 +552,8 @@ def Deliver(request):
 	return render(request, 'Services/Deliver.html', context)
 import urllib
 def DeliverSub(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	DeliverDatas = request.POST.get('data')
 	#print "DeliverDatas:",DeliverDatas
 	DeliverDataslist = DeliverDatas.split(',')
@@ -588,12 +575,15 @@ def DeliverSub(request):
 	return HttpResponse(code)
 
 def UserMap(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Services/UserMap.html', context)
 
 def GetMap(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	reqUid = request.POST.get('Uid')
 	reqstep = request.POST.get('step')
 
@@ -602,17 +592,19 @@ def GetMap(request):
 	memlist = []
 	res = []
 	memobj = models.Member()
-	serviceid = 1;
 	if reqUid == None:
-		memlist = memobj.myMemberNet(
-			userOrServiceid_=serviceid,
-			role_="0",
-			pageNum=1
-			)
+		# memlist = memobj.myMemberNet(
+		# 	userOrServiceid_=serviceid,
+		# 	role_="0",
+		# 	pageNum=1
+		# 	)
+		servicemem = models.Service.GetServiceName(servcie_id_ = serviceid)
+		resmem =  {"UserId":0, "text":servicemem.service_name, "parentId":0,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":""}
+		res.append(resmem)
 	else:
 		memlist = memobj.myMemberNet(
 			userOrServiceid_=reqUid,
-			role_="1",
+			role_="0", # here we find referenceid = userid  so keep role_ = "0"
 			pageNum=1
 			)
 	for member in memlist:
@@ -621,19 +613,19 @@ def GetMap(request):
 		# print member.user_name
 		# print member.reference_id
 		# print member.service_id
-		resmem =  {"UserId":member.user_id, "text":member.nickname, "parentId":member.reference_id,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":member.user_name}
+		resmem =  {"UserId":member.user_id, "text":member.user_name, "parentId":member.reference_id,"type":"folder", "step":1, "Level":1, "Sort":0, "UserName":member.user_name}
 		res.append(resmem)
 
 	code = str(json.dumps(res))
 	return HttpResponse(code)
 
 def ComBank(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	serviceid = 1;
+	serviceid = request.session['service_id']
 	saobj = models.ServiceAccount()
 	accountlist,pagenum,totalnum= saobj.comBank(
-			service_id_=1, 
+			service_id_=serviceid, 
 			pageNum=1
 			)
 	print accountlist, pagenum, totalnum
@@ -645,7 +637,7 @@ def ComBank(request):
 	return render(request, 'Services/ComBank.html', context)
 
 def Promotion(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	# UserInfo=&GiftStatus=4&GiftFrom=-1&AddStart=&AddEnd=&SubStart=&SubEnd=&orderby=1
 	reqUserInfo = request.GET.get('UserInfo')
@@ -683,7 +675,7 @@ def Promotion(request):
 		curpage = 1
 	
 	comsobj = models.CommissionOrder()
-	comslist,pagenum,totalnum = comsobj.commissionList(
+	comslist,pagenum,totalnum,totalmoney = comsobj.commissionList(
 		user_name_=reqUserInfo,
 		commission_status_=reqGiftStatus,
 		commission_type_=reqGiftFrom,
@@ -728,6 +720,7 @@ def Promotion(request):
 				'orderby':reqorderby,
 				'pagenum':pagenum,
 				'totalnum':totalnum,
+				'totalmoney':totalmoney,
 				'pageshowlist':pageshowlist,
 				'prevpage':prevpage,
 				'curpage':curpage,
@@ -740,6 +733,8 @@ def Promotion(request):
 	return render(request, 'Services/Promotion.html', context)
 
 def MoneyAudit(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqids = request.POST.get('ids')
 	comsidlist = reqids.split(',')
 	comsobj = models.CommissionOrder()
@@ -751,6 +746,8 @@ def MoneyAudit(request):
 	return HttpResponse(code)
 
 def MoneySub(request):
+	if request.session.get('role') == None or request.session['role'] != '1':
+		return HttpResponseRedirect('/')
 	reqids = request.POST.get('ids')
 	comsidlist = reqids.split(',')
 	comsobj = models.CommissionOrder()
@@ -762,9 +759,10 @@ def MoneySub(request):
 	return HttpResponse(code)
 
 def AdviceList(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	
+	serviceid = request.session['service_id']
+	print "service_id:", serviceid
 	reqtitle = request.GET.get('title')
 	reqserviceReadStatus = request.GET.get('serviceReadStatus')
 	reqadminReadStatus = request.GET.get('adminReadStatus')
@@ -797,8 +795,8 @@ def AdviceList(request):
 
 	advobj = models.Advice()
 	advlist,pagenum,totalnum = advobj.my_advice(
-							user_or_service_id_= 1,
-							role_="0",
+							user_or_service_id_= serviceid,
+							role_="1",
 							title_ = reqtitle,
 							advice_status_ = reqserviceReadStatus,
                   			time_start_ = reqaddStart,
@@ -850,7 +848,7 @@ def AdviceList(request):
 	return render(request, 'Services/AdviceList.html', context)
 
 def AdviceView(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	advid = request.GET.get('id')
 	print "advid:",advid
@@ -860,13 +858,19 @@ def AdviceView(request):
 	return render(request, 'Services/AdviceView.html', context)
 
 def AdviceSub(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	advid = request.POST.get('id')
 	advcon = request.POST.get('info')
 	print "advcon:",advcon
 	advobj = models.Advice()
-	advobj.reply_advice(1,advcon,1,advid)
+	advobj.reply_advice(	
+			user_id_ = 1, #useless
+			reply_content_ = advcon,
+			service_id_ = serviceid, # useless
+			advice_id_ = advid   
+			)
 	advice = advobj.one_advice(advid)
 	if advice.advice_status == "1":
 		obj = {'result':'t'}
@@ -876,11 +880,9 @@ def AdviceSub(request):
 	return HttpResponse(code)
 
 def SubService(request):
-	if request.session['role'] != '1':
+	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	ser = models.Service()
-	#ser.saveSecService("改个名字","service_pwd_",None,"service_area_",\
-#                        '2',"老zhuji","老李备忘录")
 	print ser.getSecService('2').service_id
 	context = {}
 	return render(request, 'Services/SubService.html', context)
