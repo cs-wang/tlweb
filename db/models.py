@@ -72,16 +72,16 @@ class Advice(models.Model):
         except BaseException, e:
             print e
             return False
-    #我的意见role = 0为服务中心，=1为会员
+    #我的意见role = 1为服务中心，=0为会员
     def my_advice(self,user_or_service_id_,role_="1",title_ = None,advice_status_ = None,\
                   time_start_ = None,time_end_ = None,pageNum=1):
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
             args = {}
-            if role_ =="1":
-                args['user_id'] = user_or_service_id_
             if role_ =="0":
+                args['user_id'] = user_or_service_id_
+            if role_ =="1":
                 args['service_id'] = user_or_service_id_
             args1 = {}
             if title_ != None:
@@ -786,13 +786,13 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #会员网络不需要分页全部显示
-    #role = 0 为服务中心，= 1为会员默认为第一页
+    #role = 1 为服务中心，= 0为会员默认为第一页
     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
         try:
-            if role_ == '0':
+            if role_ == '1':
                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()
                 return memberlist
-            if role_ == '1':
+            if role_ == '0':
                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()
                 return memberlist
         except BaseException,e:
