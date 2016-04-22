@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^AdviceList/AdviceView/$', views.AdviceView),
     url(r'^AdviceList/AdviceView/AdviceSub/$', views.AdviceSub),
     url(r'^SubService/$', views.SubService),
+    url(r'^SubService/SubServiceSave/$', views.SubServiceSave),
 ]

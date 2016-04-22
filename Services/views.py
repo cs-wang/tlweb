@@ -882,7 +882,39 @@ def AdviceSub(request):
 def SubService(request):
 	if request.session.get('role') == None or request.session['role'] != '1':
 		return HttpResponseRedirect('/')
+	serviceid = request.session['service_id']
 	ser = models.Service()
 	print ser.getSecService('2').service_id
-	context = {}
+	context = { "serviceid":serviceid }
 	return render(request, 'Services/SubService.html', context)
+
+def SubServiceSave(request):
+	UserId = request.POST.get('UserId')
+	ServiceName = request.POST.get('ServiceName')
+	ServiceAdminName = request.POST.get('ServiceAdminName')
+	UserName = request.POST.get('UserName')
+	UserPwd = request.POST.get('UserPwd')
+	UserStatus = request.POST.get('UserStatus')
+	ServiceMark = request.POST.get('ServiceMark')
+	print "UserId:",UserId
+	print "ServiceName:",ServiceName
+	print "ServiceAdminName:",ServiceAdminName
+	print "UserName:",UserName
+	print "UserPwd:",UserPwd
+	print "UserStatus:",UserStatus
+	print "ServiceMark:",ServiceMark
+
+	serobj = models.Service()
+	serobj.saveSecService(
+			service_name_ = UserName,
+			service_pwd_ = UserPwd,
+			service_role_ = UserStatus,
+			service_area_ = ServiceName,
+            service_ref_ = UserId,
+            service_response_ = ServiceAdminName,
+            service_memo_ = ServiceMark
+            )
+
+	obj = {'result':'t'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)

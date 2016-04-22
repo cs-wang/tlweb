@@ -97,20 +97,20 @@
 <div class="row noMarginLR">
     <div class="col-xs-12">
         <form class="form-horizontal" role="form">
-            <input id="UserId" name="UserId" type="hidden" value="395" />
+            <input id="UserId" name="UserId" type="hidden" value="{{serviceid}}" />
 
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 副中心名称 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="ServiceName" name="ServiceName" placeholder="" class="col-xs-10 col-sm-5" value="诸暨副服务中心" />
+                    <input type="text" id="ServiceName" name="ServiceName" placeholder="" class="col-xs-10 col-sm-5" value="" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 负责人 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="ServiceAdminName" name="ServiceAdminName" placeholder="" class="col-xs-10 col-sm-5" value="老赵" />
+                    <input type="text" id="ServiceAdminName" name="ServiceAdminName" placeholder="" class="col-xs-10 col-sm-5" value="" />
                 </div>
             </div>
 
@@ -120,7 +120,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 登陆名 </label>
                 <div class="col-sm-9">
-                    <input type="text" id="UserName" name="UserName" placeholder="" class="col-xs-10 col-sm-5" value="zj007" />
+                    <input type="text" id="UserName" name="UserName" placeholder="" class="col-xs-10 col-sm-5" value="" />
                 </div>
             </div>
 
@@ -151,7 +151,7 @@
 
                 <div class="col-sm-9">
                     <select id="UserStatus">
-                        <option value="1">启用</option>
+                        <option value="2">启用</option>
                         <option value="3" >禁用</option>
 
                     </select>
@@ -215,7 +215,7 @@
 
             var data = { UserId: UserId, ServiceName: ServiceName,  ServiceAdminName: ServiceAdminName, UserName: UserName, UserPwd: UserPwd, UserStatus: UserStatus, ServiceMark: ServiceMark }
             //alert(JSON.stringify(data));
-            $.post('SubServiceSave', data, function (json) {
+            $.post('SubServiceSave/', data, function (json) {
                 if (json.result == "t") {
                     layer.msg('保存成功！', { icon: 1 });
                 }
@@ -223,7 +223,7 @@
                     layer.alert('保存失败。<br />' + json.msg, { icon: 5 });
                 }
 
-            });
+            }, "json");
         })
 
 
