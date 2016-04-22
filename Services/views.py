@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.db import transaction
 from db import models
 import datetime
 import json
@@ -11,21 +12,12 @@ import pytz
 
 # Create your views here.
 import urllib2
-
-
+@transaction.atomic
 def DashBoard(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-# 	send_Short_Message(15757116149,"zzh")
-# 	time = timezone.now()
-#     	time_1 = timezone.now()-datetime.timedelta(days=30)
-# 	print time
-# 	print time_1
-   	oc = models.CommissionOrder()
-   	oc.leadercommission(1)
 	context = {}
 	return render(request, 'Services/DashBoard.html', context)
-
 def NoticeList(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
@@ -132,7 +124,7 @@ def MemberEdit(request):
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Services/MemberEdit.html', context)
-
+@transaction.atomic
 def MemberEdit1(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
@@ -440,24 +432,26 @@ def SetAudit(request):
 	context = {}
 	return render(request, 'Services/SetAudit.html', context)
 # 审核
+@transaction.atomic
 def SetAudit1(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
-	reqUserId = request.POST.get('UserId')
-	print "reqUserId:",reqUserId
+# 	reqUserId = request.POST.get('UserId')
+# 	print "reqUserId:",reqUserId
 	member_ = models.Member()
-	if member_.confirmMember(
-		user_id_ = reqUserId, 
-		service_id_ = 1
-		)==True:
+# 	if member_.confirmMember(
+# 		user_id_ = reqUserId, 
+# 		service_id_ = 1
+# 		)==True:
+# 	
+# 		obj = {'result':'t'}
+# 	else:
+# 		obj = {'result':'f',
+# 			'msg':'请稍后再试！'}
+# 	code = str(json.dumps(obj))
+# 	return HttpResponse(code)
 	
-		obj = {'result':'t'}
-	else:
-		obj = {'result':'f',
-			'msg':'请稍后再试！'}
-	code = str(json.dumps(obj))
-	return HttpResponse(code)
-
+	return render(request, 'Services/SetAudit.html', context)
 def MemberOrder(request):
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
