@@ -55,6 +55,7 @@ def ViewMsg(request):
 	return render(request, 'Services/ViewMsg.html', context)
 
 def MsgRead(request):
+	print 'MessageRead'
 	if request.session['role'] != '1':
 		return HttpResponseRedirect('/')
 	msgid = request.POST.get('MsgId')

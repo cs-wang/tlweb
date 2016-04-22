@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tldb',
-        'USER': 'root',
-        'PASSWORD':'123456',
-        'HOST':'127.0.0.1',
+        'NAME': 'tlweb',
+        'USER': 'admin',
+        'PASSWORD':'Tlweb1234',
+        'HOST':'139.196.235.142',
         'PORT':'3306',
     }
 }
@@ -115,11 +115,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N =True
 
 USE_TZ = True
 

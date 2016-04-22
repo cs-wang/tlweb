@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -445,6 +445,17 @@
 
 
 <div class="row noMarginLR">
+     <div class="col-sm-9">
+                    <div style="clear:both">
+                        <p>
+                        
+                            <a href="?type=0" id="SD" {% if type == '0' %} onclick="return false" style="color:gray" {% endif %}  >待审核的佣金</a>
+                            &nbsp;&nbsp;
+                            <a href="?type=1" id="BD"  {% if type == '1' %} onclick="return false" style="color:gray" {% endif %}  >待发放的佣金</a>
+                        </p>
+                    </div>
+                </div>
+             
     <div class="col-xs-12">
     <div class="iWideTable cf">
         <table id="simple-table" class="table table-striped table-bordered table-hover">
@@ -460,7 +471,34 @@
             </thead>
 
             <tbody>
-
+              {% for comission in comissionlist %}
+              <td>{{comission.commission_price}}</td>
+              
+              {% if comission.commission_memo == None %}
+              <td></td>
+              {% else %}
+              <td>{{comission.commission_memo}}</td>
+              {% endif %}
+              
+              
+              {% if comission.commission_created == None %}
+              <td></td>
+              {% else %}
+              <td>{{comission.commission_created}}</td>
+              {% endif %}
+              
+              {% if comission.commission_sent == None %}
+              <td></td>
+              {% else %}
+              <td>{{comission.commission_sent}}</td>
+              {% endif %}
+              
+              {% if type == '0' %}
+              <td>待审核</td>
+              {% else %}
+              <td>待发放</td>
+              {% endif %}
+              {% endfor %}
 
             </tbody>
         </table>
@@ -468,21 +506,40 @@
 
         
 
-        <div class="iCountTxt">金额合计：0</div>
+        <div class="iCountTxt">金额合计：{{money}}</div>
         
 
 
 
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 0 页 &nbsp; 共 0 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&type={{type}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&type={{type}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&type={{type}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&type={{type}}">末页</a></li>
 
+                </ul>
         </div>
     </div>
 </div>

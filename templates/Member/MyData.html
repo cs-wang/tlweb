@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -439,34 +439,55 @@
         </small>
     </h1>
 </div><!-- /.page-header -->
-
+{% if modifiable == '0' %}
 <div class="alert alert-warning">
-    您的资料已通过服务中心审核，无法修改，需要修改的<a href="Advice?type=SD">请点击此处进行申请</a>, 当您需要了解更多信息时请致电0575-87755511或18006800511.
+    您的资料已通过服务中心审核，无法修改，需要修改的<a href="../Advice?type=SD">请点击此处进行申请</a>, 当您需要了解更多信息时请致电0575-87755511或18006800511.
 </div>
+{% endif %}
 
 <div class="row noMarginLR">
     <div class="col-xs-12">
-        <form class="form-horizontal" role="form">
+         <form class="form-horizontal" role="form">
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 手机号码 </label>
 
-                <div class="col-sm-9">
-                    <input type="text" id="UserName" name="UserName" placeholder="手机号码将是登陆名" class="col-xs-10 col-sm-5" value="15906753588"  disabled/>
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="UserName" name="UserName"  disabled="disabled" value={{meminfo.user_name}}  placeholder="手机号码将是登陆名" class="col-xs-10 col-sm-5" maxlength="12"  autocomplete="off"  
+                           
+
+                            />*
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">手机号码将是登陆名和报单编号,请认真填写,可以多带一位字母或数字</span>
+                        </span>
+                    </p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 昵称或姓名 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" value="赵林" maxlength="20" />
+                    <input type="text" id="NickName" name="NickName"  value={{meminfo.nickname}} placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5"  maxlength="20" 
+                                                        />
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red"必须填写，以便系统识别>必须填写，以便系统识别</span>
+                        </span>
+                    </p>
                 </div>
             </div>
+
+            
             
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
 
-                <div class="col-sm-9">
-                    <input type="text" id="DepositMobile" name="DepositMobile" placeholder="" class="col-xs-10 col-sm-5" value="" />
+                <div class="col-sm-9 parentCls">
+                {% if meminfo.delegation_phone == "" %}
+                    <input type="text" id="DepositMobile" name="DepositMobile"    placeholder="" class="col-xs-10 col-sm-5"  />
+                {% else %}
+                   <input type="text" id="DepositMobile" name="DepositMobile"  value={{meminfo.delegation_phone}}  placeholder="" class="col-xs-10 col-sm-5"  />
+                {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">当汇款人非本人时请填写</span>
@@ -478,7 +499,11 @@
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
 
                 <div class="col-sm-9">
+                {% if meminfo.delegation_info  == "" %}
                     <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="" />
+                {% else %}
+                   <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value={{meminfo.delegation_info}}  />
+                {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">汇款人非本人时请填写</span>
@@ -491,7 +516,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 绑定手机号码 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="BindMob" name="BindMob" placeholder="不填写等于登陆账号" class="col-xs-10 col-sm-5" value="" maxlength="11" />
+                    <input type="text" id="BindMob" name="BindMob" placeholder="不填写等于登陆账号" class="col-xs-10 col-sm-5" value={{meminfo.bind_phone}} maxlength="11" />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">系统短信将发送到您绑定的手机号码</span>
@@ -499,35 +524,39 @@
                     </p>
                 </div>
             </div>
-
-            <div class="form-group" style="display:none">
+            <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 登陆密码 </label>
 
                 <div class="col-sm-9">
                     <!-- #section:elements.form.input-icon -->
-                    <span>
-                        <input type="password" id="UserPwd">
+                    <span class="blockinMobile">
+                        <input type="password" id="UserPwd" value={{meminfo.password}}>
                     </span>
 
-                    <span>
+                    <span class="blockinMobile">
                         <input type="password" id="UserRePwd" placeholder="重复登陆密码">
                     </span>
-                        <span class="middle">如果您不修改密码，请留空</span>
-
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">请尽量设置较为复杂的密码</span>
+                        </span>
+                    </p>
                     <!-- /section:elements.form.input-icon -->
                 </div>
             </div>
 
             
 
-            <div class="space-4"></div>
-
 
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 微信 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" value="15906853588" />
+                {% if meminfo.weixin_id == "" %}
+                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空" class="col-xs-10 col-sm-5" />
+                {% else %}
+                    <input type="text" id="WeChat" name="WeChat" placeholder="不填留空"  value={{meminfo.weixin_id}}  class="col-xs-10 col-sm-5" />
+                {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">微信接受奖金和汇款的会员，必须填写</span>
@@ -542,7 +571,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 开户银行 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="BankName" name="BankName" placeholder="需填写到支行" class="col-xs-10 col-sm-5" value="" />
+                    <input type="text" id="BankName" name="BankName"  value={{meminfo.bank}} placeholder="需填写到支行" class="col-xs-10 col-sm-5"  />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">您必须填完整开户行，如：农业银行浙江分行杭州西湖支行</span>
@@ -555,16 +584,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 银行账号 </label>
 
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="BankAccount" name="BankAccount" placeholder="" class="col-xs-10 col-sm-5" value="" maxlength="19" />
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="TrueName" name="TrueName" placeholder="" class="col-xs-10 col-sm-5" value="" />
+                    <input type="text" id="BankAccount" name="BankAccount"  value={{meminfo.account}} placeholder="" class="col-xs-10 col-sm-5" maxlength="19"   />
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">您必须认真填写银行账号</span>
@@ -572,14 +592,31 @@
                     </p>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="TrueName" name="TrueName"  value={{meminfo.card_holder}} placeholder="" class="col-xs-10 col-sm-5" />*
+                    <p style="clear:both">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <span class="middle" style="color:red">绑定银行卡姓名</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
 
 
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 收货人 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5" value="" />
-
+                {% if meminfo.receiver == '' %}
+                    <input type="text" id="RecName" name="RecName" placeholder="" class="col-xs-10 col-sm-5"  />
+                 {% else %}
+                    <input type="text" id="RecName" name="RecName" value={{meminfo.receiver}}  placeholder="" class="col-xs-10 col-sm-5"  />
+                 {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">外地需邮寄会员必填</span>
@@ -587,12 +624,15 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group parentCls">
+            <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 收货人电话 </label>
 
-                <div class="col-sm-9">
-                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5" value="" />
-
+                <div class="col-sm-9 parentCls">
+                {% if meminfo.receiver_phone == ''%}
+                    <input type="text" id="RecMob" name="RecMob" placeholder="" class="col-xs-10 col-sm-5"  maxlength="11" />
+                {% else %}
+                    <input type="text" id="RecMob" name="RecMob" value={{meminfo.receiver_phone}} placeholder="" class="col-xs-10 col-sm-5"  maxlength="11" />
+                {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">外地需邮寄会员必填</span>
@@ -606,8 +646,11 @@
                 <label class="col-sm-3 control-label no-padding-right"> 收货地址 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5" value="" />
-
+                {% if meminfo.receiver_addr == '' %}
+                    <input type="text" id="RecAdd" name="RecAdd" placeholder="" class="col-xs-10 col-sm-5"  />
+                 {% else %}
+                    <input type="text" id="RecAdd" name="RecAdd"  value={{meminfo.receiver_addr}} placeholder="" class="col-xs-10 col-sm-5"  />
+                 {% endif %}
                     <p style="clear:both">
                         <span class="help-inline col-xs-12 col-sm-7">
                             <span class="middle" style="color:red">外地需邮寄会员必填</span>
@@ -618,16 +661,22 @@
 
 
 
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> 备注 </label>
+            
+          
 
-                <div class="col-sm-9">
-                    <textarea id="Mark" class="col-xs-10 col-sm-5 " style=" height: 80px;"></textarea>
+
+           
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="button" id="Save">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        修改
+                    </button>
 
 
                 </div>
             </div>
-
+           
 
         </form>
     </div>
@@ -641,12 +690,165 @@
         color: #ff4400;
     }
 </style>
+{% if modifiable == '0' %}
 <script>
     $('input').prop('disabled', true);
     $('textarea').prop('disabled', true);
 
 
 </script>
+{% endif %}
+{% if modifiable == '1' %}
+<script>
+    $(document).ready(function () {
+
+        new TextMagnifier({
+            inputElem: '#UserName',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4,1],
+
+        });
+        new TextMagnifier({
+            inputElem: '#RecMob',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#DepositMobile',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 4, 4],
+
+        });
+        new TextMagnifier({
+            inputElem: '#BankAccount',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [4, 4, 4, 4, 3],
+
+        });
+        new TextMagnifier({
+            inputElem: '#IDCard',
+            //parentCls: 'col-sm-9',
+            align: 'top',
+            splitType: [3, 3, 4, 4, 4],
+
+        });
+
+
+
+        $('#showBank').click(function () {
+
+            $('#bank-table').fadeIn();
+        })
+
+
+
+
+        $('input[type="checkbox"][name="product"]').change(function () {
+            //alert('ss');
+            var total = 1000;
+            var select = $('input[type="checkbox"][name="product"]:checked');
+            var selectProduct = '';
+            if (select.length > 2) { $(this).prop('checked', false); return; }
+            $(select).each(function (x, y) {
+                if ($(y).attr('data-val') == 500) {
+                    if (select.length == 1) { selectProduct = selectProduct + $(y).attr('data-name') + 'x 2  +'; }
+                    else if (select.length == 2) { selectProduct = selectProduct + $(y).attr('data-name') + '  +'; }
+                }
+                if ($(y).attr('data-val') == 200) {
+                    if (select.length == 1) {
+                        selectProduct = selectProduct + $(y).attr('data-name') + ' x5';
+                    }
+                    else {
+                        selectProduct = selectProduct + $(y).attr('data-name');
+                    }
+                }
+            })
+            selectProduct = selectProduct.substring(0, selectProduct.length - 1);
+            $('#info').text(selectProduct);
+            $('#Mark').val(selectProduct);
+        });
+
+
+        //$('#A3').trigger('change');
+
+
+        $('#Save').click(function () {
+            var UserName = $('#UserName').val();
+            var IDCard ='';// $('#IDCard').val();
+            var NickName = $('#NickName').val();
+
+
+            var UserPwd = $('#UserPwd').val();
+            var UserRePwd = $('#UserRePwd').val();
+            var TrueName = $('#TrueName').val();
+            var WeChat = $('#WeChat').val();
+            var Alipay = $('#Alipay').val();
+            var BankName = $('#BankName').val();
+            var BankAccount = $('#BankAccount').val();
+
+            var RecName = $('#RecName').val();
+            var RecMob = $('#RecMob').val();
+            var RecAdd = $('#RecAdd').val();
+            var DepositMobile = $('#DepositMobile').val();
+
+            
+            var BindMob = $('#BindMob').val();
+
+            if (UserName == "") { $('#UserName').focus(); layer.tips('手机号码不能为空', '#UserName'); return false; }
+            if (UserName.length < 11 || IsMobile(UserName.substring(0,11)) == false) { $('#UserName').focus(); layer.tips('手机号码格式不正确', '#UserName'); return false; }
+
+            if (NickName == "") { $('#NickName').focus(); layer.tips('昵称或姓名不能为空', '#NickName'); return false; }
+
+            //if (IDCard != "") {
+            //    if (IDCard.length != 18 || IdCardValidate(IDCard) == false) {
+            //        $('#IDCard').focus(); layer.tips('身份证号码不正确', '#IDCard'); return false;
+            //    }
+            //}
+
+            if (UserPwd == "") { $('#UserPwd').focus(); layer.tips('密码不能为空', '#UserPwd'); return false; }
+            if (UserPwd != UserRePwd) { $('#UserRePwd').focus(); layer.tips('两次密码输入不一致', '#UserRePwd'); return false; }
+
+
+            
+
+
+            if (WeChat == '' && BankName == "") { $('#BankName').focus(); layer.tips('当您不填写微信时，银行开户行不能为空', '#BankName'); return false; }
+            if (WeChat == '' && BankName.indexOf('银行') == -1) { $('#BankName').focus(); layer.tips('当您不填写微信时，银行开户行请填写完整', '#BankName'); return false; }
+            if (WeChat == '' && BankName.indexOf('分') == -1 && BankName.indexOf('支') == -1) { $('#BankName').focus(); layer.tips('当您不填写微信时，银行开户行请填写完整', '#BankName'); return false; }
+            if (WeChat == '' && BankAccount == "") { $('#BankAccount').focus(); layer.tips('当您不填写微信时，银行账号不能为空', '#BankAccount'); return false; }
+            if (WeChat == '' && IsBankNo(BankAccount.replace(/\s/g, "")) == false) { $('#BankAccount').focus(); layer.tips('当您不填写微信时，银行账号请正确填写', '#BankAccount'); return false; }
+            if (WeChat == '' && TrueName == "") { $('#TrueName').focus(); layer.tips('当您不填写微信时，真实姓名不能为空', '#TrueName'); return false; }
+
+            //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
+            //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
+            //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
+            if (BindMob == "") { $('#BindMob').focus(); layer.tips('绑定的手机不能为空', '#BindMob'); return false; }
+            
+            var data = {
+                UserName: UserName, NickName: NickName, UserPwd: UserPwd, DepositMobile: DepositMobile, BindMob: BindMob,
+                WeChat: WeChat, Alipay: Alipay, BankName: BankName, BankAccount: BankAccount,
+                TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob
+            }
+            $('#Save').prop('disabled', true);
+            $.post('MyDataUpdate/',  data, function (json) {
+                if (json.result == "t") {
+                    layer.msg('修改成功！', { icon: 1 }, function () { $('input').val(''); location.href = '?' });
+                }
+                else {
+                    $('#Save').prop('disabled', false);
+                    layer.alert('修改失败。<br />' + json.msg, { icon: 5 });
+                }
+
+            },"json");
+        })
+    });
+</script>
+{% endif %}
 
 
 

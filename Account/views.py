@@ -22,6 +22,9 @@ def login(request):
         code = str(json.dumps(obj))
         code1 = str(json.dumps(obj1))
         if flag == True:
+            user_id=member_.getUserId(user_).user_id
+            request.session['user_id']=user_id
+            request.session['username']=user_
             if role_ == '0':
                 request.session['role'] = '0'
             elif role_ == '1':

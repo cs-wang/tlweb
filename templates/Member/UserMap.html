@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>佣金订单 - 天龙健康会员操作平台</title>
+    <title>推荐网络 - 天龙健康会员操作平台</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                {{username}}
+                               {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -429,184 +429,80 @@
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
                             
+
+
 <link rel="stylesheet" href="/assets/css/datepicker.css" />
 <script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
 <!-- /section:settings.box -->
 <div class="page-header">
     <h1>
-        业务管理
+        推荐管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            佣金订单
+            推荐网络
         </small>
     </h1>
 </div><!-- /.page-header -->
-
+<script src="/assets/js/fuelux/fuelux.tree.js"></script>
+<script src="/assets/js/ace/elements.treeview.js"></script>
 
 <div class="row noMarginLR">
-    <div class="col-xs-12">
-        
-        <div>
-            <form class="form-inline hasBlockToolItem" action="?" method="Get">
-
-                
-
-                <select class="" id="type" name="type"><option value="-1">所有</option>
-<option value="0">待审核</option>
-<option value="1">待发放</option>
-<option value="2">已发放</option>
-</select>
- 
-                <select class="" id="rewardtype" name="rewardtype"><option value="-1">所有奖</option>
-<option value="0">推荐奖</option>
-<option value="1">优秀推荐奖</option>
-<option value='2'>超级推荐奖</option>
-<option value="3">广告费</option>
-<option value="4">网络推荐奖</option>
-<option value="5">优秀人才奖</option>
-<option value="6">复投推荐奖</option>
-<option value="7">领导奖</option> 
-</select>
-
-
-                <input class="form-control date-picker" id="create_start" name="create_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 起" />
-                <input class="form-control date-picker" id="create_end" name="create_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 止" />
-
-                <input class="form-control date-picker" id="sent_start" name="sent_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 起" />
-                <input class="form-control date-picker" id="sent_end" name="sent_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 止" />
-
-
-
-
-                <button type="submit" class="btn btn-info btn-sm">
-                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
-                </button>
-            </form>
-        </div>
-
-        <div class="iWideTable cf">
-        <table id="simple-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th style="width:10%">金额</th>
-                    <th style="width:10%">奖别</th>
-                    <th style="">备注</th>
-                    <th style="width:130px">生成日期</th>
-                    <th style="width:130px">发放日期</th>
-                    <th style="width:90px">状态</th>
-
-
-                </tr>
-            </thead>
-
-            <tbody>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【蒋成丰】获得推荐奖</td>
-                        <td>2016-03-14 19:49</td>
-                        <td>2016-03-14 19:51</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【陈婷】获得推荐奖</td>
-                        <td>2016-03-13 15:38</td>
-                        <td>2016-03-13 15:42</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">855.00</td>
-                        <td>广告费</td>
-                        <td>推广费红包</td>
-                        <td>2016-03-12 20:31</td>
-                        <td>2016-03-12 21:12</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【蒋荷燕】获得推荐奖</td>
-                        <td>2016-03-08 14:20</td>
-                        <td>2016-03-08 15:50</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【张伟光】获得推荐奖</td>
-                        <td>2016-03-07 13:48</td>
-                        <td>2016-03-07 21:46</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【李莉】获得推荐奖</td>
-                        <td>2016-03-06 14:51</td>
-                        <td>2016-03-07 06:59</td>
-                        <td>已发放</td>
-
-                    </tr>
-
-
-            </tbody>
-        </table>
+  <div class="col-sm-9">
+                    <div style="clear:both">
+                        <p>
+                            <a href="../MyRecomeAll/?type=1" id="SD"  {% if type == '1' %} onclick="return false" style="color:gray" {% endif %}  >直接推荐</a>
+                            &nbsp;&nbsp;
+                            <a href="../MyRecomeAll/?type=0" id="BD"  {% if type == '0' %} onclick="return false" style="color:gray" {% endif %} >间接推荐</a>
+                            &nbsp;&nbsp;
+                            <a href="" id="BD"   onclick="return false" style="color:gray"   >推荐网络</a>
+                        </p>
+                    </div>
+                    <div class="widget-body">
+	<div class="widget-main padding-8">
+    	<ul id="tree1" class="tree tree-unselectable" role="tree">
+    	</ul>
     </div>
+</div>
+                </div>
 
-
-        <div class="iCountTxt">金额合计：1855</div>
-        
-
-
-
-
-<div class="row">
-    <div class="col-xs-5 iPagesLeft">
-        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 6 条记录
-        </div> 
-    </div>
-      <div class="col-xs-7 iPagesRight">
-        <div class="dataTables_paginate paging_simple_numbers">
-                <ul class="pagination">
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&type={{type}}">首页</a></li>
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&type={{type}}">上一页</a></li>
-                        {% if preomit == True %}
-                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
-                        {% endif %}
-                        {% for pindex in pageshowlist %}
-                        {% if pindex == curpage %}
-                        <li class="paginate_button active"><a>{{curpage}}</a></li>
-                        {% elif pindex  %}
-                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
-                        {% endif %}
-                        {% endfor %}
-                        {% if nextomit == True %}
-                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
-                        {% endif %}
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&type={{type}}">下一页</a></li>
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&type={{type}}">末页</a></li>
-
-                </ul>
-        </div>
-    </div>
 </div>
     </div><!-- /.span -->
 </div><!-- /.row -->
-<script>
-    $('.date-picker').datepicker({
-        autoclose: true,
-        todayHighlight: true
-    })
 
+<script type="text/javascript">
+    jQuery(function ($) {
 
+        $('#tree1').ace_tree({
+            dataSource: GetData,
+            multiSelect: false,
+            cacheItems: true,
+            'open-icon': 'ace-icon fa  fa-eye',
+            'close-icon': 'ace-icon fa fa-users',
+            'selectable' : false,
+            'selected-icon' : 'ace-icon fa fa-user',
+            'unselected-icon' : 'ace-icon fa fa-user',
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+        });
+
+        function GetData(a, callback) {
+            var uid = 0;
+            var step = 0;
+            if (a != null) { uid = a.UserId, step = a.step,; }
+
+            $.post('GetMap/', { Uid: uid, step: step }, function (json) {
+                callback({ data: json });
+            }, "json");
+        }
+
+        //$('.tree-item-name , .tree-branch-name').on('click', function () { alert('')})
+
+        //$("#tree1").delegate(".tree-item-name , .tree-branch-name", {
+        //    "mouseover": function () {
+        //        alert("这是mouseover 事件!");
+        //    }
+        //});
+
+});
 </script>
 
 
