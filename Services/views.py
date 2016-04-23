@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.db import transaction
 from db import models
 import datetime
 import json
@@ -14,6 +15,7 @@ import urllib2
 
 loginrole = '1'
 
+@transaction.atomic
 def DashBoard(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -26,7 +28,6 @@ def DashBoard(request):
    	oc.leadercommission(1)
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/DashBoard.html', context)
-
 def NoticeList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -135,7 +136,7 @@ def MemberEdit(request):
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/MemberEdit.html', context)
-
+@transaction.atomic
 def MemberEdit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -436,9 +437,11 @@ def SetAudit(request):
 	context = {}
 	return render(request, 'Services/SetAudit.html', context)
 # 审核
+@transaction.atomic
 def SetAudit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
+
 	serviceid = request.session['service_id']
 	reqUserId = request.POST.get('UserId')
 	print "reqUserId:",reqUserId
@@ -448,13 +451,7 @@ def SetAudit1(request):
 		service_id_ = serviceid
 		)==True:
 	
-		obj = {'result':'t'}
-	else:
-		obj = {'result':'f',
-			'msg':'请稍后再试！'}
-	code = str(json.dumps(obj))
-	return HttpResponse(code)
-
+			return render(request, 'Services/SetAudit.html', context)
 def MemberOrder(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')

@@ -100,6 +100,7 @@ DATABASES = {
         'PASSWORD':'Tlweb1234',
         'HOST':'139.196.235.142',
         'PORT':'3306',
+        'ATOMIC_REQUESTS':True
     }
 }
 

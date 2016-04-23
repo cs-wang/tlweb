@@ -2,11 +2,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
+from django.db import transaction
 from django.utils.dateparse import parse_datetime
 from cStringIO import StringIO
 import qrcode
 import pytz
-
 # Create your views here.
 import json
 from db import models
@@ -20,11 +20,12 @@ def DashBoard(request):
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/DashBoard.html', context)
-
+	
+@transaction.atomic
 def ReConsume(request):
 	context = {}
 	return render(request, 'Member/ReConsume.html', context)
-
+@transaction.atomic
 def ReConsumeSave(request):
 	context = {}
 	obj = {'result':'t'}
@@ -77,7 +78,7 @@ def RewardOrderList(request):
 		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/RewardOrderList.html', context)
-
+@transaction.atomic
 def Recome(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
