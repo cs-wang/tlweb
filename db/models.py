@@ -8,6 +8,7 @@ from compiler.pycodegen import EXCEPT
 from django.utils import timezone
 import sys
 from scipy.constants.constants import year
+from sphinx.ext.todo import Todo
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -41,6 +42,11 @@ def Login(user,pwd,role):
          except BaseException, e:
              print e
              return False
+#显示会员数和已审核的人数
+def members(service_id_):
+    numOfMember = Member.objects.filter(service_id = service_id_).count()
+    numOfVip = Member.objects.filter(service_id = service_id_).exclude(status_id = 1).count()
+    return numOfMember,numOfVip
 
 class Advice(models.Model):
     advice_id = models.AutoField(primary_key=True)
@@ -72,16 +78,16 @@ class Advice(models.Model):
         except BaseException, e:
             print e
             return False
-    #我的意见role = 0为服务中心，=1为会员
+    #我的意见role = 1为服务中心，=0为会员
     def my_advice(self,user_or_service_id_,role_="1",title_ = None,advice_status_ = None,\
                   time_start_ = None,time_end_ = None,pageNum=1):
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
             args = {}
-            if role_ =="1":
-                args['user_id'] = user_or_service_id_
             if role_ =="0":
+                args['user_id'] = user_or_service_id_
+            if role_ =="1":
                 args['service_id'] = user_or_service_id_
             args1 = {}
             if title_ != None:
@@ -129,42 +135,52 @@ class CommissionOrder(models.Model):
     #佣金状态有三种 0待审核 1待发放 2已发放 
     commission_status = models.CharField(max_length=1, blank=True, null=True)
     #佣金发放查询列表
-    def commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,commision_created_start_=None,commision_created_end_=None,time_order_='0',pageNum=1):
-        args = {}
-        arg ={}
-        comlist = []
-        orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
-        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
-        endPos = pageNum*ONE_PAGE_OF_DATA
-        money = 0
-        if user_name_ !=None:
-            i = Member.objects.filter(user_name = user_name_).get()
-            args['user_id'] = i.user_id
-        if commission_status_ !=None:
-            args['commission_status'] = commission_status_
-        if commission_type_ != None:
-            args['commission_type'] = commission_type_
-        if commision_created_start_ != None:
-            args['commission_created__gt'] = commision_created_start_
-        if commision_created_end_ != None:
-            arg['commission_created__gt'] = commision_created_end_
-            comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
-            count = CommissionOrder.objects.filter(**args).exclude(**arg).count()
-            for i in comlist:
-                money = money + i.commission_price
-            if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count,money
+    def commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,commission_created_start_=None,commission_created_end_=None,\
+                           commission_send_start_=None,commission_send_end_=None,time_order_='0',pageNum=1):
+        try:
+            args = {}
+            arg ={}
+            comlist = []
+            orderlist = {'0':'commission_created','1':'-commission_created','2':'-commission_sent','3':'-commission_sent'}
+            startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+            endPos = pageNum*ONE_PAGE_OF_DATA
+            money = 0
+            if user_name_ !=None:
+                i = Member.objects.filter(user_name = user_name_).get()
+                args['user_id'] = i.user_id
+            if commission_status_ !=None:
+                args['commission_status'] = commission_status_
+            if commission_type_ != None:
+                args['commission_type'] = commission_type_
+            if commission_created_start_ != None:
+                args['commission_created__gt'] = commision_created_start_
+            if commission_send_start_ != None:
+                args['commission_sent__gt'] = commission_send_start_
+            if commission_created_end_ != None:
+                arg['commission_created__gt'] = commision_created_end_
+            if commission_send_end_ != None:
+                arg['commission_sent__gt'] = commission_send_end_
+            if commission_send_end_ != None or commission_created_end_ != None:
+                comlist = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).count()  
+                for i in comlist:
+                    money = money + i.commission_price
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return comlist,(count/ONE_PAGE_OF_DATA),count,money
+                else:
+                    return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
             else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
-        else:
-            comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
-            count = CommissionOrder.objects.filter(**args).count()
-            for i in comlist:
-                money = money + i.commission_price
-            if count%ONE_PAGE_OF_DATA == 0:
-                return comlist,(count/ONE_PAGE_OF_DATA),count,money
-            else:
-                return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
+                comlist = CommissionOrder.objects.filter(**args).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                count = CommissionOrder.objects.filter(**args).count()
+                for i in comlist:
+                    money = money + i.commission_price
+                if count%ONE_PAGE_OF_DATA == 0:
+                    return comlist,(count/ONE_PAGE_OF_DATA),count,money
+                else:
+                    return comlist,(count/ONE_PAGE_OF_DATA)+1,count,money
+        except BaseException, e:
+            print e
+            return [],1,0,0
     
     #审核佣金单
     def confirmComm(self,commission_id_):
@@ -190,43 +206,45 @@ class CommissionOrder(models.Model):
             print e
             return False
     #领导奖获得所有下级上个月所得
-    def leadercommission(self,service_id_):
-        #获取当前时间
-#         time = timezone.now()
-        time = datetime.datetime(2016,5,20)
-        time_1 = datetime.datetime(time.year,time.month,01)
-        if time.month == 1:
-            time_2 = datetime.datetime(time.year-1,12,01)
-        else:
-            time_2 = datetime.datetime(time.year,time.month-1,01)
-        #查询上个月是否已经生成领导奖订单
-        if CommissionOrder.objects.filter(service_id = service_id_).filter(commission_type = CommissionDetail(commission_type = '7')).filter(commission_created__gt =time_2).exclude(commission_created__gt =time_1).count() == 0:            
-            list = Member.objects.filter(service_id = service_id_).all()
-            for i in list:
-                count = Member.objects.filter(reference_id = i.user_id ).count()
-                if count >0:
-                    myReferenceList = Member.objects.filter(reference_id = i.user_id ).all()
-                    money = 0
-                    #对所有孩子的上月推荐奖订单
-                    for j in myReferenceList:
-                        commissionlists = CommissionOrder.objects.filter(user_id = j.user_id).\
-                                filter(commission_created__gt =time_2).\
-                                filter(Q(commission_type = CommissionDetail(commission_type = '0'))\
-                                       |Q(commission_type = CommissionDetail(commission_type = '1'))\
-                                       |Q(commission_type = CommissionDetail(commission_type = '2')))\
-                                       .exclude(commission_created__gt =time_1).all()
-                        if commissionlists.count() >0:
-                            for k in commissionlists:
-                                money = money +k.commission_price
-#                     print i.user_id,"获得",money
-                    if money >0:
-                        CommissionOrder.objects.create(user_id = Member(user_id = i.user_id),commission_price = money*0.1,\
-                                               commission_created = timezone.now(),commission_status = '0',\
-                                               commission_type = CommissionDetail(commission_type = '7'),service_id =i.service_id)
-                else:
-                    pass
-        else:
-            print "已经生成"
+#     def leadercommission(self,service_id_):
+#         #获取当前时间
+# #         time = timezone.now()
+#         time = datetime.datetime(2016,5,20)
+#         time_1 = datetime.datetime(time.year,time.month,01)
+#         if time.month == 1:
+#             time_2 = datetime.datetime(time.year-1,12,01)
+#         else:
+#             time_2 = datetime.datetime(time.year,time.month-1,01)
+#         #查询上个月是否已经生成领导奖订单
+#         if CommissionOrder.objects.filter(service_id = service_id_).filter(commission_type = CommissionDetail(commission_type = '7')).filter(commission_created__gt =time_2).exclude(commission_created__gt =time_1).count() == 0:            
+#             list = Member.objects.filter(service_id = service_id_).all()
+#             for i in list:
+#                 count = Member.objects.filter(reference_id = i.user_id ).count()
+#                 if count >0:
+#                     myReferenceList = Member.objects.filter(reference_id = i.user_id ).all()
+#                     money = 0
+#                     #对所有孩子的上月推荐奖订单
+#                     for j in myReferenceList:
+#                         commissionlists = CommissionOrder.objects.filter(user_id = j.user_id).\
+#                                 filter(commission_created__gt =time_2).\
+#                                 filter(Q(commission_type = CommissionDetail(commission_type = '0'))\
+#                                        |Q(commission_type = CommissionDetail(commission_type = '1'))\
+#                                        |Q(commission_type = CommissionDetail(commission_type = '2')))\
+#                                        .exclude(commission_created__gt =time_1).all()
+#                         if commissionlists.count() >0:
+#                             for k in commissionlists:
+#                                 money = money +k.commission_price
+# #                     print i.user_id,"获得",money
+#                     if money >0:
+#                         CommissionOrder.objects.create(user_id = Member(user_id = i.user_id),commission_price = money*0.1,\
+#                                                commission_created = timezone.now(),commission_status = '0',\
+#                                                commission_type = CommissionDetail(commission_type = '7'),service_id =i.service_id)
+#                 else:
+#                     pass
+#         else:
+#             print "已经生成"
+#             
+            
     # 服务点上个月最优秀10人
     # 暂时不需要
     #传入当前时间 timezone.now()
@@ -287,8 +305,7 @@ class CommissionOrder(models.Model):
         args['commission_created__gt'] = time_1
         args['user_id'] =user_id_
         normal = CommissionOrder.objects.exclude(**arg).\
-        filter(**args).filter(Q(commission_type = CommissionDetail(commission_type = '0'))\
-                              |Q(commission_type = CommissionDetail(commission_type = '6'))).count()
+        filter(**args).filter(Q(commission_type = CommissionDetail(commission_type = '0'))).count()
         great = CommissionOrder.objects.exclude(**arg).filter(**args).\
             filter(commission_type = CommissionDetail(commission_type = '1')).count()
         super = CommissionOrder.objects.exclude(**arg).filter(**args).\
@@ -539,27 +556,209 @@ class Member(models.Model):
 #             print e
 #             return False
 
-    #三叉树版本的审核会员
+    #三叉树版本的审核会员（1000元一单）
+#     def confirmMember(self,user_id_,service_id_):
+#          try:
+#              i = Member.objects.filter(user_id = user_id_).get()
+#              #不是未审核或申请加单就无法被审核
+#              #若是未审核变成已审核
+#              #若是已出局变为已激活
+#              if i.status.status_id == "1" or i.status.status_id == "7":
+#                  if i.status.status_id == "1":  
+#                      i.status = MemberStatus(id = 2,status_id = '2')
+#                      i.confirm_time = timezone.now()
+#                      i.save()
+#                      Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
+#                                             message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                      #如果为首次加单 且上级不为空判断此单为上级的第几单
+#                      if i.reference_id != 0:
+#                         #查询最近三十天上级的推荐奖类订单数量 time_1比time小30天
+#                         time = timezone.now()
+#                         #z最近30天版本
+# #                         time_1 = timezone.now()-datetime.timedelta(days=30)
+#                         time_1 = datetime.datetime(time.year,time.month,1)
+#                         args={}
+#                         arg={}
+#                         args['commission_created__gt'] = time
+#                         arg['commission_created__gt'] =  time_1
+#                         count = CommissionOrder.objects.filter(user_id = Member(user_id = i.reference_id))\
+#                             .filter(Q(commission_type = CommissionDetail(commission_type = '0'))|\
+#                                     Q(commission_type = CommissionDetail(commission_type = '1'))|\
+#                                     Q(commission_type = CommissionDetail(commission_type = '2'))|\
+#                                     Q(commission_type = CommissionDetail(commission_type = '6'))).\
+#                                     filter(**arg).exclude(**args).count()
+#                         if count < 2:
+#                             print i.reference_id,'获得190元推荐奖'
+#                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
+#                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖",\
+#                                             message_content="您已经获得190元推荐奖",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                         elif count == 2:
+#                             print i.reference_id,'获得475元推荐奖'
+#                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 500*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
+#                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖,第三单另奖200元",\
+#                                             message_content="您已经获得475元推荐奖",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                         elif count < 19:
+#                             print i.reference_id,'获得285元优秀推荐奖'
+#                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 300*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '1'),service_id = i.service_id)
+#                             Message.objects.create(user_id = i.reference_id,message_title="获得优秀推荐奖",\
+#                                             message_content="您已经获得285元推荐奖",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                         else:
+#                             print i.reference_id,'获得380元超级推荐奖'
+#                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
+#                             Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖",\
+#                                             message_content="您已经获得380元推荐奖",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                         ##首次消费
+#                         #获取他父亲最新的订单理论上说一个人只有可能一个为确认订单
+#                         count = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
+#                                                                         service_id = service_id_,order_valid_time__isnull=True).count()
+#                         if count == 0:
+#                             print "虽然推荐但是父亲没有新的订单所以没有后面的奖"
+#                         else:
+#                             o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
+#                                                                         service_id = service_id_,order_valid_time__isnull=True)[0]
+#                             o.order_valid_time = timezone.now()
+#                             o.save()
+#                             ref = Member.objects.filter(user_id = i.reference_id).get()
+#                             send_Short_Message(ref.bind_phone,ref.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+#                             #此时再对队列中进行排序
+#                             list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
+#                                      exclude(order_valid_time__isnull=True).all()
+#                             index = 0
+#                             for ob in list:
+#                                 if ob.order_id == o.order_id:
+#                                     break
+#                                 else:
+#                                     index = index + 1
+#                             #队列从0开始 
+#                             if(index+2)/3 > 0:
+#                                 print list[(index-1)/3].user_id.user_id,"拿285广告费"
+#                                 CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+#                                 Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
+#                                             message_content="您已经获得285元广告费",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                                 if(index %3 == 0):
+#                                     print list[(index-1)/3].user_id.user_id,"发送短信 第一层拿满了"
+#                             if(index+5)/9 > 0:
+#                                 print list[(index-4)/9].user_id.user_id,"拿95广告费"
+#                                 CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
+#                                 Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
+#                                             message_content="您已经获得第二层广告费95元",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                                 if((index + 6)%9 == 0):
+#                                     print "发送短信 第二层拿满了"
+#                                     send_Short_Message(list[(index-4)/9].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-4)/9].user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单800元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+#                                     #把爷爷变成出局了
+#                                     mb = Member.objects.filter(user_id = list[(index-4)/9].user_id.user_id).get() 
+#                                     mb.status = MemberStatus(id = 4,status_id = 4)
+#                                     mb.save()             
+#                      else:
+#                          print "没有上级不产生推荐奖其他奖"
+#                          return
+#                 ##复销情况
+#                  elif i.status.status_id == "7":
+#                      i.status = MemberStatus(id = 3,status_id = '3')
+#                      i.confirm_time = timezone.now()
+#                      i.save()
+#                      Message.objects.create(user_id = user_id_,message_title="您的帐号已经激活",\
+#                                             message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                      send_Short_Message(i.bind_phone,i.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+#                      print "已激活"
+#                      #先将自己的订单变为有效
+#                      o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = user_id_),\
+#                                                                         service_id = service_id_,order_valid_time__isnull=True)[0]
+#                      o.order_valid_time = timezone.now()
+#                      o.save()
+#                      print o.order_id,"已经变成有效了" 
+#                      list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
+#                                      exclude(order_valid_time__isnull=True).all()
+#                      index = 0
+#                      for ob in list:
+#                          if ob.order_id == o.order_id:
+#                              break
+#                          else:
+#                              index = index + 1
+#             
+#                     #队列 从0开始 
+#                      if(index+2)/3 > 0:
+#                          print list[(index-1)/3].user_id.user_id,"拿285广告费"
+#                          CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+#                          Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
+#                                             message_content="您已经获得285元广告费",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                          if(index %3 == 0):
+#                              print list[(index-1)/3].user_id.user_id,"发送短信 第一层拿满了"
+#                      if(index+5)/9 > 0:
+#                          print list[(index-4)/9].user_id.user_id,"拿95广告费"
+#                          CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
+#                          Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
+#                                             message_content="您已经获得第二层广告费95元",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                          if((index + 6)%9 == 0):
+#                              print "发送短信 第二层拿满了"
+#                             #把爷爷变成出局了
+#                              mb = Member.objects.filter(user_id = list[(index-4)/9].user_id.user_id).get() 
+#                              mb.status = MemberStatus(id = 4,status_id = 4)
+#                              mb.save()
+#                              send_Short_Message(list[(index-4)/9].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-4)/9].user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单800元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+#                      if i.reference_id != 0:
+#                          print i.reference_id,'获得190元复投推荐奖'
+#                          CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
+#                                                         commission_created = timezone.now(),commission_status = '0',\
+#                                                         commission_type = CommissionDetail(commission_type = '6'),service_id = i.service_id)
+#                          Message.objects.create(user_id = i.reference_id,message_title="获得复投推荐奖",\
+#                                             message_content="您已经获得190元复投推荐奖",message_status = 0,\
+#                                             sent_time = timezone.now())
+#                      else:
+#                          print "没有上级不产生复投推荐奖"
+#                          return                              
+#              else:
+#                 print "该会员状态不是申请加单或未审核，不能被审核"
+#          except BaseException,e:
+#                 print e
+#                 return False
+    
+    #1500一单（包括广告费，推荐奖，领导奖）
     def confirmMember(self,user_id_,service_id_):
-         try:
-             i = Member.objects.filter(user_id = user_id_).get()
-             #不是未审核或申请加单就无法被审核
-             #若是未审核变成已审核
-             #若是已出局变为已激活
-             if i.status.status_id == "1" or i.status.status_id == "7":
-                 if i.status.status_id == "1":  
-                     i.status = MemberStatus(id = 2,status_id = '2')
-                     i.confirm_time = timezone.now()
-                     i.save()
-                     Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
-                                            message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
-                                            sent_time = timezone.now())
-                     #如果为首次加单 且上级不为空判断此单为上级的第几单
-                     if i.reference_id != 0:
+        try:
+            i = Member.objects.filter(user_id = user_id_).get()
+            #不是未审核或申请加单就无法被审核
+            #若是未审核变成已审核#若是已出局变为已激活
+            if i.status.status_id == "1" or i.status.status_id == "7":
+                if i.status.status_id == "1":
+                    #修改了状态
+                    i.status = MemberStatus(id = 2,status_id = '2')
+                    i.confirm_time = timezone.now()
+                    i.save()
+                    Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
+                                           message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+                                           sent_time = timezone.now())
+                    #如果为首次加单 且上级不为空，判断此单为上级的第几单 复销推荐奖不记入推荐奖总数
+                    if i.reference_id != 0:
                         #查询最近三十天上级的推荐奖类订单数量 time_1比time小30天
                         time = timezone.now()
-                        #z最近30天版本
-#                         time_1 = timezone.now()-datetime.timedelta(days=30)
+                        #最近30天
                         time_1 = datetime.datetime(time.year,time.month,1)
                         args={}
                         arg={}
@@ -568,8 +767,7 @@ class Member(models.Model):
                         count = CommissionOrder.objects.filter(user_id = Member(user_id = i.reference_id))\
                             .filter(Q(commission_type = CommissionDetail(commission_type = '0'))|\
                                     Q(commission_type = CommissionDetail(commission_type = '1'))|\
-                                    Q(commission_type = CommissionDetail(commission_type = '2'))|\
-                                    Q(commission_type = CommissionDetail(commission_type = '6'))).\
+                                    Q(commission_type = CommissionDetail(commission_type = '2'))).\
                                     filter(**arg).exclude(**args).count()
                         if count < 2:
                             print i.reference_id,'获得190元推荐奖'
@@ -603,125 +801,171 @@ class Member(models.Model):
                             Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖",\
                                             message_content="您已经获得380元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
-                        ##首次消费
-                        #获取他父亲最新的订单理论上说一个人只有可能一个为确认订单
-                        count = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
-                                                                        service_id = service_id_,order_valid_time__isnull=True).count()
-                        if count == 0:
-                            print "虽然推荐但是父亲没有新的订单所以没有后面的奖"
-                        else:
+                        #至此推荐奖结束
+                        #公排开始
+                        ref = Member.objects.filter(user_id = i.reference_id).get()
+                        #如果父亲状态为已审核说明有订单
+                        if OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
+                                                                                service_id = service_id_,order_valid_time__isnull=True).count() >0:
                             o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
-                                                                        service_id = service_id_,order_valid_time__isnull=True)[0]
+                                                                                service_id = service_id_,order_valid_time__isnull=True)[0]
                             o.order_valid_time = timezone.now()
+#                             o.order_created = o.order_created
                             o.save()
-                            ref = Member.objects.filter(user_id = i.reference_id).get()
                             send_Short_Message(ref.bind_phone,ref.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                            #此时再对队列中进行排序
+                            Message.objects.create(user_id = ref.user_id,message_title="您的帐号已经激活",\
+                                           message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+                                           sent_time = timezone.now())
                             list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
-                                     exclude(order_valid_time__isnull=True).all()
+                                    exclude(order_valid_time__isnull=True).all()
                             index = 0
                             for ob in list:
                                 if ob.order_id == o.order_id:
                                     break
                                 else:
                                     index = index + 1
-                            #队列从0开始 
-                            if(index+2)/3 > 0:
-                                print list[(index-1)/3].user_id.user_id,"拿285广告费"
-                                CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
+                            #index 从0开始
+                            if index ==0:
+                                print "没有奖金"
+                            #左子树
+                            elif (index-1)%3 ==0:
+                                print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                                CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
-                                            message_content="您已经获得285元广告费",message_status = 0,\
+                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
+                                            message_content="您已经获得475元广告费",message_status = 0,\
                                             sent_time = timezone.now())
-                                if(index %3 == 0):
-                                    print list[(index-1)/3].user_id.user_id,"发送短信 第一层拿满了"
-                            if(index+5)/9 > 0:
-                                print list[(index-4)/9].user_id.user_id,"拿95广告费"
-                                CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
-                                                        commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
-                                Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
-                                            message_content="您已经获得第二层广告费95元",message_status = 0,\
-                                            sent_time = timezone.now())
-                                if((index + 6)%9 == 0):
-                                    print "发送短信 第二层拿满了"
-                                    send_Short_Message(list[(index-4)/9].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-4)/9].user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单800元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                                    #把爷爷变成出局了
-                                    mb = Member.objects.filter(user_id = list[(index-4)/9].user_id.user_id).get() 
-                                    mb.status = MemberStatus(id = 4,status_id = 4)
-                                    mb.save()             
-                     else:
-                         print "没有上级不产生推荐奖其他奖"
-                         return
-                ##复销情况
-                 elif i.status.status_id == "7":
-                     i.status = MemberStatus(id = 3,status_id = '3')
-                     i.confirm_time = timezone.now()
-                     i.save()
-                     Message.objects.create(user_id = user_id_,message_title="您的帐号已经激活",\
-                                            message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
-                                            sent_time = timezone.now())
-                     send_Short_Message(i.bind_phone,i.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                     print "已激活"
-                     #先将自己的订单变为有效
-                     o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = user_id_),\
-                                                                        service_id = service_id_,order_valid_time__isnull=True)[0]
-                     o.order_valid_time = timezone.now()
-                     o.save()
-                     print o.order_id,"已经变成有效了" 
-                     list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
-                                     exclude(order_valid_time__isnull=True).all()
-                     index = 0
-                     for ob in list:
-                         if ob.order_id == o.order_id:
-                             break
-                         else:
-                             index = index + 1
-            
-                    #队列 从0开始 
-                     if(index+2)/3 > 0:
-                         print list[(index-1)/3].user_id.user_id,"拿285广告费"
-                         CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 300*(1-tax),\
+                            #中子树
+                            elif (index-1)%3 ==1:
+                                print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                                CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                         Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费285元",\
-                                            message_content="您已经获得285元广告费",message_status = 0,\
+                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
+                                            message_content="您已经获得475元广告费",message_status = 0,\
                                             sent_time = timezone.now())
-                         if(index %3 == 0):
-                             print list[(index-1)/3].user_id.user_id,"发送短信 第一层拿满了"
-                     if(index+5)/9 > 0:
-                         print list[(index-4)/9].user_id.user_id,"拿95广告费"
-                         CommissionOrder.objects.create(user_id = list[(index-4)/9].user_id,commission_price = 100*(1-tax),\
+                                #将上级变出局
+                                mb = Member.objects.filter(user_id = list[(index-1)/3].user_id.user_id).get() 
+                                mb.status = MemberStatus(id = 4,status_id = 4)
+                                mb.save()
+                                send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-1)/3]\
+                                                   .user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单1200元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+                            #右子树
+                            elif (index-1)%3 ==2:
+                                print "右子树不做任何事情"
+                            #至此广告费结束，领导奖开始
+                            #领导奖开始
+                            #上级先添加领导奖
+                            CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*FirstRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = i.service_id)     
+                            print i.reference_id,"拿到10元 领导奖"
+                            #上级的上级添加领导奖
+                            j = Member.objects.filter(user_id = i.reference_id).get()
+                            if j.reference_id != 0:
+                                CommissionOrder.objects.create(user_id = Member(user_id = j.reference_id),commission_price = 200*SecondRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = j.service_id) 
+                                print j.reference_id,"拿到6元 领导奖"
+                                #上级的上级的上级网络推荐奖
+                                k = Member.objects.filter(user_id = j.reference_id).get()
+                                if k.reference_id != 0:
+                                    CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = 200*ThirdRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
+                                    print k.reference_id,"拿到4元 领导奖"
+                        else:
+                            print "没有新订单加入不需要产生广告费"
+                elif i.status.status_id == "7":
+                    #从申请加单变为已激活
+                    i.status = MemberStatus(id = 3,status_id = '3')
+                    i.confirm_time = timezone.now()
+                    i.save()
+                    Message.objects.create(user_id = user_id_,message_title="您的帐号已经激活",\
+                                           message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
+                                           sent_time = timezone.now())
+                    #发两百广告费
+                    CommissionOrder.objects.create(user_id = Member(user_id = user_id_),commission_price = 200*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-4)/9].user_id.service_id)
-                         Message.objects.create(user_id = list[(index-4)/9].user_id.user_id,message_title="获得第二层广告费95元",\
-                                            message_content="您已经获得第二层广告费95元",message_status = 0,\
-                                            sent_time = timezone.now())
-                         if((index + 6)%9 == 0):
-                             print "发送短信 第二层拿满了"
-                            #把爷爷变成出局了
-                             mb = Member.objects.filter(user_id = list[(index-4)/9].user_id.user_id).get() 
-                             mb.status = MemberStatus(id = 4,status_id = 4)
-                             mb.save()
-                             send_Short_Message(list[(index-4)/9].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-4)/9].user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单800元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                     if i.reference_id != 0:
-                         print i.reference_id,'获得190元复投推荐奖'
-                         CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = service_id_)
+                    print "发200广告费"
+                    #将订单变为有效的
+                    o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = user_id_),\
+                                                                       service_id = service_id_,order_valid_time__isnull=True)[0]
+                    o.order_valid_time = timezone.now()
+#                     o.order_created = o.order_created
+                    o.save()
+                    send_Short_Message(i.bind_phone,i.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+                    list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
+                                    exclude(order_valid_time__isnull=True).all()
+                    index = 0
+                    for ob in list:
+                        if ob.order_id == o.order_id:
+                            break
+                        else:
+                            index = index + 1
+                    #index 从0开始
+                    if index ==0:
+                        print "没有奖金"
+                    #左子树
+                    elif (index-1)%3 ==0:
+                        print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                        CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '6'),service_id = i.service_id)
-                         Message.objects.create(user_id = i.reference_id,message_title="获得复投推荐奖",\
-                                            message_content="您已经获得190元复投推荐奖",message_status = 0,\
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
+                                            message_content="您已经获得475元广告费",message_status = 0,\
                                             sent_time = timezone.now())
-                     else:
-                         print "没有上级不产生复投推荐奖"
-                         return                              
-             else:
+                    #中子树
+                    elif (index-1)%3 ==1:
+                        print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                        CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
+                                            message_content="您已经获得475元广告费",message_status = 0,\
+                                            sent_time = timezone.now())
+                                #将上级变出局
+                        mb = Member.objects.filter(user_id = list[(index-1)/3].user_id.user_id).get() 
+                        mb.status = MemberStatus(id = 4,status_id = 4)
+                        mb.save()
+                        send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-1)/3]\
+                                                   .user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单1200元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+                        #右子树
+                    elif (index-1)%3 ==2:
+                        print "不做任何事情"
+                    #至此广告费结束
+                    #复消推荐奖
+                    if i.reference_id != 0:
+                        CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '6'),service_id = service_id_)
+                        #领导奖
+                        #上级先添加领导奖
+                        CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*FirstRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = i.service_id)     
+                        print i.reference_id,"拿到10元 领导奖"
+                        #上级的上级添加领导奖
+                        j = Member.objects.filter(user_id = i.reference_id).get()
+                        if j.reference_id != 0:
+                            CommissionOrder.objects.create(user_id = Member(user_id = j.reference_id),commission_price = 200*SecondRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = j.service_id) 
+                            print j.reference_id,"拿到6元 领导奖"
+                        #上级的上级的领导奖
+                            k = Member.objects.filter(user_id = j.reference_id).get()
+                            if k.reference_id != 0:
+                                CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = 200*ThirdRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
+                            print k.reference_id,"拿到4元 领导奖"
+            else:
                 print "该会员状态不是申请加单或未审核，不能被审核"
-         except BaseException,e:
-                print e
-                return False
-    
+        except BaseException,e:
+               print e
+               return False
     #我直接推荐的会员(可用于我的推荐网络)
     def myReference(self,user_id_,pageNum=1):
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
@@ -749,6 +993,7 @@ class Member(models.Model):
             return user
         except BaseException,e:
             print e
+    
     #我间接推荐的会员
     def myIndirectRef(self,user_id_,pageNum=1):
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
@@ -782,13 +1027,13 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #会员网络不需要分页全部显示
-    #role = 0 为服务中心，= 1为会员默认为第一页
+    #role = 1 为服务中心，= 0为会员默认为第一页
     def myMemberNet(self,userOrServiceid_,role_,pageNum=1):
         try:
-            if role_ == '0':
+            if role_ == '1':
                 memberlist = Member.objects.filter(reference_id = 0,service_id = userOrServiceid_).all()
                 return memberlist
-            if role_ == '1':
+            if role_ == '0':
                 memberlist = Member.objects.filter(reference_id = userOrServiceid_).all()
                 return memberlist
         except BaseException,e:
@@ -972,6 +1217,7 @@ class OrderForm(models.Model):
     express_name = models.CharField(max_length=20, blank=True, null=True)
     express_number = models.CharField(max_length=50, blank=True, null=True)
     #只用于加单因为 首次下单 在注册时下单
+    #当加单成功后
     def createOrder(self,service_id_,user_id_,order_price_,order_type_,order_memo_,order_status_="未发货"):
         try:
             i = Member.objects.filter(user_id = user_id_).get()
@@ -1137,6 +1383,13 @@ class Service(models.Model):
             service = Service.objects.filter(service_name = service_name_).get()
             return service
         except BaseException,e:
+            print e
+    @staticmethod 
+    def GetServiceName(servcie_id_):
+        try:
+            servicename = Service.objects.filter(service_id = servcie_id_).get()
+            return servicename
+        except Exception, e:
             print e
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)
