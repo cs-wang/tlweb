@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^Account/', include('Account.urls')),
     url(r'^Services/', include('Services.urls')),
     url(r'^Member/', include('Member.urls')),
+    url(r'^SubService/', include('SubService.urls')),
 ]

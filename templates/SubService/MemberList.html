@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>会员列表 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<link rel="stylesheet" href="/assets/css/datepicker.css" />
+<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    {% include 'SubService/CommonNavBar.html' %}
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        {% include 'SubService/CommonList.html' %}
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+{% include 'SubService/CommonSetting.html' %}
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            会员列表 
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+<div class="row noMarginLR iUcAddNewMember">
+    <div class="col-xs-12">
+        <div class="alert alert-info">
+           会员出局之后需要加单的，请让会员登录之后在首页点击申请加单，然后在本页审核即可
+        </div>
+        <div>
+            <form class="form-inline hasBlockToolItem" action="../MemberList" method="Get"c>
+
+
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户名/手机号码" />
+
+                <select class="" id="UserStatus" name="UserStatus">
+                <option value="0"{% if reqUserStatus == "0" %} selected="selected"{% endif %}>所有</option>
+                <option value="1"{% if reqUserStatus == "1" %} selected="selected"{% endif %}>未审核</option>
+                <option value="2"{% if reqUserStatus == "2" %} selected="selected"{% endif %}>已审核</option>
+                <option value="3"{% if reqUserStatus == "3" %} selected="selected"{% endif %}>已激活</option>
+                <option value="5"{% if reqUserStatus == "5" %} selected="selected"{% endif %}>服务中心锁定</option>
+                <option value="6"{% if reqUserStatus == "6" %} selected="selected"{% endif %}>管理员锁定</option>
+                <option value="4"{% if reqUserStatus == "4" %} selected="selected"{% endif %}>已出局</option>
+                <option value="7"{% if reqUserStatus == "7" %} selected="selected"{% endif %}>申请加单</option>
+                </select>
+
+                
+
+                <select class="" id="orderby" name="orderby">
+                    <option value="0" {% if reqorderby == "0" %} selected="selected" {% endif %}>注册时间倒序</option>
+                    <option value="1" {% if reqorderby == "1" %} selected="selected" {% endif %}>注册时间正序</option>
+                    <option value="2" {% if reqorderby == "2" %} selected="selected" {% endif %}>确认时间倒序</option>
+                    <option value="3" {% if reqorderby == "3" %} selected="selected" {% endif %}>确认时间正序</option>
+                </select>
+
+
+                <select class="" id="regfrom" name="regfrom">
+                    <option value="0" {% if reqregfrom == "0" %} selected="selected" {% endif %}>所有注册点</option>
+                    <option value="1" {% if reqregfrom == "1" %} selected="selected" {% endif %}>服务中心注册</option>
+                    <option value="2" {% if reqregfrom == "2" %} selected="selected" {% endif %}>会员推荐</option>
+                </select>
+
+                <input class="form-control date-picker" id="regStart" name="regStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 起" {% if reqregStart != None %} value="{{reqregStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="regEnd" name="regEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="注册时间 止" {% if reqregEnd != None %} value="{{reqregEnd}}" {% endif %}/>
+                
+                <input class="form-control date-picker" id="subStart" name="subStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 起" {% if reqsubStart != None %} value="{{reqsubStart}}" {% endif %}/>
+                <input class="form-control date-picker" id="subEnd" name="subEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="审核时间 止" {% if reqsubEnd != None %} value="{{reqsubEnd}}" {% endif %}/>
+ 
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
+                </button>
+            </form>
+        </div>
+        
+        <div class="iWideTable cf">
+            <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:10%;">昵称或姓名</th>
+                    <th style="width:12%;">编号</th>
+                    <th style="width:8%;">托管手机</th>
+                    <th style="width:8%;">绑定手机</th>
+                    <th style="width:6%;">状态</th>
+                    <th style="width:10%;">注册时间</th>
+                    <th style="width:10%;">审核时间</th>
+                    <th style="width:12%;">注册来源</th>
+                    <th style="width:8%;">直推</th>
+                    <th style="width:220px;">操作</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            		{% for member in memberlist %}
+                    <tr>
+                        <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
+                       	{% if member.user_name != None %}
+                        {{member.user_name}}
+                        {% else %}
+                        {{member.nickname}}
+                        {% endif %}
+                        </a></td>
+                        <td data-name="mob" style="font-size:14px;">{{member.user_id}}</td>
+                        <td>{{member.delegation_phone}}</td>
+                        <td>{{member.bind_phone}}</td>
+
+                        {% if member.status.status_id == "1" %}
+                        	<td><span class="label label-success">未审核</span></td>
+                        {% elif member.status.status_id == "2" %}
+                        	<td><span class="label label-warning">已审核</span></td>
+                        {% elif member.status.status_id == "3" %}
+                            <td><span class="label label-success">已激活</span></td>
+                        {% elif member.status.status_id == "4" %}
+                            <td><span class="label label-inverse">已出局</span></td>
+                        {% elif member.status.status_id == "5" %}
+                            <td><span class="label label-warning">服务中心锁定</span></td>
+                        {% elif member.status.status_id == "6" %}
+                            <td><span class="label label-warning">管理员锁定</span></td>
+                        {% else %}
+							<td><span class="label">申请加单</span></td>
+                        {%endif%}
+                        
+                        <td>{{member.register_time}}</td>
+                        <td>
+                        {% if member.confirm_time != None %}
+                        {{member.confirm_time}}
+                        {% endif %}
+                        </td>
+                        <td>
+                                <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】{{member.reference_id}}</a>推荐
+                        </td>
+                        <td>0</td>
+                        
+                        <td>
+                            <div class=" btn-group">
+                                    {% if member.status.status_id == "1" or member.status.status_id == "7" %}
+                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.user_id}}">审核</a>
+                                    {% endif %}
+                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看{{member.user_id}}</a>
+                                    <a class="btn btn-mini btn-purple" href="../MemberEdit1/?UserId={{member.user_id}}">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.user_id}}">查看推荐</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+            </table>
+        </div>
+
+<div class="row">
+    <div class="col-xs-5 iPagesLeft">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
+        </div> 
+    </div>
+    <div class="col-xs-7 iPagesRight">
+        <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserInfo={{reqUserInfo}}&UserStatus={{reqUserStatus}}&orderby={{reqorderby}}&regfrom={{reqregfrom}}&regStart={{reqregStart}}&regEnd={{reqregEnd}}&subStart={{reqsubStart}}&subEnd={{reqsubEnd}}">末页</a></li>
+                </ul>
+        </div>
+    </div>
+</div>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+<script>
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+
+    var sW = $(window).width();
+
+    $('td[data-name="counttd"]').each(function (x, y) {
+        var id = $(y).attr('data-id');
+        $.getJSON("GetRecomeAllCount", { UserId: id }, function (json) {
+            $(y).text(json.count);
+            //alert(json.count);
+        });
+    });
+
+    $('.viewrecom').click(function () {
+        //var sign = $(this).attr('data-sign');
+        var id = $(this).attr('data-id');
+        var _url = "ViewReCome?UserId=" + id;
+        // var _url = "弹窗-查看推荐.html";
+        layer.open({
+            type: 2,
+            title: '查看推荐',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+
+
+    $('.view').click(function () {
+        var id = $(this).attr('data-id');
+        var _url = "ViewMemberSelf?UserId=" + id;
+        //var _url = "弹窗-查看会员信息.html";
+        layer.open({
+            type: 2,
+            title: '查看会员信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+
+
+    $('.recome').click(function () {
+        var id = $(this).attr('data-id');
+        var _url = "ViewMember?UserId=" + id;
+        // var _url = "弹窗-推荐人信息.html";
+        layer.open({
+            type: 2,
+            title: '查看推荐人信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+    })
+    // 激活
+    $('.audit').click(function () { //SetAuditReg
+        var id = $(this).attr('data-id');
+        // var _url = "SetAudit?UserId=" + id;
+        var _url = "SetAudit?UserId=" + id;
+        //var _url = "弹窗-审核会员信息.html";
+        layer.open({
+            type: 2,
+            title: '审核会员信息',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: _url
+        });
+
+    })
+
+    $('.reconsume').click(function () { //SetAuditReg
+        var id = $(this).attr('data-id');
+        var _url = "reconsume?UserId=" + id;
+        layer.open({
+            type: 2,
+            title: '会员复消',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '550px'],
+            content: _url
+        });
+
+    })
+    
+    $('.child').click(function () { //SetAuditReg
+
+        var id = $(this).attr('data-id');
+        layer.confirm('您确定要生成该会员的子账号吗？<br><font color="red">注意：生成之后的子账号等同于新注册账号，仍然需要经过审核才能使用！登陆为在其原有账号之后加一字母，最多不超过26个子账号</font>', { icon: 3 }, function (index) {
+            layer.close(index);
+            layer.msg('正在处理中...', { icon: 16 });
+            $.post('CreateChild', { UserId: id }, function (json) {
+                layer.closeAll('loading');
+                if (json.result == "t") {
+                    layer.alert('操作成功!<br />新生成的用户名为：' + json.msg,{ icon: 1 }, function () { location.href = location.href; })
+                }
+                else {
+                    layer.alert('操作失败！' + json.msg, { icon: 5 });
+                }
+            });
+        });
+    })
+    // 审核
+    $('.audit1').click(function () { 
+
+        var id = $(this).attr('data-id');
+        layer.confirm('您确定要审核吗？审核之后需要激活才能进入公排，请悉知', { icon: 3 }, function (index) {
+            layer.close(index);
+            layer.msg('正在处理中...', { icon: 16 });
+            $.post('SetAudit1/', { UserId: id }, function (json) {
+                layer.closeAll('loading');
+                if (json.result == "t") {
+                    layer.alert('操作成功!', { icon: 1 }, function () { location.href = location.href; })
+                }
+                else {
+                    layer.alert('操作失败！' + json.msg, { icon: 5 });
+                }
+            }, "json");
+        });
+    })
+
+
+
+    $('td[data-name="mob"]').each(function (x,y) {
+        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        $(y).text(_n);
+    })
+
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        {% include 'SubService/CommonFooter.html' %}
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    {% include 'SubService/CommonScripts.html' %}
+</body>
+</html>

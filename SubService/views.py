@@ -13,7 +13,7 @@ import pytz
 # Create your views here.
 import urllib2
 
-loginrole = '1'
+loginrole = '2'
 
 @transaction.atomic
 def DashBoard(request):
@@ -25,12 +25,13 @@ def DashBoard(request):
 # 	print time
 # 	print time_1
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/DashBoard.html', context)
+	return render(request, 'SubService/DashBoard.html', context)
+
 def NoticeList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/NoticeList.html', context)
+	return render(request, 'SubService/NoticeList.html', context)
 
 def MsgList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -101,7 +102,7 @@ def MsgList(request):
 #  	print "最多可以有" ,pageMax
 
 # 	msgobj.myMessage(1,1,0)
-	return render(request, 'Services/MsgList.html', context)
+	return render(request, 'SubService/MsgList.html', context)
 
 def ViewMsg(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -112,7 +113,7 @@ def ViewMsg(request):
 	context = {	'msgtitle':msg.message_title,
 				'msgcontent':msg.message_content,
 				'msgid':msg.message_id, }
-	return render(request, 'Services/ViewMsg.html', context)
+	return render(request, 'SubService/ViewMsg.html', context)
 
 def MsgRead(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -133,7 +134,7 @@ def MemberEdit(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/MemberEdit.html', context)
+	return render(request, 'SubService/MemberEdit.html', context)
 @transaction.atomic
 def MemberEdit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -146,7 +147,7 @@ def MemberEdit1(request):
 	context = { 'selfinfo':selfinfo,
 				'UserId':reqUserId,
 				'username':request.session['username'], }
-	return render(request, 'Services/MemberEdit1.html', context)
+	return render(request, 'SubService/MemberEdit1.html', context)
 
 def MemberSave(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -393,7 +394,7 @@ def MemberList(request):
 				'prevomitpage':prevomitpage,
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage }
-	return render(request, 'Services/MemberList.html', context)
+	return render(request, 'SubService/MemberList.html', context)
 
 def ViewMember(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -401,7 +402,7 @@ def ViewMember(request):
 	reqUserId = request.GET.get('UserId')
 	print "reqUserId:",reqUserId
 	context = {}
-	return render(request, 'Services/ViewMember.html', context)
+	return render(request, 'SubService/ViewMember.html', context)
 
 def ViewMemberSelf(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -414,7 +415,7 @@ def ViewMemberSelf(request):
 	context = {
 		'selfinfo':selfinfo,
 	}
-	return render(request, 'Services/ViewMemberSelf.html', context)
+	return render(request, 'SubService/ViewMemberSelf.html', context)
 
 def ViewReCome(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -427,19 +428,18 @@ def ViewReCome(request):
 	context = {
 		'selfinfo':selfinfo,
 	}
-	return render(request, 'Services/ViewReCome.html', context)
+	return render(request, 'SubService/ViewReCome.html', context)
 # 激活
 def SetAudit(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	context = {}
-	return render(request, 'Services/SetAudit.html', context)
+	return render(request, 'SubService/SetAudit.html', context)
 # 审核
 @transaction.atomic
 def SetAudit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
-
 	serviceid = request.session['service_id']
 	reqUserId = request.POST.get('UserId')
 	print "reqUserId:",reqUserId
@@ -541,7 +541,7 @@ def MemberOrder(request):
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage }
 
-	return render(request, 'Services/MemberOrder.html', context)
+	return render(request, 'SubService/MemberOrder.html', context)
 
 def Deliver(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -555,7 +555,7 @@ def Deliver(request):
 		orderinfo = orderformobj.myDeliverInfoByOrderId(orderid)
 		orderinfolist.append(orderinfo)
 	context = { 'orderinfolist':orderinfolist}
-	return render(request, 'Services/Deliver.html', context)
+	return render(request, 'SubService/Deliver.html', context)
 import urllib
 def DeliverSub(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -584,7 +584,7 @@ def UserMap(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/UserMap.html', context)
+	return render(request, 'SubService/UserMap.html', context)
 
 def GetMap(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -641,7 +641,7 @@ def ComBank(request):
 			'pagenum':pagenum,
 			'totalnum':totalnum
 	}
-	return render(request, 'Services/ComBank.html', context)
+	return render(request, 'SubService/ComBank.html', context)
 
 def Promotion(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -744,7 +744,7 @@ def Promotion(request):
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage
 				 }
-	return render(request, 'Services/Promotion.html', context)
+	return render(request, 'SubService/Promotion.html', context)
 
 def MoneyAudit(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -860,7 +860,7 @@ def AdviceList(request):
 				'nextpage':nextpage
 						}
 
-	return render(request, 'Services/AdviceList.html', context)
+	return render(request, 'SubService/AdviceList.html', context)
 
 def AdviceView(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -872,7 +872,7 @@ def AdviceView(request):
 	context = { 'adv':adv,
 			    'username':request.session['username'],
 			   }
-	return render(request, 'Services/AdviceView.html', context)
+	return render(request, 'SubService/AdviceView.html', context)
 
 def AdviceSub(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -900,15 +900,14 @@ def SubService(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	serviceid = request.session['service_id']
-	print "ServiceID:",serviceid
+	subserviceid = request.session['subservice_id']
+	print "serviceid:",serviceid
+	print "subserviceid:",subserviceid
 	serobj = models.Service()
 	subserviceobj =  serobj.getSecService(service_id_ = serviceid)
-	print "subserviceobj:",subserviceobj.service_id
-	context = {}
-	if subserviceobj != None:
-		context = { "subserviceobj":subserviceobj,
-					'username':request.session['username'], }
-	return render(request, 'Services/SubService.html', context)
+	context = { "subserviceobj":subserviceobj,
+				'username':request.session['username'], }
+	return render(request, 'SubService/SubService.html', context)
 
 def SubServiceSave(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -930,7 +929,7 @@ def SubServiceSave(request):
 	print "ServiceMark:",ServiceMark
 
 	serobj = models.Service()
-	ret = serobj.saveSecService(
+	serobj.saveSecService(
 			service_name_ = UserName,
 			service_pwd_ = UserPwd,
 			service_role_ = UserStatus,
@@ -940,10 +939,6 @@ def SubServiceSave(request):
             service_memo_ = ServiceMark
             )
 
-	if ret == True:
-		obj = {'result':'t'}
-	else:
-		obj = {'result':'f',
-			'msg':"用户名已经被注册"}
+	obj = {'result':'t'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
