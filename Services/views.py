@@ -24,8 +24,6 @@ def DashBoard(request):
 #     	time_1 = timezone.now()-datetime.timedelta(days=30)
 # 	print time
 # 	print time_1
-   	oc = models.CommissionOrder()
-   	oc.leadercommission(1)
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/DashBoard.html', context)
 def NoticeList(request):
@@ -451,7 +449,13 @@ def SetAudit1(request):
 		service_id_ = serviceid
 		)==True:
 	
-			return render(request, 'Services/SetAudit.html', context)
+		obj = {'result':'t'}
+	else:
+		obj = {'result':'f',
+			'msg':'请稍后再试！'}
+	code = str(json.dumps(obj))
+	return HttpResponse(code)
+
 def MemberOrder(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -669,6 +673,10 @@ def Promotion(request):
 		reqAddStart = None
 	if reqAddEnd == "" or reqAddEnd == "None":
 		reqAddEnd = None
+	if reqSubStart == "" or reqSubStart == "None":
+		reqSubStart = None
+	if reqSubEnd == "" or reqSubEnd == "None":
+		reqSubEnd = None
 	if reqorderby == None:
 		reqorderby = "0"
 	if curpage == None or curpage == "":
@@ -682,8 +690,10 @@ def Promotion(request):
 		user_name_=reqUserInfo,
 		commission_status_=reqGiftStatus,
 		commission_type_=reqGiftFrom,
-		commision_created_start_=reqAddStart,
-		commision_created_end_=reqAddEnd,
+		commission_created_start_=reqAddStart,
+		commission_created_end_=reqAddEnd,
+		commission_send_start_=reqSubStart,
+		commission_send_end_=reqSubEnd,
 		time_order_=reqorderby,
 		pageNum=curpage)
 	#for coms in comslist:

@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.db import transaction
 from db import models
 import datetime
 import json
@@ -14,6 +15,7 @@ import urllib2
 
 loginrole = '2'
 
+@transaction.atomic
 def DashBoard(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -22,16 +24,14 @@ def DashBoard(request):
 #     	time_1 = timezone.now()-datetime.timedelta(days=30)
 # 	print time
 # 	print time_1
-   	oc = models.CommissionOrder()
-   	oc.leadercommission(1)
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/DashBoard.html', context)
+	return render(request, 'SubService/DashBoard.html', context)
 
 def NoticeList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
-	return render(request, 'Services/NoticeList.html', context)
+	return render(request, 'SubService/NoticeList.html', context)
 
 def MsgList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -135,7 +135,7 @@ def MemberEdit(request):
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
 	return render(request, 'SubService/MemberEdit.html', context)
-
+@transaction.atomic
 def MemberEdit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -436,6 +436,7 @@ def SetAudit(request):
 	context = {}
 	return render(request, 'SubService/SetAudit.html', context)
 # 审核
+@transaction.atomic
 def SetAudit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -672,6 +673,10 @@ def Promotion(request):
 		reqAddStart = None
 	if reqAddEnd == "" or reqAddEnd == "None":
 		reqAddEnd = None
+	if reqSubStart == "" or reqSubStart == "None":
+		reqSubStart = None
+	if reqSubEnd == "" or reqSubEnd == "None":
+		reqSubEnd = None
 	if reqorderby == None:
 		reqorderby = "0"
 	if curpage == None or curpage == "":
@@ -685,8 +690,10 @@ def Promotion(request):
 		user_name_=reqUserInfo,
 		commission_status_=reqGiftStatus,
 		commission_type_=reqGiftFrom,
-		commision_created_start_=reqAddStart,
-		commision_created_end_=reqAddEnd,
+		commission_created_start_=reqAddStart,
+		commission_created_end_=reqAddEnd,
+		commission_send_start_=reqSubStart,
+		commission_send_end_=reqSubEnd,
 		time_order_=reqorderby,
 		pageNum=curpage)
 	#for coms in comslist:
