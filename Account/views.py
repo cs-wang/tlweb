@@ -24,15 +24,28 @@ def login(request):
             request.session['role'] = role_
         obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
+        obj2 = {'result':'success','role':'2'}
         code = str(json.dumps(obj))
         code1 = str(json.dumps(obj1))
+        code2 = str(json.dumps(obj2))
         if flag == True:
+            request.session['username'] = user_
             if role_ == '0':
                 request.session['role'] = '0'
                 request.session['user_id'] = models.Member.GetUser(user_).user_id
             elif role_ == '1':
                 request.session['role'] = '1'
                 request.session['service_id'] = models.Service.GetService(user_).service_id
+                sub_role = models.Service.GetService(user_).role
+                if sub_role == '2':
+                    request.session['role'] = '2'
+                    subserviceobj = models.Service.GetService(user_)
+                    request.session['service_id'] = subserviceobj.service_ref
+                    request.session['subservice_id'] = subserviceobj.service_id
+                    print "request.session['role']:",request.session['role']
+                    print "request.session['service_id']:",request.session['service_id']
+                    print "request.session['subservice_id']:",request.session['subservice_id']
+                    return HttpResponse(code2)
             return HttpResponse(code)
         elif flag == False:
             return HttpResponse(code1)

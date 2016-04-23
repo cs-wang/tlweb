@@ -1460,25 +1460,32 @@ class Service(models.Model):
     #副中心保存(密码未做)
     def saveSecService(self,service_name_,service_pwd_,service_role_=None,service_area_=None,\
                        service_ref_=None,service_response_=None,service_memo_=None):
-        i = None
         try:
             i = Service.objects.filter(service_ref = service_ref_)
             if not i:
-                Service.objects.create(service_name = service_name_,service_pwd = service_pwd_,role = service_role_,\
+                j = Service.objects.filter(service_name = service_name_)
+                if j:
+                    return False
+                else:
+                    Service.objects.create(service_name = service_name_,service_pwd = service_pwd_,role = service_role_,\
                                        service_area = service_area_,service_ref = service_ref_,service_response = service_response_,\
                                        service_memo = service_memo_)
-            if i:
+                    return True
+            elif i:
                 y = i.get()
                 y.service_name = service_name_
-                y.service_pwd = service_pwd_
+                if service_pwd_ != "":
+                    y.service_pwd = service_pwd_
                 y.role = service_role_
                 y.service_area = service_area_
                 y.service_ref = service_ref_
                 y.service_response = service_response_
                 y.service_memo = service_memo_
                 y.save()
+                return True
         except BaseException,e:
             print e
+            return False
     #获取副中心
     def getSecService(self,service_id_):
         try:

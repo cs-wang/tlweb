@@ -225,6 +225,14 @@
                     	location.href = '/Member/DashBoard/'
                     } else if (json.role == '1') {
                     	location.href = 'Services/DashBoard/'
+                    } else if (json.role == '2') {
+                        location.href = 'SubService/DashBoard/'
+                    } else {
+                        $('#loginerr').show();
+                        $('#loginbtn').removeAttr('disabled');
+                        $('#loginbtn1').removeAttr('disabled');
+                        layer.alert(json.msg, {icon :5 });
+                        return false;
                     }
                 } else if(json.result != "success"){
                     $('#loginerr').show();
