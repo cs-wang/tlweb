@@ -53,6 +53,7 @@ def register(request, ReferenceId = None):
         RegUserStatus = request.POST['UserStatus']
         RegBindMob = request.POST['BindMob']
         RegDepositMobile = request.POST['DepositMobile']
+        RefMobile = request.POST['FromMobile']
         # md5 for password
         RegUserPwd = request.POST['UserPwd']
         global md5_used
@@ -68,6 +69,8 @@ def register(request, ReferenceId = None):
         RegRecAdd = request.POST['RecAdd']
         RegRecMob = request.POST['RecMob']
         RegMark = request.POST['Mark']
+        
+#         print "RefMobile:"
         '''
         print "RegUserId:",RegUserId
         print "RegUserName:",RegUserName
@@ -76,6 +79,7 @@ def register(request, ReferenceId = None):
         print "RegUserStatus:",RegUserStatus
         print "RegBindMob:",RegBindMob
         print "RegDepositMobile:",RegDepositMobile
+        print "RefMobile:",RefMobile
         print "RegUserPwd:",RegUserPwd
         print "RegUserPayPwd:",RegUserPayPwd
         print "RegWeChat:",RegWeChat
@@ -89,12 +93,12 @@ def register(request, ReferenceId = None):
         print "RegMark:",RegMark
         '''
         memberobj = models.Member()
-        if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+        if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
             RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
             obj = {'result':'t'}
         else:
             obj = {'result':'f',
-                'msg':'用户名已经被注册'}
+                'msg':'用户名已经被注册,或推荐人手机号无效'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
 
