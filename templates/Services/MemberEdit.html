@@ -51,7 +51,35 @@
     </script>
     <script src="/assets/js/bootstrap.js"></script>
     <script src="/assets/js/Common.js"></script>
-
+<style type="text/css" media="screen">
+	     *{margin:0;padding:0;}
+	     .inputFix{	         
+             position: relative;
+	     }
+	     .prodctVal{
+	         width: 50px;
+             padding-left: 10px;
+             line-height: 24px;
+             margin:5px;
+	     }
+	     .arrow{
+             width: 0;
+             height: 0;
+             border:5px solid white;
+          }
+          .up-arrow{
+             border-bottom: 5px solid #636363;
+             position: absolute;
+             top: 8px;
+             left: 39px;
+          }
+          .down-arrow{
+             border-top: 5px solid #636363;
+             position: absolute;
+             top: 27px;
+             left:39px;
+          }
+	</style>
 </head>
 
 <body class="no-skin">
@@ -272,12 +300,42 @@
                     <label class="col-sm-3 control-label no-padding-right"> 选择产品 </label>
 
                     <div class="col-sm-9">
-                        <p class="haveChosen">以下产品选满1000元</p>
+                        <p class="haveChosen">以下产品选满1500元</p>
                         <div class="emBox">
-                        <label><input id="A1" name="product" type="checkbox" data-val="500" data-name="亚麻籽益生菌水溶粉500元/提" />亚麻籽益生菌水溶粉500元/提</label> <br />
-                        <label><input id="A4" name="product" type="checkbox" data-val="500" data-name="亚麻全营养代餐棒500元/套" />亚麻全营养代餐棒500元/套</label> <br />
-                        <label><input id="A5" name="product" type="checkbox" data-val="500" data-name="亚麻营养膳食粉500元/套" />亚麻营养膳食粉500元/套</label> <br />
-                        <label><input id="A2" name="product" type="checkbox" data-val="500" data-name="亚麻籽有机冷榨油大礼盒500元/提" />亚麻籽有机冷榨油大礼盒500元/提</label> 
+                        <div class="inputFix">
+	         <input type="text" class="prodctVal" readonly value="0" max="3" min="0"/>
+                
+	         <p class="up-arrow arrow"></p>
+	         <p class="down-arrow arrow"></p>
+	           <label class="prodctdesc">亚麻籽益生菌水溶粉500元/提 </label>
+          </div>
+                   
+                 <div  class="inputFix">
+	                    <input type="text" class="prodctVal" readonly value="0" max="3" min="0"/>
+	                    <p class="up-arrow arrow"></p>
+	                   <p class="down-arrow arrow"></p>
+	                   <label class="prodctdesc">亚麻籽有机冷榨油大礼盒500元/提</label>
+	                  
+                 </div>
+                
+                
+                <div class="inputFix">
+             
+    	     <input type="text" class="prodctVal" readonly value="0" max="3" min="0"/>
+    	     <p class="up-arrow arrow"></p>
+    	     <p class="down-arrow arrow"></p>
+    	     <label class="prodctdesc">亚麻全营养代餐棒500元/套 </label>
+         </div>
+        
+              
+        
+         <div class="inputFix">
+             
+    	     <input type="text" class="prodctVal" readonly value="0" max="3" min="0"/>
+    	     <p class="up-arrow arrow"></p>
+    	     <p class="down-arrow arrow"></p>
+    	     <label class="prodctdesc">亚麻营养膳食粉500元/套</label>
+         </div> 
                         </div>
 
                         <p class="haveChosen">您选择的是：</p>
@@ -482,6 +540,53 @@
 
             }, "json");
         })
+    });
+    function getSum(){
+        var len = $('.prodctVal').length;
+        var sum = 0;
+        for(var i=0;i<len;i++){
+            var val = parseInt($('.prodctVal').eq(i).val());
+            sum = sum+val;
+        }
+
+        return sum;
+    }
+
+    $('.up-arrow').on("click",function(event){
+        var $obj = $(this).siblings("input");
+        var value = $obj.val();
+        var sum = getSum();
+        if((sum < 3)&&(value < 3)) {                 
+            $obj.val(++value);
+            var len=$('.prodctVal').length;
+            var text="";
+            for (var i=0;i<len;i++){
+            	if(parseInt($('.prodctVal').eq(i).val())!=0)
+                {
+            	        text=text+$('.prodctdesc').eq(i).html()+"x"+$('.prodctVal').eq(i).val()+" ";
+                }
+            }
+            $('#info').text(text);
+            $('#Mark').val(text);
+        }                      
+    });
+    $('.down-arrow').on("click",function(event){
+        var $obj = $(this).siblings("input");
+        var value = $obj.val();
+        var sum = getSum();
+        if((sum >= 0)&&(value > 0)) {
+        	$obj.val(--value);
+            var len=$('.prodctVal').length;
+            var text="";
+            for (var i=0;i<len;i++){
+            	if(parseInt($('.prodctVal').eq(i).val())!=0)
+                {
+            	        text=text+$('.prodctdesc').eq(i).html()+"x"+$('.prodctVal').eq(i).val()+" ";
+                }
+            }
+            $('#info').text(text);
+            $('#Mark').val(text);
+        } 
     });
 </script>
                             <!-- PAGE CONTENT ENDS -->
