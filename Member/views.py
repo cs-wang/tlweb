@@ -43,11 +43,9 @@ def DashBoard(request):
 	context["count"]=count
 	return render(request, 'Member/DashBoard.html', context)
 	
-@transaction.atomic
 def ReConsume(request):
 	context = {}
 	return render(request, 'Member/ReConsume.html', context)
-@transaction.atomic
 def ReConsumeSave(request):
 	mark=request.POST['Mark']
 	username=request.session["username"]
@@ -57,12 +55,18 @@ def ReConsumeSave(request):
 	memobj=models.Member()
 	user=memobj.GetUser(username)
 	print user.nickname
-	flag=orderobj.createOrder(
+	try :
+		with transaction.atomic():
+				flag=orderobj.createOrder(
 							service_id_=user.service_id,
 							user_id_=user.user_id,
 							order_price_=1500*0.8,
 							order_type_='1',
 							order_memo_=mark)
+	except BaseException,e:
+		print e
+		flag = False
+
 	context = {}
 	if flag:
 		obj = {'result':'t'}
@@ -533,8 +537,13 @@ def RecomeSave(request):
 	print 'RegRefId:',RegRefId
 	memobj=models.Member()
 	service_id=memobj.myInfo(RegRefId).service_id
-	flag=memobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,\
+	try :
+		with transaction.atomic():
+			flag=memobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,\
 						RegBankAccount,RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,service_id,RegRefId)
+	except BaseException,e:
+		print e
+		flag = False
 	#register(self,user,nickname_,delegation_phone_,delegation_info_,\
      #    bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
        #  receiver_addr_,order_Memo_,serviceid,referenceid):

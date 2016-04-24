@@ -15,16 +15,15 @@ import urllib2
 
 loginrole = '1'
 
-@transaction.atomic
+
 def DashBoard(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
-# 	send_Short_Message(15757116149,"zzh")
-# 	time = timezone.now()
-#     	time_1 = timezone.now()-datetime.timedelta(days=30)
-# 	print time
-# 	print time_1
-	context = {'username':request.session['username'],}
+	serviceid = request.session['service_id']
+	numOfMember,numOfVip = models.members(service_id_=serviceid)
+	context = { 'username':request.session['username'],
+				'numOfMember':numOfMember,
+				'numOfVip':numOfVip }
 	return render(request, 'Services/DashBoard.html', context)
 def NoticeList(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
@@ -134,7 +133,6 @@ def MemberEdit(request):
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/MemberEdit.html', context)
-@transaction.atomic
 def MemberEdit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -189,7 +187,9 @@ def MemberSave(request):
 	print "RegRecMob:",RegRecMob
 	print "RegMark:",RegMark
 	memberobj = models.Member()
-	if memberobj.register(
+	try :
+		with transaction.atomic():
+			if memberobj.register(
 				user = RegUserName,
 				nickname_ = RegNickName,
 				delegation_phone_ = RegDepositMobile,
@@ -207,10 +207,14 @@ def MemberSave(request):
 				serviceid = serviceid,
 				referenceid = 0
 				) == True:
-		obj = {'result':'t'}
-	else:
+				obj = {'result':'t'}
+			else:
+				obj = {'result':'f',
+					'msg':'用户名已经被注册'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
-			'msg':'用户名已经被注册'}
+					'msg':'用户名已经被注册'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 
@@ -338,7 +342,7 @@ def MemberList(request):
 	print "reqsubEnd:",reqsubEnd
 	
 	member_ = models.Member()
-	memberlist,pagenum,totalnum = member_.MemberList(
+	memberlistnew,pagenum,totalnum = member_.MemberList(
 		service_id_=serviceid,
 		user_or_phone_=reqUserInfo,
 		member_status_=kreqUserStatus,
@@ -350,6 +354,15 @@ def MemberList(request):
 		conf_end_time_=reqsubEnd,
 		pageNum=curpage
 		)
+	memberlist = []
+	for onemember in memberlistnew:
+		onerefer = member_.myInfo(onemember.reference_id)
+		myreferlist1,pagenum1,totalnum1 = member_.myReference(user_id_ = onemember.user_id)
+		onemember.refernum = totalnum1
+		ones = (onemember, onerefer)
+		memberlist.append(ones)
+	print memberlist
+
 	######################################################
 	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
 	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
@@ -410,9 +423,13 @@ def ViewMemberSelf(request):
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
 	selfinfo = member_.myInfo(reqUserId)
+	myreferlist,pagenum,totalnum = member_.myReference(user_id_ = reqUserId)
+	refinfo = member_.myInfo(selfinfo.reference_id)
 	print "selfinfo:",selfinfo
 	context = {
 		'selfinfo':selfinfo,
+		'refinfo':refinfo,
+		'totalnum':totalnum
 	}
 	return render(request, 'Services/ViewMemberSelf.html', context)
 
@@ -420,12 +437,50 @@ def ViewReCome(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	reqUserId = request.GET.get('UserId')
+	curpage = request.GET.get('p')
+	if curpage == None or curpage == '':
+		curpage = "1"
+	curpage = int(curpage)
+	if curpage <= 0:
+		curpage = 1
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
-	selfinfo = member_.myInfo(reqUserId)
-	print "selfinfo:",selfinfo
+	myreferlist,pagenum,totalnum = member_.myReference(user_id_ = reqUserId, pageNum = curpage)
+	######################################################
+	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
+	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
+	interval = 5
+	firstshowpage = (curpage-1)/interval*interval+1
+	lastshowpage = (firstshowpage+interval if firstshowpage+interval < pagenum else pagenum+1)
+	pageshowlist = range(firstshowpage, lastshowpage)
+	
+	if firstshowpage == 1:
+		preomit = False
+		prevomitpage = 1 #useless here
+	else:
+		preomit = True
+		prevomitpage = (1 if firstshowpage-3 < 1 else firstshowpage-3)
+
+	if lastshowpage >= pagenum+1:
+		nextomit = False
+		nextomitpage = pagenum #useless here
+	else:
+		nextomit = True
+		nextomitpage = (pagenum if lastshowpage + 2 > pagenum else lastshowpage + 2)
+	######################################################
 	context = {
-		'selfinfo':selfinfo,
+				'UserId':reqUserId,
+				'myreferlist':myreferlist,
+				'pagenum':pagenum,
+				'totalnum':totalnum,
+				'pageshowlist':pageshowlist,
+				'prevpage':prevpage,
+				'curpage':curpage,
+				'preomit':preomit,
+				'nextomit':nextomit,
+				'prevomitpage':prevomitpage,
+				'nextomitpage':nextomitpage,
+				'nextpage':nextpage
 	}
 	return render(request, 'Services/ViewReCome.html', context)
 # 激活
@@ -435,7 +490,6 @@ def SetAudit(request):
 	context = {}
 	return render(request, 'Services/SetAudit.html', context)
 # 审核
-@transaction.atomic
 def SetAudit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -444,15 +498,21 @@ def SetAudit1(request):
 	reqUserId = request.POST.get('UserId')
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
-	if member_.confirmMember(
+	try :
+		with transaction.atomic():
+			if member_.confirmMember(
 		user_id_ = reqUserId, 
 		service_id_ = serviceid
 		)==True:
-	
-		obj = {'result':'t'}
-	else:
+				obj = {'result':'t'}
+			else:
+				obj = {'result':'f',
+					'msg':'请稍后再试！'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
-			'msg':'请稍后再试！'}
+					'msg':'请稍后再试！'}
+	
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 
@@ -564,17 +624,21 @@ def DeliverSub(request):
 	#print "DeliverDatas:",DeliverDatas
 	DeliverDataslist = DeliverDatas.split(',')
 	orderformobj = models.OrderForm()
-	for ddatas in DeliverDataslist:
-		ddataslist = ddatas.split('|')
-		expressname = ddataslist[1].replace('%','\\').decode('unicode-escape')
-		orderformobj.comfirmDelivery(
+	obj = {}
+	try :
+		with transaction.atomic():
+			for ddatas in DeliverDataslist:
+				ddataslist = ddatas.split('|')
+				expressname = ddataslist[1].replace('%','\\').decode('unicode-escape')
+				orderformobj.comfirmDelivery(
 					order_id_ = ddataslist[0],
 					express_name_ = expressname,#unicode
 					express_number_ = ddataslist[2]
 				)
-	if True:
-		obj = {'result':'t'}
-	else:
+				
+				obj = {'result':'t'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
 			'msg':'请稍后再试！'}
 	code = str(json.dumps(obj))
