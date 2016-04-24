@@ -114,7 +114,7 @@
                     <option value="0" {% if GiftFrom == "0" %} selected="selected" {% endif %}>推荐奖</option>
                     <option value="1" {% if GiftFrom == "1" %} selected="selected" {% endif %}>优秀推荐奖</option>
                     <option value="2" {% if GiftFrom == "2" %} selected="selected" {% endif %}>超级推荐奖</option>
-                    <option value="3" {% if GiftFrom == "3" %} selected="selected" {% endif %}>广告费(层奖)</option>
+                    <option value="3" {% if GiftFrom == "3" %} selected="selected" {% endif %}>广告费</option>
                     <option value="4" {% if GiftFrom == "4" %} selected="selected" {% endif %}>网络推荐奖</option>
                     <option value="5" {% if GiftFrom == "5" %} selected="selected" {% endif %}>优秀人才奖</option>
                 </select>
@@ -175,7 +175,7 @@
                         {% elif coms.commission_type.commission_type == "2" %}
                         超级推荐奖
                         {% elif coms.commission_type.commission_type == "3" %}
-                        广告费(层奖)
+                        广告费
                         {% elif coms.commission_type.commission_type == "4" %}
                         网络推荐奖
                         {% elif coms.commission_type.commission_type == "5" %}
