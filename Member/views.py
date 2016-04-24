@@ -950,5 +950,8 @@ def QrCode(request, ReferenceId):
 	buf = StringIO()
   	img.save(buf)
   	image_stream = buf.getvalue()
-	return HttpResponse(image_stream , content_type="image/png")
+  	context = {QrCode :image_stream}
+  	return render(request, 'Member/Qrcode.html',context)
+# 	return HttpResponse(image_stream , content_type="image/png")
+	
 
