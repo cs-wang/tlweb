@@ -15,7 +15,7 @@ import urllib2
 
 loginrole = '1'
 
-@transaction.atomic
+
 def DashBoard(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -133,7 +133,6 @@ def MemberEdit(request):
 		return HttpResponseRedirect('/')
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/MemberEdit.html', context)
-@transaction.atomic
 def MemberEdit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -188,7 +187,9 @@ def MemberSave(request):
 	print "RegRecMob:",RegRecMob
 	print "RegMark:",RegMark
 	memberobj = models.Member()
-	if memberobj.register(
+	try :
+		with transaction.atomic():
+			if memberobj.register(
 				user = RegUserName,
 				nickname_ = RegNickName,
 				delegation_phone_ = RegDepositMobile,
@@ -206,10 +207,14 @@ def MemberSave(request):
 				serviceid = serviceid,
 				referenceid = 0
 				) == True:
-		obj = {'result':'t'}
-	else:
+				obj = {'result':'t'}
+			else:
+				obj = {'result':'f',
+					'msg':'用户名已经被注册'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
-			'msg':'用户名已经被注册'}
+					'msg':'用户名已经被注册'}
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 
@@ -485,7 +490,6 @@ def SetAudit(request):
 	context = {}
 	return render(request, 'Services/SetAudit.html', context)
 # 审核
-@transaction.atomic
 def SetAudit1(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
@@ -494,15 +498,21 @@ def SetAudit1(request):
 	reqUserId = request.POST.get('UserId')
 	print "reqUserId:",reqUserId
 	member_ = models.Member()
-	if member_.confirmMember(
+	try :
+		with transaction.atomic():
+			if member_.confirmMember(
 		user_id_ = reqUserId, 
 		service_id_ = serviceid
 		)==True:
-	
-		obj = {'result':'t'}
-	else:
+				obj = {'result':'t'}
+			else:
+				obj = {'result':'f',
+					'msg':'请稍后再试！'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
-			'msg':'请稍后再试！'}
+					'msg':'请稍后再试！'}
+	
 	code = str(json.dumps(obj))
 	return HttpResponse(code)
 
@@ -614,17 +624,20 @@ def DeliverSub(request):
 	#print "DeliverDatas:",DeliverDatas
 	DeliverDataslist = DeliverDatas.split(',')
 	orderformobj = models.OrderForm()
-	for ddatas in DeliverDataslist:
-		ddataslist = ddatas.split('|')
-		expressname = ddataslist[1].replace('%','\\').decode('unicode-escape')
-		orderformobj.comfirmDelivery(
+	obj = {}
+	try :
+		with transaction.atomic():
+			for ddatas in DeliverDataslist:
+				ddataslist = ddatas.split('|')
+				expressname = ddataslist[1].replace('%','\\').decode('unicode-escape')
+				orderformobj.comfirmDelivery(
 					order_id_ = ddataslist[0],
 					express_name_ = expressname,#unicode
 					express_number_ = ddataslist[2]
 				)
-	if True:
-		obj = {'result':'t'}
-	else:
+				obj = {'result':'t'}
+	except BaseException,e:
+		print e
 		obj = {'result':'f',
 			'msg':'请稍后再试！'}
 	code = str(json.dumps(obj))

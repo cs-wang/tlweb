@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>查看消息</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+</head>
+
+<body class="no-skin">
+
+    <div class="main-container" id="main-container">
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+
+                            
+
+<div class="row noMarginLR">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+
+        <h3 class="header smaller lighter blue">
+            <small>{{message_title}}</small>
+        </h3>
+
+        <div class="row" style="text-align:left;margin:0 auto">
+            {{message_content}}
+        </div>
+        <hr>
+        <div style="text-align:center">
+            <button class="btn btn-success" id="read">我已阅读</button>
+            <button class="btn btn-light" id="close">关闭</button>
+        </div>
+    </div><!-- /.col -->
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('#read').click(function () {
+            parent.layer.msg('确认中...', { icon: 16 });
+            $.post('MsgRead/',{ MsgId:{{message_id}} }, function (json) {
+                if (json.result == "t") {
+                    parent.location.href=parent.location.href;
+                    parent.layer.closeAll();
+                }
+                else {
+                    parent.layer.alert('请刷新后再试', { icon: 5 });
+                }
+            },"json");
+        });
+
+        $('#close').click(function () {
+            parent.layer.closeAll();
+        });
+    });
+
+
+
+</script>
+
+
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+
+    </div>
+
+
+
+</body>
+</html>

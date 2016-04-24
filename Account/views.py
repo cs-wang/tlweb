@@ -66,6 +66,7 @@ def register(request, ReferenceId = None):
         RegUserStatus = request.POST['UserStatus']
         RegBindMob = request.POST['BindMob']
         RegDepositMobile = request.POST['DepositMobile']
+        RefMobile = request.POST['FromMobile']
         # md5 for password
         RegUserPwd = request.POST['UserPwd']
         global md5_used
@@ -81,6 +82,8 @@ def register(request, ReferenceId = None):
         RegRecAdd = request.POST['RecAdd']
         RegRecMob = request.POST['RecMob']
         RegMark = request.POST['Mark']
+        
+#         print "RefMobile:"
         '''
         print "RegUserId:",RegUserId
         print "RegUserName:",RegUserName
@@ -89,6 +92,7 @@ def register(request, ReferenceId = None):
         print "RegUserStatus:",RegUserStatus
         print "RegBindMob:",RegBindMob
         print "RegDepositMobile:",RegDepositMobile
+        print "RefMobile:",RefMobile
         print "RegUserPwd:",RegUserPwd
         print "RegUserPayPwd:",RegUserPayPwd
         print "RegWeChat:",RegWeChat
@@ -102,15 +106,39 @@ def register(request, ReferenceId = None):
         print "RegMark:",RegMark
         '''
         memberobj = models.Member()
-        if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
-            RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
-            obj = {'result':'t'}
-        else:
-            obj = {'result':'f',
-                'msg':'用户名已经被注册'}
+        try :
+            with transaction.atomic():
+                if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+                                      RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+                    obj = {'result':'t'}
+                else:
+                    obj = {'result':'f',
+                               'msg':'用户名已经被注册,或推荐人手机号无效'}
+        except BaseException,e:
+            print e
+            obj = {'result':'f','msg':'操作有误请重试'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
 
 def ChangePwd(request):
     context = {}
-    return render(request, 'Account/ChangePwd.html', context)
+    if request.method == 'GET':
+        context ={}
+        return render(request, 'Account/ChangePwd.html', context)   
+    elif request.method == 'POST':
+        user_or_service_id_ = request.session['user_id']
+        oldpwd_ = request.POST['OldPwd']
+        newpwd_ = request.POST['NewPwd']
+        role_id_ = request.session['role']
+        print 'user_or_service_id_',user_or_service_id_
+        print 'oldpwd_',oldpwd_
+        print 'newpwd_',newpwd_
+        print 'role_id_',role_id_
+        flag = models.fixPwd(user_or_service_id_,oldpwd_,newpwd_,role_id_)
+        print 'flag',flag
+        if flag:
+            obj = {'result':'t','msg':'修改成功'}
+        else:
+            obj = {'result':'f','msg':'请确认旧密码是否正确，副中心修改密码请联系服务中心'}
+        code = str(json.dumps(obj))
+        return HttpResponse(code)

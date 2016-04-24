@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -145,12 +146,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
+
 # TIME_ZONE = 'UTC'
 TIME_ZONE ='Asia/Shanghai' 
 # USE_TZ = True 
+
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N =True
 
 USE_TZ = False
 

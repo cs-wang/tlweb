@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -448,20 +448,29 @@
 
         <div>
             <form class="form-inline hasBlockToolItem" action="?" method="Get">
+            {% if title == None %}
                 <input id="title" name="title" type="text" class="input-sm" placeholder="意见标题" />
+              {% else %}
+              <input id="title" name="title" type="text" class="input-sm"  value={{title}} />
+              {% endif %}
 
 
-                服务中心 <select class="" id="serviceReadStatus" name="serviceReadStatus"><option value="-1">所有</option>
-<option value="0">未阅读</option>
-<option value="1">已阅读</option>
+                服务中心 <select class="" id="readstatus" name="readstatus">
+                <option value="2" {% if readstatus == '2' %} selected {% endif %}>所有</option>
+               <option value="0" {% if readstatus == '0' %} selected {% endif %}>未阅读</option>
+              <option value="1" {% if readstatus == '1' %} selected {% endif %}>已阅读</option>
 </select>
-                管理员 <select class="" id="adminReadStatus" name="adminReadStatus"><option value="-1">所有</option>
-<option value="0">未阅读</option>
-<option value="1">已阅读</option>
-</select>
-
-                <input class="form-control date-picker" id="addStart" name="addStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 起" />
-                <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 止" />
+             
+               {% if start == None %}
+                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 起" />
+                {% else %}
+                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{start}} />
+                {% endif %}
+                {% if end == None %}
+                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 止" />
+                {% else %}
+                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{end}} />
+                {% endif %}
 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
@@ -476,7 +485,6 @@
                     <th style="width:60%;">标题</th>
                     <th style="width:10%">发表时间</th>
                     <th style="width:10%">服务中心</th>
-                    <th style="width:10%">管理员</th>
                     <th style="width:10%"></th>
 
 
@@ -484,14 +492,27 @@
             </thead>
 
             <tbody>
-                    <tr>
-                        <td>aaa</td>
-                        <td>2016-03-21 17:09</td>
-                        <td><span class='label label-success'>已阅读</span></td>
-                        <td><span class='label'>未阅读</span></td>
-                        <td><button class="btn btn-minier btn-light view" data-id="8">查看意见</button></td>
-                    </tr>
-
+            {% for adv in advlist %}
+            <tr>
+            <td>{{adv.advice_title}}</td>
+            {% if adv.advice_created == None %}
+            <td></td>
+            {% else %}
+            <td>{{adv.advice_created}}</td>
+            {% endif %}
+            {% if adv.advice_status == '0' %}
+            <td><span class='label label-success'>未阅读</span></td>
+            <td><button class="btn btn-minier btn-light view" data-id={{adv.advice_id}} disabled>查看意见</button></td>
+            {% else %}
+            
+            <td><span class='label label-success'>已阅读</span></td>
+            <td><button class="btn btn-minier btn-light view" data-id={{adv.advice_id}} >查看意见</button></td>
+            {% endif %}
+            
+            
+            </tr>
+            {% endfor %}
+                 
 
             </tbody>
         </table>
@@ -505,14 +526,33 @@
 
 
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-5">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 1 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6">
+     <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&status={{status}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&status={{status}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&status={{status}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&status={{status}}">末页</a></li>
 
+                </ul>
         </div>
     </div>
 </div>
@@ -524,9 +564,9 @@
         todayHighlight: true
     })
     $('.view').click(function () {
-        var Id = $(this).attr('data-Id');
+        var Id = $(this).attr('data-id');
         // var _url = "AdviceView?id=" + Id;
-        var _url = "弹窗-查看意见.html";
+        var _url = "AdviceView/?Id="+Id;
         layer.open({
             type: 2,
             title: '查看意见',
