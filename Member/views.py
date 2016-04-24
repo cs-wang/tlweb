@@ -22,6 +22,7 @@ def DashBoard(request):
 	print user_id
 	memberobj = models.Member()
 	myinfo=memberobj.myInfo(user_id)
+	count=len(memberobj.myMemberNet(user_id,"0"))
 	print myinfo.user_name
 	print myinfo.nickname
 	#print myinfo.status_id
@@ -34,6 +35,12 @@ def DashBoard(request):
 			           'regist_time':str(myinfo.register_time)[0:19],'confirm_time':str(myinfo.confirm_time)[0:19],"mem_status":str(myinfo.status_id)}
 	print "status_id"+str(myinfo.status_id)
 	print "status_id",context["mem_status"]
+	orderobj=models.CommissionOrder()
+	normal,great,super=orderobj.getGreatOrSuper(user_id)
+	context['normal']=normal
+	context['great']=great
+	context['super']=super
+	context["count"]=count
 	return render(request, 'Member/DashBoard.html', context)
 	
 def ReConsume(request):

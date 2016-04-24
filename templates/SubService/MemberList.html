@@ -151,14 +151,14 @@
             <thead>
                 <tr>
                     <th style="width:10%;">昵称或姓名</th>
-                    <th style="width:12%;">编号</th>
+                    <!--th style="width:12%;">编号</th-->
                     <th style="width:8%;">托管手机</th>
                     <th style="width:8%;">绑定手机</th>
                     <th style="width:6%;">状态</th>
                     <th style="width:10%;">注册时间</th>
                     <th style="width:10%;">审核时间</th>
                     <th style="width:12%;">注册来源</th>
-                    <th style="width:8%;">直推</th>
+                    <th style="width:8%;">直推人数</th>
                     <th style="width:220px;">操作</th>
                 </tr>
             </thead>
@@ -166,52 +166,57 @@
             <tbody>
             		{% for member in memberlist %}
                     <tr>
-                        <td><a href="../MemberOrder?UserId={{member.user_id}}" title="查看会员订单">
-                       	{% if member.user_name != None %}
-                        {{member.user_name}}
+                        <td><a href="../MemberOrder?UserId={{member.0.user_id}}" title="查看会员订单">
+                       	{% if member.0.user_name != None %}
+                        {{member.0.user_name}}
                         {% else %}
-                        {{member.nickname}}
+                        {{member.0.nickname}}
                         {% endif %}
                         </a></td>
-                        <td data-name="mob" style="font-size:14px;">{{member.user_id}}</td>
-                        <td>{{member.delegation_phone}}</td>
-                        <td>{{member.bind_phone}}</td>
+                        <!--td data-name="mob" style="font-size:14px;">{{member.user_id}}</td-->
+                        <td>{{member.0.delegation_phone}}</td>
+                        <td>{{member.0.bind_phone}}</td>
 
-                        {% if member.status.status_id == "1" %}
+                        {% if member.0.status.status_id == "1" %}
                         	<td><span class="label label-success">未审核</span></td>
-                        {% elif member.status.status_id == "2" %}
+                        {% elif member.0.status.status_id == "2" %}
                         	<td><span class="label label-warning">已审核</span></td>
-                        {% elif member.status.status_id == "3" %}
+                        {% elif member.0.status.status_id == "3" %}
                             <td><span class="label label-success">已激活</span></td>
-                        {% elif member.status.status_id == "4" %}
+                        {% elif member.0.status.status_id == "4" %}
                             <td><span class="label label-inverse">已出局</span></td>
-                        {% elif member.status.status_id == "5" %}
+                        {% elif member.0.status.status_id == "5" %}
                             <td><span class="label label-warning">服务中心锁定</span></td>
-                        {% elif member.status.status_id == "6" %}
+                        {% elif member.0.status.status_id == "6" %}
                             <td><span class="label label-warning">管理员锁定</span></td>
                         {% else %}
 							<td><span class="label">申请加单</span></td>
                         {%endif%}
                         
-                        <td>{{member.register_time}}</td>
+                        <td>{{member.0.register_time}}</td>
                         <td>
-                        {% if member.confirm_time != None %}
-                        {{member.confirm_time}}
+                        {% if member.0.confirm_time != None %}
+                        {{member.0.confirm_time}}
                         {% endif %}
                         </td>
-                        <td>
+                        <!--td>
                                 <a href="javascript:;" data-id="{{member.reference_id}}" class="recome" title="点击查看推荐人">【{{reference_name}}】{{member.reference_id}}</a>推荐
+                        </td-->
+                        <td>
+                        {% if member.1 != None %}
+                            【{{member.1.user_name}}】推荐
+                        {% endif %}
                         </td>
-                        <td>0</td>
+                        <td>{{member.0.refernum}}</td>
                         
                         <td>
                             <div class=" btn-group">
-                                    {% if member.status.status_id == "1" or member.status.status_id == "7" %}
-                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.user_id}}">审核</a>
+                                    {% if member.0.status.status_id == "1" or member.0.status.status_id == "7" %}
+                                        <a class="btn btn-mini btn-warning audit1" data-id="{{member.0.user_id}}">审核</a>
                                     {% endif %}
-                                    <a class="btn btn-mini btn-primary view" data-id="{{member.user_id}}">查看{{member.user_id}}</a>
-                                    <a class="btn btn-mini btn-purple" href="../MemberEdit1/?UserId={{member.user_id}}">修改</a>
-                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.user_id}}">查看推荐</button>
+                                    <a class="btn btn-mini btn-primary view" data-id="{{member.0.user_id}}">查看</a>
+                                    <a class="btn btn-mini btn-purple" href="../MemberEdit1/?UserId={{member.0.user_id}}">修改</a>
+                                    <button type="button" class="btn btn-white btn-inverse btn-mini viewrecom" data-sign="" data-id="{{member.0.user_id}}">查看推荐</button>
                             </div>
                         </td>
                     </tr>

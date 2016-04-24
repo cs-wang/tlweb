@@ -169,7 +169,7 @@
                                 <span class="menu-text">
                                     消息中心
 
-                                            <span class="badge badge-danger">6</span>
+                                            <!--<span class="badge badge-danger">6</span>-->
                                 </span>
                             </a>
                             <b class="arrow"></b> 
@@ -489,7 +489,7 @@
                     <div class="profile-info-name"> 直推人数 </div>
 
                     <div class="profile-info-value">
-                        5
+                        {{count}}
                     </div>
                 </div>
 
@@ -510,8 +510,23 @@
 
                     <div class="profile-info-value">{% if confirm_time != 'None' %} {{confirm_time}} {% endif %}       </div>
                 </div>
+                
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> 推荐奖 </div>
+                   
+                    <div class="profile-info-value"><span><label style="color:red;font-size:25px;">{{normal}}</label><label>/3</label></span> </div>
+                   
+                </div>
+               <div class="profile-info-row">
+                    <div class="profile-info-name"> 优秀推荐奖 </div>
 
-             
+                    <div class="profile-info-value"><span><label style="color:red;font-size:25px;">{{great}}</label><label>/19</label></span>  </div>
+                </div>
+               <div class="profile-info-row">
+                    <div class="profile-info-name"> 超级推荐奖</div>
+
+                    <div class="profile-info-value"><span><label style="color:red;font-size:25px;">{{super}}</label></span>  </div>
+                </div>
             </div>
 
 

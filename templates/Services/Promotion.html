@@ -110,13 +110,15 @@
                     <option value="2" {% if GiftStatus == "2" %} selected="selected" {% endif %}>已发放</option>
                 </select>
                 <select class="" id="GiftFrom" name="GiftFrom">
-                    <option value="6" {% if GiftFrom == "6" %} selected="selected" {% endif %}>所有奖</option>
+                    <option value="8" {% if GiftFrom == "8" %} selected="selected" {% endif %}>所有奖</option>
                     <option value="0" {% if GiftFrom == "0" %} selected="selected" {% endif %}>推荐奖</option>
                     <option value="1" {% if GiftFrom == "1" %} selected="selected" {% endif %}>优秀推荐奖</option>
                     <option value="2" {% if GiftFrom == "2" %} selected="selected" {% endif %}>超级推荐奖</option>
-                    <option value="3" {% if GiftFrom == "3" %} selected="selected" {% endif %}>广告费(层奖)</option>
+                    <option value="3" {% if GiftFrom == "3" %} selected="selected" {% endif %}>广告费</option>
                     <option value="4" {% if GiftFrom == "4" %} selected="selected" {% endif %}>网络推荐奖</option>
                     <option value="5" {% if GiftFrom == "5" %} selected="selected" {% endif %}>优秀人才奖</option>
+                    <option value="6" {% if GiftFrom == "6" %} selected="selected" {% endif %}>复投推荐奖</option>
+                    <option value="7" {% if GiftFrom == "7" %} selected="selected" {% endif %}>领导奖</option>
                 </select>
                 <input class="form-control date-picker" id="AddStart" name="AddStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 起" />
                 <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 止" />
@@ -175,11 +177,15 @@
                         {% elif coms.commission_type.commission_type == "2" %}
                         超级推荐奖
                         {% elif coms.commission_type.commission_type == "3" %}
-                        广告费(层奖)
+                        广告费
                         {% elif coms.commission_type.commission_type == "4" %}
                         网络推荐奖
                         {% elif coms.commission_type.commission_type == "5" %}
                         优秀人才奖
+                        {% elif coms.commission_type.commission_type == "6" %}
+                        复投推荐奖
+                        {% elif coms.commission_type.commission_type == "7" %}
+                        领导奖
                         {% endif %}
                         </td>
                         <td>{{coms.user_id.bank}}</td>
