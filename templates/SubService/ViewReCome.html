@@ -97,7 +97,15 @@
             </thead>
 
             <tbody>
-
+            {% for myrefer in myreferlist %}
+            <tr>
+                <td>{{myrefer.user_name}}</td>
+                <td>{{myrefer.bind_phone}}</td>
+                <td>{{myrefer.register_time}}</td>
+                <td>{{myrefer.confirm_time}}</td>
+                <td>{{myrefer.user_id}}</td>
+            </tr>
+            {% endfor %}
 
             </tbody>
         </table>
@@ -110,7 +118,30 @@
 <div class="row" style="margin-left:0px;">
     <div class="col-xs-12">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 0 页 &nbsp; 共 0 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
+        </div> 
+    </div>
+        <div class="col-xs-7 iPagesRight">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserId={{UserId}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserId={{UserId}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserId={{UserId}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserId={{UserId}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserId={{UserId}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserId={{UserId}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserId={{UserId}}">末页</a></li>
+                </ul>
         </div> 
     </div>
 </div>
