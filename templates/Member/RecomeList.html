@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -453,14 +453,7 @@
 
 
 
-                <select class="col-xs-4 col-sm-4" id="LevelId" name="LevelId" style="width:120px"><option value="0">所有</option>
-<option value="1">一星</option>
-<option value="2">二星</option>
-<option value="3">三星</option>
-<option value="4">四星</option>
-<option value="5">五星</option>
-</select>
-
+              
 
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="ace-icon glyphicon glyphicon-search"></i>查询
@@ -484,66 +477,16 @@
             </thead>
 
             <tbody>
-                    <tr><td>蒋成丰</td>
-                        
-                        <td>13065580338</td>
-                        
-                        
-                        
-                        <td>2016-03-14 17:28</td>
-                        <td>2016-03-14 21:03</td>
-                        
-                        
-                        <td>1</td>
-                    </tr>
-                    <tr><td>陈婷</td>
-                        
-                        <td>13858508007</td>
-                        
-                        
-                        
-                        <td>2016-03-13 14:50</td>
-                        <td>2016-03-14 11:11</td>
-                        
-                        
-                        <td>1</td>
-                    </tr>
-                    <tr><td>蒋荷燕</td>
-                        
-                        <td>15968568546</td>
-                        
-                        
-                        
-                        <td>2016-03-08 14:13</td>
-                        <td>2016-03-08 14:20</td>
-                        
-                        
-                        <td>1</td>
-                    </tr>
-                    <tr><td>张伟光</td>
-                        
-                        <td>13600630166</td>
-                        
-                        
-                        
-                        <td>2016-03-07 12:57</td>
-                        <td>2016-03-07 15:29</td>
-                        
-                        
-                        <td>1</td>
-                    </tr>
-                    <tr><td>李莉</td>
-                        
-                        <td>13858521060</td>
-                        
-                        
-                        
-                        <td>2016-03-06 14:27</td>
-                        <td>2016-03-06 14:51</td>
-                        
-                        
-                        <td>2</td>
-                    </tr>
+            {% for ref in refInfolist %}
+            <tr>
+            <td>{{ref.nickname}}</td>
+            <td>{{ref.bind_phone}}</td>
+            <td>{{ref.regist_time}}</td>
+            <td>{{ref.confirm_time}}</td>
+            <td>{{ref.ref_num}}</td>
+            </tr>
+            {% endfor %}
+                   
 
 
             </tbody>
@@ -555,14 +498,33 @@
 
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 5 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+     <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&status={{status}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&status={{status}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&status={{status}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&status={{status}}">末页</a></li>
 
+                </ul>
         </div>
     </div>
 </div>

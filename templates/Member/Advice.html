@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -448,7 +448,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 标题 </label>
 
                 <div class="col-sm-9">
-                    <input type="text" id="AdviceTitle" name="AdviceTitle" maxlength="50" placeholder="意见标题" class="col-xs-10 col-sm-5" />*
+                    <input type="text" id="AdviceTitle" name="AdviceTitle" maxlength="50" placeholder="意见标题" class="col-xs-10 col-sm-5"  />*
                     <div style="clear:both">
                         <p>
                             <a href="javascript:;" id="SD">申请修改资料</a>
@@ -528,8 +528,11 @@
             $('#AdviceInfo').val(Info);
         });
 
-
-        $('#SD').trigger('click');
+    {% if type == 'BD'%}
+        $('#BD').trigger('click');
+    {% else %}
+      $('#SD').trigger('click');
+    {% endif %}
         
 
 
@@ -541,17 +544,17 @@
             if (info == "") { $('#AdviceInfo').focus(); layer.tips('意见内容不能为空', '#AdviceInfo'); return false; }
             layer.msg('正在处理中...', { icon: 16 });
             $(this).prop('disabled', true);
-            $.post('AdviceSub', { title: title, info: info }, function (json) {
+            $.post('AdviceSub/', { title: title, info: info }, function (json) {
                 layer.closeAll('loading');
                 if (json.result == "t") {
-                    layer.msg('发表成功！', { icon: 1 }, function () { location.href = 'AdviceList' });
+                    layer.msg('发表成功！', { icon: 1 }, function () { location.href = '../AdviceList/' });
 
                 }
                 else {
                     layer.alert('发表失败 。<br />' + json.msg, { icon: 5 });
                 }
 
-            });
+            },"json");
         })
     });
 </script>

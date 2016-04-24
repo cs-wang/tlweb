@@ -5,8 +5,12 @@ from django.db.models import Q
 import datetime
 from django.db import models
 from compiler.pycodegen import EXCEPT
+import datetime
+from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 import sys
+from scipy.constants.constants import year
 from scipy.constants.constants import year
 from sphinx.ext.todo import Todo
 import hashlib
@@ -17,7 +21,9 @@ FirstRatio = 0.03
 SecondRatio = 0.03
 ThirdRatio = 0.04
 tax = 0.05
-ONE_PAGE_OF_DATA = 15
+
+ONE_PAGE_OF_DATA = 15    
+
 def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_info_,\
              bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
              receiver_addr_,order_Memo_,serviceid,referenceid):   
@@ -141,8 +147,11 @@ class Advice(models.Model):
             time_ = timezone.now()
             Advice.objects.create(user_id = Member(user_id_), advice_title = title_, advice_content = content_,service = Service(service_id_)\
                                   ,advice_status = 0, advice_created = time_)
+            return True
         except BaseException, e:
+            
             print e
+            return False
     def reply_advice(self,user_id_,reply_content_,service_id_,advice_id_):
         try:
             time_ = timezone.now()
@@ -158,6 +167,7 @@ class Advice(models.Model):
     #我的意见role = 1为服务中心，=0为会员
     def my_advice(self,user_or_service_id_,role_="1",title_ = None,advice_status_ = None,\
                   time_start_ = None,time_end_ = None,pageNum=1):
+        print advice_status_
         try:
             startPos = (pageNum-1)*ONE_PAGE_OF_DATA
             endPos = pageNum*ONE_PAGE_OF_DATA
@@ -193,11 +203,13 @@ class Advice(models.Model):
             return [],0,0
 
     def one_advice(self, adv_id_):
-    	advice = Advice.objects.filter(advice_id = adv_id_).get()
-    	return advice
+        advice = Advice.objects.filter(advice_id = adv_id_).get()
+        return advice
 class CommissionDetail(models.Model):
     commission_type = models.CharField(primary_key=True, max_length=1)
     commission_desc = models.CharField(max_length=10, blank=True, null=True)
+    def getDetailAll(self):
+        return CommissionDetail.objects.order_by("commission_type").all()
 
 class CommissionOrder(models.Model):
     commission_id = models.AutoField(primary_key=True)
@@ -212,6 +224,7 @@ class CommissionOrder(models.Model):
     #佣金状态有三种 0待审核 1待发放 2已发放 
     commission_status = models.CharField(max_length=1, blank=True, null=True)
     #佣金发放查询列表
+
     def commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,commission_created_start_=None,commission_created_end_=None,\
                            commission_send_start_=None,commission_send_end_=None,time_order_='0',pageNum=1):
         try:
@@ -230,16 +243,20 @@ class CommissionOrder(models.Model):
             if commission_type_ != None:
                 args['commission_type'] = commission_type_
             if commission_created_start_ != None:
-                args['commission_created__gt'] = commision_created_start_
+                args['commission_created__gt'] = commission_created_start_
             if commission_send_start_ != None:
                 args['commission_sent__gt'] = commission_send_start_
             if commission_created_end_ != None:
-                arg['commission_created__gt'] = commision_created_end_
+                arg['commission_created__gt'] = commission_created_end_
             if commission_send_end_ != None:
                 arg['commission_sent__gt'] = commission_send_end_
             if commission_send_end_ != None or commission_created_end_ != None:
-                comlist = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
-                count = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).count()  
+                if commission_send_end_ != None:
+                    comlist = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                    count = CommissionOrder.objects.filter(**args).filter(commission_sent__isnull=False).exclude(**arg).count()  
+                else:
+                    comlist = CommissionOrder.objects.filter(**args).exclude(**arg).order_by(orderlist.get(time_order_)).all()[startPos:endPos]
+                    count = CommissionOrder.objects.filter(**args).exclude(**arg).count() 
                 for i in comlist:
                     money = money + i.commission_price
                 if count%ONE_PAGE_OF_DATA == 0:
@@ -282,6 +299,7 @@ class CommissionOrder(models.Model):
         except BaseException,e:
             print e
             return False
+
     #领导奖获得所有下级上个月所得
 #     def leadercommission(self,service_id_):
 #         #获取当前时间
@@ -322,6 +340,7 @@ class CommissionOrder(models.Model):
 #             print "已经生成"
 #             
             
+
     # 服务点上个月最优秀10人
     # 暂时不需要
     #传入当前时间 timezone.now()
@@ -392,6 +411,8 @@ class CommissionOrder(models.Model):
 class MemberStatus(models.Model):
      status_id = models.CharField(max_length=1)
      status_desc = models.CharField(max_length=20)
+     def getStatusDesc(self,status_id_):
+         return MemberStatus.objects.filter(status_id=status_id_).get()
 
 class Member(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -427,6 +448,7 @@ class Member(models.Model):
         except BaseException,e:
             print e
     #user用户名 pwd密码 role角色 0为会员1为服务点
+
 #     def login(self,user,pwd,role):
 #          if role == '0':
 #              try:
@@ -450,7 +472,6 @@ class Member(models.Model):
 #              except BaseException, e:
 #                  print e
 #                  return False
-    
     #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
     #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
     #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID 推荐人Id为0时为所在服务中心
@@ -562,6 +583,7 @@ class Member(models.Model):
 #                             print list[(index-1)/2].user_id.user_id,"拿380广告费"
 #                             CommissionOrder.objects.create(user_id = list[(index-1)/2].user_id,commission_price = 400*(1-tax),\
 #                                                        commission_created = timezone.now(),commission_status = '0',\
+
 #                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/2].user_id.service_id)
 #                             if(index %2 == 0):
 #                                 print list[(index-1)/2].user_id.user_id,"发送短信 第一层拿满了"
@@ -633,6 +655,7 @@ class Member(models.Model):
 #         except BaseException,e:
 #             print e
 #             return False
+
 
     #三叉树版本的审核会员（1000元一单）
 #     def confirmMember(self,user_id_,service_id_):
@@ -881,6 +904,7 @@ class Member(models.Model):
                                 print i.reference_id,'获得400元超级推荐奖+1900元'
                                 CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
+
                                                         commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
                                 CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 1900*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
@@ -1327,6 +1351,7 @@ class OrderForm(models.Model):
     express_name = models.CharField(max_length=20, blank=True, null=True)
     express_number = models.CharField(max_length=50, blank=True, null=True)
     #只用于加单因为 首次下单 在注册时下单
+
     #当加单成功后
     def createOrder(self,service_id_,user_id_,order_price_,order_type_,order_memo_,order_status_="未发货"):
         try:
@@ -1406,6 +1431,7 @@ class OrderForm(models.Model):
                     for i in users:
                         orderlist.append(OrderForm.objects.filter(**args).filter(user_id = i.user_id).all())
                         count = count + OrderForm.objects.filter(**args).filter(user_id = i.user_id).count()
+
                     for j in orderlist:
                         money = money +j.order_price
                 elif user_or_phone_ ==None:
@@ -1493,6 +1519,15 @@ class Service(models.Model):
         except BaseException,e:
             print e
             return False
+
+    def getServiceInfo(self,service_id_):
+        try:
+            return Service.objects.filter(service_id= service_id_).get()
+        except BaseException,e:
+            print e
+            return false;
+        
+
             #获取用户Id
     @staticmethod 
     def GetService(service_name_):
@@ -1508,6 +1543,7 @@ class Service(models.Model):
             return servicename
         except Exception, e:
             print e
+
 class ServiceAccount(models.Model):
     service = models.ForeignKey(Service, models.DO_NOTHING)
     bank = models.CharField(primary_key=True, max_length=255)
@@ -1527,6 +1563,12 @@ class ServiceAccount(models.Model):
                 return account_list,(count/ONE_PAGE_OF_DATA)+1,count
         except BaseException,e:
             print e 
+    def comBankAll(self,service_id_):
+        try:
+            account_list=ServiceAccount.objects.filter(service=service_id_)
+            return account_list
+        except BaseException,e:
+            print e
     
 class ShortMessage(models.Model):
     message_id = models.IntegerField(primary_key=True)
@@ -1542,4 +1584,4 @@ def send_Short_Message(phone,content):
 #     if int(a) == 0:
 #         print "sendsuccess"
 #     else:
-#         print "error"
+
