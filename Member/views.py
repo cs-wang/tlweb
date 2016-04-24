@@ -21,11 +21,9 @@ def DashBoard(request):
 	context = {}
 	return render(request, 'Member/DashBoard.html', context)
 	
-@transaction.atomic
 def ReConsume(request):
 	context = {}
 	return render(request, 'Member/ReConsume.html', context)
-@transaction.atomic
 def ReConsumeSave(request):
 	context = {}
 	obj = {'result':'t'}

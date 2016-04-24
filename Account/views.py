@@ -106,12 +106,17 @@ def register(request, ReferenceId = None):
         print "RegMark:",RegMark
         '''
         memberobj = models.Member()
-        if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
-            RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
-            obj = {'result':'t'}
-        else:
-            obj = {'result':'f',
-                'msg':'用户名已经被注册,或推荐人手机号无效'}
+        try :
+            with transaction.atomic():
+                if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+                                      RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+                    obj = {'result':'t'}
+                else:
+                    obj = {'result':'f',
+                               'msg':'用户名已经被注册,或推荐人手机号无效'}
+        except BaseException,e:
+            print e
+            obj = {'result':'f','msg':'操作有误请重试'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
 

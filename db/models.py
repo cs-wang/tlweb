@@ -18,6 +18,7 @@ SecondRatio = 0.03
 ThirdRatio = 0.04
 tax = 0.05
 ONE_PAGE_OF_DATA = 15
+#支持事务(已做)
 def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_info_,\
              bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
              receiver_addr_,order_Memo_,serviceid,referenceid):   
@@ -26,7 +27,7 @@ def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_i
                 print "已经存在用户"
                 return False
             else:
-                try:
+#                 try:
                     #查出推荐人
                     mem_ref = Member.objects.filter(bind_phone = ref_phone_)
                     if not mem_ref:
@@ -54,9 +55,9 @@ def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_i
                                                    message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
                                                    sent_time = time_, message_status = '0',user_id = i.user_id)
                         return True
-                except BaseException,e:
-                        print e
-                        return False        
+#                 except BaseException,e:
+#                         print e
+#                         return False        
 def fixPwd(user_or_service_id_,oldpwd_,newpwd_,role_id_):
     if role_id_ == '0':
         i = Member.objects.filter(user_id = user_or_service_id_).get()
@@ -94,7 +95,6 @@ def fixPwd(user_or_service_id_,oldpwd_,newpwd_,role_id_):
                 return True
             else:
                 return False
-        
 #user用户名 pwd密码 role角色 0为会员1为服务点
 def Login(user,pwd,role):
     if role == '0':
@@ -455,6 +455,7 @@ class Member(models.Model):
     #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
     #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID 推荐人Id为0时为所在服务中心
     #同时修改会员表和订单表
+    #（事务已做）
     def register(self,user,nickname_,delegation_phone_,delegation_info_,\
          bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
          receiver_addr_,order_Memo_,serviceid,referenceid):
@@ -464,7 +465,7 @@ class Member(models.Model):
                 print "已经存在用户"
                 return False
             else:
-                try:
+#                 try:
                     time_ = timezone.now()
                     #修改member表
                     i = Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
@@ -486,9 +487,9 @@ class Member(models.Model):
                                                message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
                                                sent_time = time_, message_status = '0',user_id = i.user_id)
                     return True
-                except BaseException,e:
-                    print e
-                    return False  
+#                 except BaseException,e:
+#                     print e
+#                     return False  
                   
     #激活会员并且给会员发送已经激活消息
 #     @staticmethod
@@ -818,8 +819,9 @@ class Member(models.Model):
 #                 return False
     
     #1500一单（包括广告费，推荐奖，领导奖）
+    #(事务已做)
     def confirmMember(self,user_id_,service_id_):
-        try:
+#         try:
             i = Member.objects.filter(user_id = user_id_).get()
             #不是未审核或申请加单就无法被审核
             #若是未审核变成已审核#若是已出局变为已激活
@@ -983,9 +985,11 @@ class Member(models.Model):
                                 if list[(index-1)/3].user_id.reference_id != 0:
                                     ref_man = Member.objects.filter(user_id = list[(index-1)/3].user_id.reference_id).get()
                                     send_Short_Message(ref_man.bind_phone,ref_man.user_name+"会员您好,您推荐的用户:"+list[(index-1)/3].user_id.username+"即将获得第3次广告奖励500元后结束。希望你再次提醒会员，重复消费你将自动获得推荐奖200元。咨询电话：0575-87755511.回复TD退订")
+                    
                             #至此广告费结束
                         else:
                             print "没有新订单加入不需要产生广告费"
+                    return True
                 elif i.status.status_id == "7":
                     #从申请加单变为已激活
                     i.status = MemberStatus(id = 3,status_id = '3')
@@ -1071,11 +1075,13 @@ class Member(models.Model):
                                             commission_created = timezone.now(),commission_status = '0',\
                                             commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
                             print k.reference_id,"拿到8元 领导奖"
+                    return True
             else:
                 print "该会员状态不是申请加单或未审核，不能被审核"
-        except BaseException,e:
-               print e
-               return False
+                return False
+#         except BaseException,e:
+#                print e
+#                return False
     #我直接推荐的会员(可用于我的推荐网络)
     def myReference(self,user_id_,pageNum=1):
         startPos = (pageNum-1)*ONE_PAGE_OF_DATA
@@ -1328,8 +1334,9 @@ class OrderForm(models.Model):
     express_number = models.CharField(max_length=50, blank=True, null=True)
     #只用于加单因为 首次下单 在注册时下单
     #当加单成功后
+    #(事务已做)
     def createOrder(self,service_id_,user_id_,order_price_,order_type_,order_memo_,order_status_="未发货"):
-        try:
+#         try:
             i = Member.objects.filter(user_id = user_id_).get()
             i.status = MemberStatus(id = 7,status_id = 7)
             i.save()
@@ -1343,12 +1350,13 @@ class OrderForm(models.Model):
             ref = Member.objects.filter(user_id = i.user_id).get()
             send_Short_Message(ref.bind_phone,ref.user_name+"会员您好:由您推荐的会员"+i.user_name+" 再次加单成功，你将获得推荐奖，自动扣税5%。咨询电话：0575-87755511.回复TD退订【天龙健康】")
             return True
-        except BaseException,e:
-            print e
-            return False
+#         except BaseException,e:
+#             print e
+#             return False
     #确认发货并且提醒会员已经发货了
+    #(事务已做)
     def comfirmDelivery(self,order_id_,express_name_,express_number_):
-        try:    
+#         try:    
             ord = OrderForm.objects.filter(order_id = order_id_).get()
             ord.express_name=express_name_
             ord.express_number=express_number_
@@ -1358,9 +1366,9 @@ class OrderForm(models.Model):
             Message.objects.create(user_id = ord.user_id.user_id,message_title="您的订单已经发货",\
                                    message_content="您的商品"+ord.order_memo+"已经发货，快递号为"+express_number_,message_status = 0,\
                                    sent_time = timezone.now())
-        except BaseException,e:
-            print e
-            return False
+#         except BaseException,e:
+#             print e
+#             return False
     #服务中心订单以及会员界面中订单 #order_type 为0表示未发货的,1表示已发货的，2为所有
     #若不提供user_or_phone_ 返回一个list 用一个循环取读
     #若提供user_or_phone_ 返回一个list,list中的元素也为list 因为多个用户可能同时为一个手机号
