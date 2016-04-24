@@ -13,16 +13,94 @@ import sys
 from scipy.constants.constants import year
 from scipy.constants.constants import year
 from sphinx.ext.todo import Todo
+import hashlib
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
-FirstRatio = 0.05
+md5_used = False
+FirstRatio = 0.03
 SecondRatio = 0.03
-ThirdRatio = 0.02
+ThirdRatio = 0.04
 tax = 0.05
 
 ONE_PAGE_OF_DATA = 15    
 
+def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_info_,\
+             bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
+             receiver_addr_,order_Memo_,serviceid,referenceid):   
+            userEntity = Member.objects.filter(user_name = user)
+            if len(userEntity) >= 1:
+                print "已经存在用户"
+                return False
+            else:
+                try:
+                    #查出推荐人
+                    mem_ref = Member.objects.filter(bind_phone = ref_phone_)
+                    if not mem_ref:
+                        print "推荐人手机号码不存在"
+                        return False
+                    else:
+                        time_ = timezone.now()
+                        #修改member表
+                        i = Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
+                                                  status_id = 1,service_id = serviceid,reference_id = referenceid,\
+                                                  delegation_phone = delegation_phone_,\
+                                                  delegation_info = delegation_info_,bind_phone = bind_phone_,\
+                                                  weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
+                                                  receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
+                                                  register_time = time_)
+                        print i.user_id,"注册成功"
+                        send_Short_Message(bind_phone_, "恭喜您已审核通过成为天龙健康会员，你的注册号："+user+\
+                                               "，推荐会员可以获得公司推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】")
+                        #修改订单表
+                        OrderForm.objects.create(service_id = serviceid , user_id = Member(user_id = i.user_id),\
+                                                     order_price = 1500, order_type = 0,order_created = time_,order_memo = order_Memo_,\
+                                                     order_status ="未发货")
+                        #消息列表中增加一条
+                        Message.objects.create(service_id = serviceid,message_title = nickname_+"首次加单，请审核订单并审核会员",\
+                                                   message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
+                                                   sent_time = time_, message_status = '0',user_id = i.user_id)
+                        return True
+                except BaseException,e:
+                        print e
+                        return False        
+def fixPwd(user_or_service_id_,oldpwd_,newpwd_,role_id_):
+    if role_id_ == '0':
+        i = Member.objects.filter(user_id = user_or_service_id_).get()
+        print i.password
+        print oldpwd_
+        if md5_used:
+            if hashlib.md5(oldpwd_.encode('utf8')).hexdigest() == i.password:
+                i.password = hashlib.md5(newpwd_.encode('utf8')).hexdigest()
+                i.save()
+                return True
+            else:
+                return False
+        else:
+            if oldpwd_ == i.password:
+                i.password = newpwd_
+                i.save()
+                return True
+            else:
+                print "get in "
+                return False
+    elif role_id_ == '1':
+        i = Service.objects.filter(service_id  = user_or_service_id_).get()
+        print i.password
+        if md5_used:
+            if hashlib.md5(oldpwd_.encode('utf8')).hexdigest() == i.service_pwd:
+                i.service_pwd = hashlib.md5(newpwd_.encode('utf8')).hexdigest()
+                i.save()
+                return True
+            else:
+                return False
+        else:
+            if oldpwd_ ==i.service_pwd:
+                i.service_pwd = newpwd_
+                i.save()
+                return True
+            else:
+                return False
+        
 #user用户名 pwd密码 role角色 0为会员1为服务点
 def Login(user,pwd,role):
     if role == '0':
@@ -394,8 +472,6 @@ class Member(models.Model):
 #              except BaseException, e:
 #                  print e
 #                  return False
-
-             
     #user :用户名 nickname：昵称或姓名 delegation_phone委托汇款人手机号 delegation_info委托汇款信息 
     #bind_phone:绑定手机 pwd:密码 weixinId:微信号 bank:开户银行 account:卡号 cardHolder:持卡人 receiver:收货人
     #receiver_phone :收货人手机号 receiver_addr :收货地址  orderMemo:订单详情 serviceid:服务点ID referenceid推荐人ID 推荐人Id为0时为所在服务中心
@@ -413,27 +489,28 @@ class Member(models.Model):
                     time_ = timezone.now()
                     #修改member表
                     i = Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
-                                          status_id = 1,service_id = serviceid,reference_id = referenceid,\
-                                          delegation_phone = delegation_phone_,\
-                                          delegation_info = delegation_info_,bind_phone = bind_phone_,\
-                                          weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
-                                          receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
-                                          register_time = time_)
+                                              status_id = 1,service_id = serviceid,reference_id = referenceid,\
+                                              delegation_phone = delegation_phone_,\
+                                              delegation_info = delegation_info_,bind_phone = bind_phone_,\
+                                              weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
+                                              receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
+                                              register_time = time_)
                     print i.user_id,"注册成功"
                     send_Short_Message(bind_phone_, "恭喜您已审核通过成为天龙健康会员，你的注册号："+user+\
-                                       "，推荐会员可以获得公司推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】")
-                    #修改订单表
+                                           "，推荐会员可以获得公司推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】")
+                        #修改订单表
                     OrderForm.objects.create(service_id = serviceid , user_id = Member(user_id = i.user_id),\
-                                             order_price = 1000, order_type = 0,order_created = time_,order_memo = order_Memo_,\
-                                             order_status ="未发货")
-                    #消息列表中增加一条
+                                                 order_price = 1500, order_type = 0,order_created = time_,order_memo = order_Memo_,\
+                                                 order_status ="未发货")
+                        #消息列表中增加一条
                     Message.objects.create(service_id = serviceid,message_title = nickname_+"首次加单，请审核订单并审核会员",\
-                                           message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
-                                           sent_time = time_, message_status = '0',user_id = i.user_id)
+                                               message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
+                                               sent_time = time_, message_status = '0',user_id = i.user_id)
                     return True
                 except BaseException,e:
                     print e
-                    return False    
+                    return False  
+                  
     #激活会员并且给会员发送已经激活消息
 #     @staticmethod
 #     def activateMember(user_id_,service_id_):
@@ -778,6 +855,7 @@ class Member(models.Model):
                     Message.objects.create(user_id = user_id_,message_title="您的帐号通过审核",\
                                            message_content=i.user_name+"您已经通过审核推荐一个人就能进入公司公排系统，感谢您对我们的支持",message_status = 0,\
                                            sent_time = timezone.now())
+                    send_Short_Message(i.bind_phone,"（天龙健康）恭喜您已审核通过成为天龙健康会员，你的注册号：%s，推荐会员可以获得公司广告费推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】"%(i.user_name))
                     #如果为首次加单 且上级不为空，判断此单为上级的第几单 复销推荐奖不记入推荐奖总数
                     if i.reference_id != 0:
                         #查询最近三十天上级的推荐奖类订单数量 time_1比time小30天
@@ -793,40 +871,77 @@ class Member(models.Model):
                                     Q(commission_type = CommissionDetail(commission_type = '1'))|\
                                     Q(commission_type = CommissionDetail(commission_type = '2'))).\
                                     filter(**arg).exclude(**args).count()
+                        money = 0 
                         if count < 2:
                             print i.reference_id,'获得190元推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖",\
-                                            message_content="您已经获得190元推荐奖",message_status = 0,\
+                                            message_content="您已经获得200元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
+                            money = 200
                         elif count == 2:
-                            print i.reference_id,'获得475元推荐奖'
+                            print i.reference_id,'获得300+200元推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得推荐奖,第三单另奖200元",\
-                                            message_content="您已经获得475元推荐奖",message_status = 0,\
+                                            message_content="您获得300元推荐奖再加200元",message_status = 0,\
                                             sent_time = timezone.now())
+                            money = 300
                         elif count < 19:
-                            print i.reference_id,'获得285元优秀推荐奖'
+                            print i.reference_id,'获得300元优秀推荐奖'
                             CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 300*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '1'),service_id = i.service_id)
                             Message.objects.create(user_id = i.reference_id,message_title="获得优秀推荐奖",\
-                                            message_content="您已经获得285元推荐奖",message_status = 0,\
+                                            message_content="您获得300元推荐奖",message_status = 0,\
                                             sent_time = timezone.now())
+                            money = 300
                         else:
-                            print i.reference_id,'获得380元超级推荐奖'
-                            CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
+                            if count == 19:
+                                print i.reference_id,'获得400元超级推荐奖+1900元'
+                                CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
 
                                                         commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
-                            Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖",\
-                                            message_content="您已经获得380元推荐奖",message_status = 0,\
+                                CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 1900*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '0'),service_id = i.service_id)
+                                Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖以及1900元推荐奖",\
+                                            message_content="您获得400推荐奖和1900元的",message_status = 0,\
                                             sent_time = timezone.now())
+                            else:
+                                print i.reference_id,'获得400元超级推荐奖'
+                                CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
+                                Message.objects.create(user_id = i.reference_id,message_title="获得超级推荐奖",\
+                                            message_content="您获得400推荐奖",message_status = 0,\
+                                            sent_time = timezone.now())
+                            money = 400
                         #至此推荐奖结束
+                        #领导奖开始
+                        #上级先添加领导奖
+                        CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = money*FirstRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = i.service_id)     
+                        print i.reference_id,money*FirstRatio,"领导奖"
+                        #上级的上级添加领导奖
+                        j = Member.objects.filter(user_id = i.reference_id).get()
+                        if j.reference_id != 0:
+                            CommissionOrder.objects.create(user_id = Member(user_id = j.reference_id),commission_price = money*SecondRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = j.service_id) 
+                            print j.reference_id,money*SecondRatio,"领导奖"
+                            #上级的上级的上级网络推荐奖
+                            k = Member.objects.filter(user_id = j.reference_id).get()
+                            if k.reference_id != 0:
+                                CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = money*ThirdRatio,\
+                                            commission_created = timezone.now(),commission_status = '0',\
+                                            commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
+                                print k.reference_id,money*ThirdRatio,"领导奖"
                         #公排开始
                         ref = Member.objects.filter(user_id = i.reference_id).get()
                         #如果父亲状态为已审核说明有订单
@@ -835,9 +950,8 @@ class Member(models.Model):
                             o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = i.reference_id),\
                                                                                 service_id = service_id_,order_valid_time__isnull=True)[0]
                             o.order_valid_time = timezone.now()
-#                             o.order_created = o.order_created
                             o.save()
-                            send_Short_Message(ref.bind_phone,ref.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+                            send_Short_Message(ref.bind_phone,ref.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,并获得推荐奖，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
                             Message.objects.create(user_id = ref.user_id,message_title="您的帐号已经激活",\
                                            message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
                                            sent_time = timezone.now())
@@ -854,52 +968,46 @@ class Member(models.Model):
                                 print "没有奖金"
                             #左子树
                             elif (index-1)%3 ==0:
-                                print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                                print list[(index-1)/3].user_id.user_id,"拿500广告费"
                                 CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
-                                            message_content="您已经获得475元广告费",message_status = 0,\
+                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
                                             sent_time = timezone.now())
+                                send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好，您的用户名为"+list[(index-1)/3].user_id.user_name+"即将获得第1次广告奖励500元，请关注绑定的银行卡号或微信号，继续推广可获得更多广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
                             #中子树
                             elif (index-1)%3 ==1:
-                                print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                                print list[(index-1)/3].user_id.user_id,"拿500广告费"
                                 CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
-                                            message_content="您已经获得475元广告费",message_status = 0,\
+                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
                                             sent_time = timezone.now())
+                                send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好，您的用户名为"+list[(index-1)/3].user_id.user_name+"即将获得第2次广告奖励500元，请关注绑定的银行卡号或微信号，继续推广可获得更多广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
+                            #右子树
+                            elif (index-1)%3 ==2:
+                                print list[(index-1)/3].user_id.user_id,"拿500广告费"
+                                CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+                                Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
+                                            sent_time = timezone.now())
+                                send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好，您的用户名为"+list[(index-1)/3].user_id.user_name+"即将获得第3次广告奖励500元，可以享受公司特别优惠政策，只需继续加单1200元，就可以再次直接生成VIP会员，重新获取产品和进入公排享受广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
                                 #将上级变出局
                                 mb = Member.objects.filter(user_id = list[(index-1)/3].user_id.user_id).get() 
                                 mb.status = MemberStatus(id = 4,status_id = 4)
                                 mb.save()
+                                #给拿钱的的发送出局短信
                                 send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-1)/3]\
                                                    .user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单1200元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                            #右子树
-                            elif (index-1)%3 ==2:
-                                print "右子树不做任何事情"
-                            #至此广告费结束，领导奖开始
-                            #领导奖开始
-                            #上级先添加领导奖
-                            CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*FirstRatio,\
-                                            commission_created = timezone.now(),commission_status = '0',\
-                                            commission_type = CommissionDetail(commission_type = '7'),service_id = i.service_id)     
-                            print i.reference_id,"拿到10元 领导奖"
-                            #上级的上级添加领导奖
-                            j = Member.objects.filter(user_id = i.reference_id).get()
-                            if j.reference_id != 0:
-                                CommissionOrder.objects.create(user_id = Member(user_id = j.reference_id),commission_price = 200*SecondRatio,\
-                                            commission_created = timezone.now(),commission_status = '0',\
-                                            commission_type = CommissionDetail(commission_type = '7'),service_id = j.service_id) 
-                                print j.reference_id,"拿到6元 领导奖"
-                                #上级的上级的上级网络推荐奖
-                                k = Member.objects.filter(user_id = j.reference_id).get()
-                                if k.reference_id != 0:
-                                    CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = 200*ThirdRatio,\
-                                            commission_created = timezone.now(),commission_status = '0',\
-                                            commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
-                                    print k.reference_id,"拿到4元 领导奖"
+                                #给出局的上级发送短信
+                                if list[(index-1)/3].user_id.reference_id != 0:
+                                    ref_man = Member.objects.filter(user_id = list[(index-1)/3].user_id.reference_id).get()
+                                    send_Short_Message(ref_man.bind_phone,ref_man.user_name+"会员您好,您推荐的用户:"+list[(index-1)/3].user_id.username+"即将获得第3次广告奖励500元后结束。希望你再次提醒会员，重复消费你将自动获得推荐奖200元。咨询电话：0575-87755511.回复TD退订")
+                            #至此广告费结束
                         else:
                             print "没有新订单加入不需要产生广告费"
                 elif i.status.status_id == "7":
@@ -910,16 +1018,10 @@ class Member(models.Model):
                     Message.objects.create(user_id = user_id_,message_title="您的帐号已经激活",\
                                            message_content=i.user_name+"您已经进入公司公排系统，感谢您对我们的支持",message_status = 0,\
                                            sent_time = timezone.now())
-                    #发两百广告费
-                    CommissionOrder.objects.create(user_id = Member(user_id = user_id_),commission_price = 200*(1-tax),\
-                                                        commission_created = timezone.now(),commission_status = '0',\
-                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = service_id_)
-                    print "发200广告费"
                     #将订单变为有效的
                     o = OrderForm.objects.order_by("-order_created").filter(user_id = Member(user_id = user_id_),\
                                                                        service_id = service_id_,order_valid_time__isnull=True)[0]
                     o.order_valid_time = timezone.now()
-#                     o.order_created = o.order_created
                     o.save()
                     send_Short_Message(i.bind_phone,i.user_name+"会员您好：你已经成为vip会员，将自动进入公司系统公排模式,推荐奖不限，推荐越多奖金越多。咨询电话：0575-87755511.回复TD退订【天龙健康】")
                     list = OrderForm.objects.filter(service_id = service_id_).order_by("order_valid_time").\
@@ -935,21 +1037,31 @@ class Member(models.Model):
                         print "没有奖金"
                     #左子树
                     elif (index-1)%3 ==0:
-                        print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                        print list[(index-1)/3].user_id.user_id,"拿500广告费"
                         CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
-                                            message_content="您已经获得475元广告费",message_status = 0,\
+                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
                                             sent_time = timezone.now())
                     #中子树
                     elif (index-1)%3 ==1:
-                        print list[(index-1)/3].user_id.user_id,"拿475广告费"
+                        print list[(index-1)/3].user_id.user_id,"拿500广告费"
                         CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
                                                         commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
-                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费475元",\
-                                            message_content="您已经获得475元广告费",message_status = 0,\
+                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
+                                            sent_time = timezone.now())
+                    
+                        #右子树
+                    elif (index-1)%3 ==2:
+                        print list[(index-1)/3].user_id.user_id,"拿500广告费"
+                        CommissionOrder.objects.create(user_id = list[(index-1)/3].user_id,commission_price = 500*(1-tax),\
+                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_type = CommissionDetail(commission_type = '3'),service_id = list[(index-1)/3].user_id.service_id)
+                        Message.objects.create(user_id = list[(index-1)/3].user_id.user_id,message_title="获得第一层广告费500元",\
+                                            message_content="您已经获得500元广告费",message_status = 0,\
                                             sent_time = timezone.now())
                                 #将上级变出局
                         mb = Member.objects.filter(user_id = list[(index-1)/3].user_id.user_id).get() 
@@ -957,11 +1069,8 @@ class Member(models.Model):
                         mb.save()
                         send_Short_Message(list[(index-1)/3].user_id.bind_phone,"会员您好：您的VIP编号："+list[(index-1)/3]\
                                                    .user_id.user_name+"已成为公司高级会员，享受公司特别优惠政策，只需继续加单1200元，就可以再次直接生成VIP会员，重新获取产品又可获得自动公排广告奖励。咨询电话：0575-87755511.回复TD退订【天龙健康】")
-                        #右子树
-                    elif (index-1)%3 ==2:
-                        print "不做任何事情"
                     #至此广告费结束
-                    #复消推荐奖
+                    #复投推荐奖
                     if i.reference_id != 0:
                         CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*(1-tax),\
                                                         commission_created = timezone.now(),commission_status = '0',\
@@ -971,7 +1080,7 @@ class Member(models.Model):
                         CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 200*FirstRatio,\
                                             commission_created = timezone.now(),commission_status = '0',\
                                             commission_type = CommissionDetail(commission_type = '7'),service_id = i.service_id)     
-                        print i.reference_id,"拿到10元 领导奖"
+                        print i.reference_id,"拿到6元 领导奖"
                         #上级的上级添加领导奖
                         j = Member.objects.filter(user_id = i.reference_id).get()
                         if j.reference_id != 0:
@@ -985,7 +1094,7 @@ class Member(models.Model):
                                 CommissionOrder.objects.create(user_id = Member(user_id = k.reference_id),commission_price = 200*ThirdRatio,\
                                             commission_created = timezone.now(),commission_status = '0',\
                                             commission_type = CommissionDetail(commission_type = '7'),service_id = k.service_id)   
-                            print k.reference_id,"拿到4元 领导奖"
+                            print k.reference_id,"拿到8元 领导奖"
             else:
                 print "该会员状态不是申请加单或未审核，不能被审核"
         except BaseException,e:
@@ -1170,7 +1279,7 @@ class Message(models.Model):
     message_status = models.CharField(max_length=1, blank=True, null=True)
 
     def getAllMsg(self):
-      msgs =Message.objects.all()
+      msgs = Message.objects.all()
       return msgs
 
     def getFilterMsg(self,msgid):
@@ -1377,25 +1486,32 @@ class Service(models.Model):
     #副中心保存(密码未做)
     def saveSecService(self,service_name_,service_pwd_,service_role_=None,service_area_=None,\
                        service_ref_=None,service_response_=None,service_memo_=None):
-        i = None
         try:
             i = Service.objects.filter(service_ref = service_ref_)
             if not i:
-                Service.objects.create(service_name = service_name_,service_pwd = service_pwd_,role = service_role_,\
+                j = Service.objects.filter(service_name = service_name_)
+                if j:
+                    return False
+                else:
+                    Service.objects.create(service_name = service_name_,service_pwd = service_pwd_,role = service_role_,\
                                        service_area = service_area_,service_ref = service_ref_,service_response = service_response_,\
                                        service_memo = service_memo_)
-            if i:
+                    return True
+            elif i:
                 y = i.get()
                 y.service_name = service_name_
-                y.service_pwd = service_pwd_
+                if service_pwd_ != "":
+                    y.service_pwd = service_pwd_
                 y.role = service_role_
                 y.service_area = service_area_
                 y.service_ref = service_ref_
                 y.service_response = service_response_
                 y.service_memo = service_memo_
                 y.save()
+                return True
         except BaseException,e:
             print e
+            return False
     #获取副中心
     def getSecService(self,service_id_):
         try:

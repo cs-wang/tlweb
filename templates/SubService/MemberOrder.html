@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>会员订单 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    {% include 'SubService/CommonNavBar.html' %}
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        {% include 'SubService/CommonList.html' %}
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+
+{% include 'SubService/CommonSetting.html' %}
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row noMarginLR">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+
+<link rel="stylesheet" href="/assets/css/datepicker.css" />
+<script src="/assets/js/date-time/bootstrap-datepicker.js"></script>
+<script src="/assets/js/layer/layer.js"></script>
+<!-- /section:settings.box -->
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            会员订单
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+
+<div class="row noMarginLR">
+    <div class="col-xs-12">
+        <div>
+            <form class="form-inline hasBlockToolItem" action="?" method="Get">
+                
+
+                <input id="UserInfo" name="UserInfo" type="text" class="input-sm" placeholder="用户姓名/手机号码" {% if UserInfo != None %} value="{{UserInfo}}" {% endif %} />
+                <select class="" id="OrderStatus" name="OrderStatus">
+                    <option value="2" {% if OrderStatus == "2" %} selected="selected" {% endif %}>所有</option>
+                    <option value="0" {% if OrderStatus == "0" %} selected="selected" {% endif %}>未发货</option>
+                    <option value="1" {% if OrderStatus == "1" %} selected="selected" {% endif %}>已发货</option>
+                </select>
+
+                <input class="form-control date-picker" id="start" name="start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 起" {% if start != None %} value="{{start}}" {% endif %}/>
+                <input class="form-control date-picker" id="end" name="end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="订单时间 止" {% if end != None %} value="{{end}}" {% endif %} />
+
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="ace-icon glyphicon glyphicon-search"></i>查询
+                </button>
+            </form>
+        </div>
+    
+        <div class="iWideTable cf">
+            <table id="simple-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:5px;"><input id="chk" type="checkbox" /></th>
+                        <th style="width:15%;">昵称或姓名</th>
+                        <th style="width:15%;">手机</th>
+                        <th style="width:15%;">订单金额</th>
+                        <th style="width:15%;">订单类型</th>
+                        <th style="width:15%;">订单时间</th>
+                        <th style="">订单备注</th>
+                        <th style="width:60px">状态</th>
+                        <th style="width:20px"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                        {% for order in orderlist %}
+                        <tr>
+                            <td>
+                                    <input id="" name="chk" type="checkbox" value="{{order.order_id}}" />
+                            </td>
+                            <td>{{order.user_id.user_name}}</td>
+                            <td data-name="mob" style="font-size:16px;">{{order.user_id.bind_phone}}</td>
+                            <td>{{order.order_price}}</td>
+                            <td>{{order.order_type}}报单</td>
+                            <td>{{order.order_created}}</td>
+                            <td>{{order.order_memo}}</td>
+                            <td>{{order.order_status}}</td>
+                            <td></td>
+                        </tr>
+
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="iCountTxt">订单金额合计：{{totalmoney}}</div>
+        
+        <button class="btn btn-sm btn-pink" id="batDeliver">批量发货</button>
+        
+<div class="row">
+    <div class="col-xs-5 iPagesLeft">
+        <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
+            第 {{curpage}} 页 共 {{pagenum}} 页 共 {{totalnum}} 条记录
+        </div> 
+    </div>
+    <div class="col-xs-7 iPagesRight">
+        <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&UserInfo={{UserInfo}}&OrderStatus={{OrderStatus}}&start={{start}}&end={{end}}">末页</a></li>
+                </ul>
+        </div>
+    </div>
+</div>
+
+    </div><!-- /.span -->
+</div><!-- /.row -->
+<script>
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+    $('td[data-name="mob"]').each(function (x, y) {
+        var _n = formatStr($(y).text(), [3, 4, 4,1], ' ');
+        $(y).text(_n);
+    });
+
+
+
+
+    $('#chk').click(function () {
+        $('input[name="chk"]').each(function () {
+            $(this).prop('checked', $('#chk').prop('checked'))
+        });
+    })
+
+    $('#batDeliver').click(function () {
+        var ids = new Array();
+        $("input[name='chk']").each(function () {
+            if ($(this).prop('checked') == true) {
+                ids.push($(this).val());
+            }
+        });
+        if (ids.length == 0) {
+            layer.alert('您没有选择任何一条数据', { icon: 5 });
+        }
+        else {
+            var _url = "Deliver/?ids=" + ids.join(',');
+            //var _url = "弹窗-确认发货.html";
+            layer.open({
+                type: 2,
+                title: '确认发货',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['80%', '90%'],
+                content: _url
+            });
+        }
+    });
+    $('.view').click(function () {
+        var opid = $(this).attr('data-opid');
+        var _url = "ViewDeliver?id=" + opid;
+        layer.open({
+            type: 2,
+            title: '查看发货单',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['800px', '450px'],
+            content: _url
+        });
+
+    })
+
+</script>
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        {% include 'SubService/CommonFooter.html' %}
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    {% include 'SubService/CommonScripts.html' %}
+</body>
+</html>

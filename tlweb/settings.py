@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Account',
     'Services',
     'Member',
+    'SubService',
 ]
 
 MIDDLEWARE_CLASSES = [

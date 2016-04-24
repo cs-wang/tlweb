@@ -24,17 +24,28 @@ def login(request):
             request.session['role'] = role_
         obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
+        obj2 = {'result':'success','role':'2'}
         code = str(json.dumps(obj))
         code1 = str(json.dumps(obj1))
+        code2 = str(json.dumps(obj2))
         if flag == True:
+            request.session['username'] = user_
             if role_ == '0':
                 request.session['role'] = '0'
                 request.session['user_id'] = models.Member.GetUser(user_).user_id
-                request.session['username']=user_
             elif role_ == '1':
                 request.session['role'] = '1'
                 request.session['service_id'] = models.Service.GetService(user_).service_id
-                
+                sub_role = models.Service.GetService(user_).role
+                if sub_role == '2':
+                    request.session['role'] = '2'
+                    subserviceobj = models.Service.GetService(user_)
+                    request.session['service_id'] = subserviceobj.service_ref
+                    request.session['subservice_id'] = subserviceobj.service_id
+                    print "request.session['role']:",request.session['role']
+                    print "request.session['service_id']:",request.session['service_id']
+                    print "request.session['subservice_id']:",request.session['subservice_id']
+                    return HttpResponse(code2)
             return HttpResponse(code)
         elif flag == False:
             return HttpResponse(code1)
@@ -55,6 +66,7 @@ def register(request, ReferenceId = None):
         RegUserStatus = request.POST['UserStatus']
         RegBindMob = request.POST['BindMob']
         RegDepositMobile = request.POST['DepositMobile']
+        RefMobile = request.POST['FromMobile']
         # md5 for password
         RegUserPwd = request.POST['UserPwd']
         global md5_used
@@ -70,6 +82,8 @@ def register(request, ReferenceId = None):
         RegRecAdd = request.POST['RecAdd']
         RegRecMob = request.POST['RecMob']
         RegMark = request.POST['Mark']
+        
+#         print "RefMobile:"
         '''
         print "RegUserId:",RegUserId
         print "RegUserName:",RegUserName
@@ -78,6 +92,7 @@ def register(request, ReferenceId = None):
         print "RegUserStatus:",RegUserStatus
         print "RegBindMob:",RegBindMob
         print "RegDepositMobile:",RegDepositMobile
+        print "RefMobile:",RefMobile
         print "RegUserPwd:",RegUserPwd
         print "RegUserPayPwd:",RegUserPayPwd
         print "RegWeChat:",RegWeChat
@@ -91,12 +106,12 @@ def register(request, ReferenceId = None):
         print "RegMark:",RegMark
         '''
         memberobj = models.Member()
-        if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+        if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
             RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
             obj = {'result':'t'}
         else:
             obj = {'result':'f',
-                'msg':'用户名已经被注册'}
+                'msg':'用户名已经被注册,或推荐人手机号无效'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
 

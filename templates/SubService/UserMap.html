@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>会员网络 - 天龙健康会员操作平台</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="../assets/css/ace-ie.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <script src="../assets/js/respond.js"></script>
+    <![endif]-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/Common.js"></script>
+
+</head>
+
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    {% include 'SubService/CommonNavBar.html' %}
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        {% include 'SubService/CommonList.html' %}
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- #section:settings.box -->
+{% include 'SubService/CommonSetting.html' %}
+<!-- /.ace-settings-container -->
+<!-- /section:settings.box -->
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            
+<script src="/assets/js/fuelux/fuelux.tree.js"></script>
+<script src="/assets/js/ace/elements.treeview.js"></script>
+<div class="page-header">
+    <h1>
+        会员中心
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            会员网格
+        </small>
+    </h1>
+</div>
+
+<div class="widget-body">
+	<div class="widget-main padding-8">
+    	<ul id="tree1" class="tree tree-unselectable" role="tree">
+    	</ul>
+    </div>
+</div>
+
+<style>
+    
+</style>
+<script type="text/javascript">
+    jQuery(function ($) {
+
+        $('#tree1').ace_tree({
+            dataSource: GetData,
+            multiSelect: false,
+            cacheItems: true,
+            'open-icon': 'ace-icon fa  fa-eye',
+            'close-icon': 'ace-icon fa fa-users',
+            'selectable' : false,
+            'selected-icon' : 'ace-icon fa fa-user',
+            'unselected-icon' : 'ace-icon fa fa-user',
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+        });
+
+        function GetData(a, callback) {
+            var uid = 0;
+            var step = 0;
+            if (a != null) { uid = a.UserId, step = a.step; }
+
+            $.post('GetMap/', { Uid: uid, step: step }, function (json) {
+                callback({ data: json });
+            }, "json");
+        }
+
+        //$('.tree-item-name , .tree-branch-name').on('click', function () { alert('')})
+
+        //$("#tree1").delegate(".tree-item-name , .tree-branch-name", {
+        //    "mouseover": function () {
+        //        alert("这是mouseover 事件!");
+        //    }
+        //});
+
+});
+</script>
+
+
+
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        {% include 'SubService/CommonFooter.html' %}
+    </div><!-- /.main-container -->
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    {% include 'SubService/CommonScripts.html' %}
+</body>
+</html>
