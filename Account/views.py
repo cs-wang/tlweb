@@ -126,10 +126,14 @@ def ChangePwd(request):
         context ={}
         return render(request, 'Account/ChangePwd.html', context)   
     elif request.method == 'POST':
-        user_or_service_id_ = request.session['user_id']
+        role_id_ = request.session['role']
+        if role_id_ =='0':
+            user_or_service_id_ = request.session['user_id']
+        else:
+            user_or_service_id_ = request.session['service_id']  
+            
         oldpwd_ = request.POST['OldPwd']
         newpwd_ = request.POST['NewPwd']
-        role_id_ = request.session['role']
         print 'user_or_service_id_',user_or_service_id_
         print 'oldpwd_',oldpwd_
         print 'newpwd_',newpwd_
