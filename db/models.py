@@ -407,6 +407,7 @@ class CommissionOrder(models.Model):
         super = CommissionOrder.objects.exclude(**arg).filter(**args).\
             filter(commission_type = CommissionDetail(commission_type = '2')).count()
         print normal,great,super
+        return normal,great,super
         
 class MemberStatus(models.Model):
      status_id = models.CharField(max_length=1)
