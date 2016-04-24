@@ -499,7 +499,7 @@
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款信息 </label>
 
                 <div class="col-sm-9">
-                {% if meminfo.delegation_info  == "" %}
+                {% if meminfo.delegation_info == None or meminfo.delegation_info  == "" %}
                     <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value="" />
                 {% else %}
                    <input type="text" id="Alipay" name="Alipay" placeholder="" class="col-xs-10 col-sm-5" value={{meminfo.delegation_info}}  />
@@ -668,7 +668,7 @@
            
             <div class="clearfix form-actions">
                 <div class="col-md-offset-3 col-md-9">
-                    <button class="btn btn-info" type="button" id="Save">
+                    <button class="btn btn-info" type="button" id="Save"  {% if modifiable == '0' %} disabled {% endif %} >
                         <i class="ace-icon fa fa-check bigger-110"></i>
                         修改
                     </button>

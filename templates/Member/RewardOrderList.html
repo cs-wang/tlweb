@@ -451,29 +451,49 @@
 
                 
 
-                <select class="" id="type" name="type"><option value="-1">所有</option>
-<option value="0">待审核</option>
-<option value="1">待发放</option>
-<option value="2">已发放</option>
+                <select class="" id="type" name="type">
+                <option value="-1"  {% if type == None %} selected {% endif %}>所有</option>
+                <option value="0" {% if type == "0" %} selected {% endif %}>待审核</option>
+                <option value="1" {% if type == "1" %} selected {% endif %}>待发放</option>
+                <option value="2" {% if type == "2" %} selected {% endif %}>已发放</option>
 </select>
  
-                <select class="" id="rewardtype" name="rewardtype"><option value="-1">所有奖</option>
-<option value="0">推荐奖</option>
-<option value="1">优秀推荐奖</option>
-<option value='2'>超级推荐奖</option>
-<option value="3">广告费</option>
-<option value="4">网络推荐奖</option>
-<option value="5">优秀人才奖</option>
-<option value="6">复投推荐奖</option>
-<option value="7">领导奖</option> 
+                <select class="" id="rewardtype" name="rewardtype">
+                <option value="-1" {% if rewardtype == None %} selected {% endif %}>所有奖</option>
+                <option value="0" {% if rewardtype == "0" %} selected {% endif %}>推荐奖</option>
+                <option value="1" {% if rewardtype == "1" %} selected {%endif %}>优秀推荐奖</option>
+                <option value='2' {% if rewardtype == "2" %} selected {%endif %}>超级推荐奖</option>
+                <option value="3" {% if rewardtype == "3" %} selected {%endif %}>广告费</option>
+                <option value="4" {% if rewardtype == "4" %} selected {% endif %})>网络推荐奖</option>
+                <option value="5" {% if rewardtype == "5" %} selected {% endif %} >优秀人才奖</option>
+                
+                <option value="6" {% if rewardtype == "6" %} selected {% endif %}>复投推荐奖</option>
+                <option value="7" {% if rewardtyep == "7" %} selected {% endif %}>领导奖</option> 
 </select>
-
-
+               {% if create_start == None or create_start == ""%}
                 <input class="form-control date-picker" id="create_start" name="create_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 起" />
+                {% else %}
+                <input class="form-control date-picker" id="create_start" name="create_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{create_start}} />
+                {% endif %}
+                
+                {% if create_end == None or create_end == "" %}
                 <input class="form-control date-picker" id="create_end" name="create_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="生成时间 止" />
+                {% else %}
+                <input class="form-control date-picker" id="create_end" name="create_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{create_end}}  />
+                {% endif %}
 
+                {% if sent_start == None or sent_start == "" %}
                 <input class="form-control date-picker" id="sent_start" name="sent_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 起" />
+                {% else %}
+                <input class="form-control date-picker" id="sent_start" name="sent_start" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{sent_start}} />
+                {% endif %}
+                
+                {% if sent_end == None or sent_end == ""%}
                 <input class="form-control date-picker" id="sent_end" name="sent_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发放时间 止" />
+                {% else %}
+                <input class="form-control date-picker" id="sent_end" name="sent_end" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" value={{sent_end}}  />
+                {% endif %}
+                
 
 
 
@@ -500,68 +520,24 @@
             </thead>
 
             <tbody>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【蒋成丰】获得推荐奖</td>
-                        <td>2016-03-14 19:49</td>
-                        <td>2016-03-14 19:51</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【陈婷】获得推荐奖</td>
-                        <td>2016-03-13 15:38</td>
-                        <td>2016-03-13 15:42</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">855.00</td>
-                        <td>广告费</td>
-                        <td>推广费红包</td>
-                        <td>2016-03-12 20:31</td>
-                        <td>2016-03-12 21:12</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【蒋荷燕】获得推荐奖</td>
-                        <td>2016-03-08 14:20</td>
-                        <td>2016-03-08 15:50</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【张伟光】获得推荐奖</td>
-                        <td>2016-03-07 13:48</td>
-                        <td>2016-03-07 21:46</td>
-                        <td>已发放</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align:right">200.00</td>
-                        <td>推荐奖</td>
-                        <td>推荐会员【李莉】获得推荐奖</td>
-                        <td>2016-03-06 14:51</td>
-                        <td>2016-03-07 06:59</td>
-                        <td>已发放</td>
-
-                    </tr>
-
+                  {% for cominfo in cominfolist %}
+                  <tr>
+                  <td style="text-align:right">{{cominfo.price}}</td>
+                  <td>{{cominfo.rewardtype}}</td>
+                  
+                  <td>{% if cominfo.memo  != None %}{{cominfo.memo}}{% endif %}</td>
+                  <td>{% if cominfo.created_time != None %}{{cominfo.created_time}} {% endif %}</td>
+                  <td>{% if comminfo.sent_time != None %}{{cominfo.sent_time}}{% endif %}</td>
+                  <td>{{cominfo.order_status}}</td>
+                  </tr>
+                  {% endfor %}
 
             </tbody>
         </table>
     </div>
 
 
-        <div class="iCountTxt">金额合计：1855</div>
+        <div class="iCountTxt">金额合计：{{money}}</div>
         
 
 
@@ -570,14 +546,14 @@
 <div class="row">
     <div class="col-xs-5 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 6 条记录
+            第 {{curpage}} 页 共 {{pagenum}} 页 &nbsp; 共 {{totalnum}} 条记录
         </div> 
     </div>
       <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&type={{type}}">首页</a></li>
-                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&type={{type}}">上一页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&type={{type}}&rewardtype={{rewardtype}}&create_start={{create_start}}&create_end={{create_end}}&sent_start={{sent_start}}&sent_end={{sent_end}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&type={{type}}&rewardtype={{rewardtype}}&create_start={{create_start}}&create_end={{create_end}}sent_start={{sent_start}}&sent_end={{sent_end}}">上一页</a></li>
                         {% if preomit == True %}
                         <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
                         {% endif %}
@@ -591,8 +567,8 @@
                         {% if nextomit == True %}
                         <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
                         {% endif %}
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&type={{type}}">下一页</a></li>
-                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&type={{type}}">末页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&type={{type}}&rewardtype={{rewardtype}}&create_start={{create_start}}&create_end={{create_end}}&sent_start={{sent_start}}&sent_end={{sent_end}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&type={{type}}&rewardtype={{rewardtype}}&create_start={{create_start}}&create_end={{create_end}}&sent_start={{sent_start}}&sent_end={{sent_end}}">末页</a></li>
 
                 </ul>
         </div>

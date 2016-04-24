@@ -495,13 +495,21 @@
             {% for adv in advlist %}
             <tr>
             <td>{{adv.advice_title}}</td>
+            {% if adv.advice_created == None %}
+            <td></td>
+            {% else %}
             <td>{{adv.advice_created}}</td>
+            {% endif %}
             {% if adv.advice_status == '0' %}
             <td><span class='label label-success'>未阅读</span></td>
-            <td><button class="btn btn-minier btn-light view" data-id={{adv.advice_id}}>查看意见</button></td>
+            <td><button class="btn btn-minier btn-light view" data-id={{adv.advice_id}} disabled>查看意见</button></td>
             {% else %}
-            <td>以阅读</td>
+            
+            <td><span class='label label-success'>已阅读</span></td>
+            <td><button class="btn btn-minier btn-light view" data-id={{adv.advice_id}} >查看意见</button></td>
             {% endif %}
+            
+            
             </tr>
             {% endfor %}
                  
@@ -556,9 +564,9 @@
         todayHighlight: true
     })
     $('.view').click(function () {
-        var Id = $(this).attr('data-Id');
+        var Id = $(this).attr('data-id');
         // var _url = "AdviceView?id=" + Id;
-        var _url = "弹窗-查看意见.html";
+        var _url = "AdviceView/?Id="+Id;
         layer.open({
             type: 2,
             title: '查看意见',

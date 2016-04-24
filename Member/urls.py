@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^UserMap/$',views.UserMap),
     url(r'^Advice/$', views.Advice),
     url(r'^AdviceList/$', views.AdviceList),
+     url(r'^AdviceList/AdviceView/$', views.AdviceView),
+    url(r'^QrCode/(?P<ReferenceId>(\d)*)/$', views.QrCode)
 ]

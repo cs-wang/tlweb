@@ -18,6 +18,8 @@ from django.contrib import admin
 import views
 import settings
 from Index import views
+#handler400 = 'Index.views.page404'
+#handler500 = 'Index.views.page404'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^assets/(?P<path>.*)$', 'django.views.static.serve',{'document_root':'./assets'}),

@@ -78,6 +78,18 @@ WSGI_APPLICATION = 'tlweb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'test',
+#         'USER': 'root',
+#         'PASSWORD':'123456',
+#         'HOST':'127.0.0.1',
+#         'PORT':'3306',
+#     }
+# }
+
 
 DATABASES = {
     'default': {
@@ -87,9 +99,9 @@ DATABASES = {
         'PASSWORD':'Tlweb1234',
         'HOST':'139.196.235.142',
         'PORT':'3306',
+        'ATOMIC_REQUESTS':True
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -108,6 +120,23 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console':{
+#             'level':'DEBUG',
+#             'class':'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'propagate': True,
+#             'level':'DEBUG',
+#         },
+#     }
+# }
 
 
 # Internationalization
@@ -115,17 +144,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'Asia/Shanghai'
+
+# TIME_ZONE = 'UTC'
+TIME_ZONE ='Asia/Shanghai' 
+# USE_TZ = True 
 
 USE_I18N = True
 
 USE_L10N =True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-

@@ -472,6 +472,7 @@
 
             <tbody>
               {% for comission in comissionlist %}
+              <tr>
               <td>{{comission.commission_price}}</td>
               
               {% if comission.commission_memo == None %}
@@ -499,7 +500,7 @@
               <td>待发放</td>
               {% endif %}
               {% endfor %}
-
+             <tr>
             </tbody>
         </table>
 </div>

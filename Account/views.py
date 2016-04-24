@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json
 from db import models
 from urllib2 import Request
+import hashlib
+md5_used = False
 def login(request):
     if request.method == 'GET':
         it = models.ShortMessage.objects.all()
@@ -12,33 +14,92 @@ def login(request):
     elif request.method == 'POST':
         user_ = request.POST['username']
         pwd_ = request.POST['password']    
+        global md5_used
+        if md5_used:
+            pwd_ = hashlib.md5(pwd_.encode('utf8')).hexdigest()
         role_ = request.POST['role']
         print user_, pwd_,role_
-        member_ = models.Member()
-        flag = member_.login(user_,pwd_,role_)
-        print flag,'hello'
+        flag = models.Login(user_, pwd_, role_)
+        if flag:
+            request.session['role'] = role_
         obj = {'result':'success','role':role_}
         obj1 = {'msg':'登录失败'}
         code = str(json.dumps(obj))
         code1 = str(json.dumps(obj1))
         if flag == True:
-            user_id=member_.getUserId(user_).user_id
-            request.session['user_id']=user_id
-            request.session['username']=user_
             if role_ == '0':
                 request.session['role'] = '0'
+                request.session['user_id'] = models.Member.GetUser(user_).user_id
+                request.session['username']=user_
             elif role_ == '1':
                 request.session['role'] = '1'
+                request.session['service_id'] = models.Service.GetService(user_).service_id
+                
             return HttpResponse(code)
         elif flag == False:
             return HttpResponse(code1)
          
-def register(request):
-    member_ = models.Member()
-    #有推荐人
-#     flag = member_.register('new',"hahah","delegation_phone_","delegation_info_",\
-#           "bind_phone_","pwd","weixinId","bank_","account_","cardHolder","receiver_","reciever_phone_",\
-#           "receiver_addr_","order_Memo",1,1)
-    context ={}
-    return render(request, 'index/home.html', context)
-#     return HttpResponse("ok")
+
+def register(request, ReferenceId = None):
+
+    if request.method == 'GET':
+        member_ = models.Member()
+  
+        context ={}
+        return render(request, 'Account/Register.html', context)
+    elif request.method == 'POST':
+        RegUserId = request.POST['UserId']
+        RegUserName = request.POST['UserName']
+        RegNickName = request.POST['NickName']
+        RegIDCard = request.POST['IDCard']
+        RegUserStatus = request.POST['UserStatus']
+        RegBindMob = request.POST['BindMob']
+        RegDepositMobile = request.POST['DepositMobile']
+        # md5 for password
+        RegUserPwd = request.POST['UserPwd']
+        global md5_used
+        if md5_used:
+            RegUserPwd = hashlib.md5(RegUserPwd.encode('utf8')).hexdigest()
+        RegUserPayPwd = request.POST['UserPayPwd']
+        RegWeChat = request.POST['WeChat']
+        RegAlipay = request.POST['Alipay']
+        RegBankName = request.POST['BankName']
+        RegBankAccount = request.POST['BankAccount']
+        RegTrueName = request.POST['TrueName']
+        RegRecName = request.POST['RecName']
+        RegRecAdd = request.POST['RecAdd']
+        RegRecMob = request.POST['RecMob']
+        RegMark = request.POST['Mark']
+        '''
+        print "RegUserId:",RegUserId
+        print "RegUserName:",RegUserName
+        print "RegNickName:",RegNickName
+        print "RegIDCard:",RegIDCard
+        print "RegUserStatus:",RegUserStatus
+        print "RegBindMob:",RegBindMob
+        print "RegDepositMobile:",RegDepositMobile
+        print "RegUserPwd:",RegUserPwd
+        print "RegUserPayPwd:",RegUserPayPwd
+        print "RegWeChat:",RegWeChat
+        print "RegAlipay:",RegAlipay
+        print "RegBankName:",RegBankName
+        print "RegBankAccount:",RegBankAccount
+        print "RegTrueName:",RegTrueName
+        print "RegRecName:",RegRecName
+        print "RegRecAdd:",RegRecAdd
+        print "RegRecMob:",RegRecMob
+        print "RegMark:",RegMark
+        '''
+        memberobj = models.Member()
+        if memberobj.register(RegUserName,RegNickName,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+            RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+            obj = {'result':'t'}
+        else:
+            obj = {'result':'f',
+                'msg':'用户名已经被注册'}
+        code = str(json.dumps(obj))
+        return HttpResponse(code)
+
+def ChangePwd(request):
+    context = {}
+    return render(request, 'Account/ChangePwd.html', context)

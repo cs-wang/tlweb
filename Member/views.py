@@ -2,13 +2,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
+from django.db import transaction
 from django.utils.dateparse import parse_datetime
+from cStringIO import StringIO
+import qrcode
 import pytz
 # Create your views here.
 import json
 from db import models
 from urllib2 import Request
 from django.template.defaultfilters import title
+
+site_dns = 'http://192.168.3.108:8000'
+
 def DashBoard(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
@@ -24,18 +30,39 @@ def DashBoard(request):
 	print status_desc
 	print str(myinfo.register_time)[0:19]
 	print str(myinfo.confirm_time)[0:19]
-	context = {'user_name':myinfo.user_name,'nickname':myinfo.nickname,'status_desc':status_desc,'count':5,\
-			           'regist_time':str(myinfo.register_time)[0:19],'confirm_time':str(myinfo.confirm_time)[0:19]}
+	context = {'user_id':user_id,'user_name':myinfo.user_name,'nickname':myinfo.nickname,'status_desc':status_desc,'count':5,\
+			           'regist_time':str(myinfo.register_time)[0:19],'confirm_time':str(myinfo.confirm_time)[0:19],"mem_status":str(myinfo.status_id)}
+	print "status_id"+str(myinfo.status_id)
+	print "status_id",context["mem_status"]
 	return render(request, 'Member/DashBoard.html', context)
-
+	
+@transaction.atomic
 def ReConsume(request):
 	context = {}
 	return render(request, 'Member/ReConsume.html', context)
-
+@transaction.atomic
 def ReConsumeSave(request):
+	mark=request.POST['Mark']
+	username=request.session["username"]
+	#createOrder(self,service_id_,user_id_,order_price_,order_type_,order_memo_,order_status_="未发货"):
+	print "mark",mark
+	orderobj=models.OrderForm()
+	memobj=models.Member()
+	user=memobj.GetUser(username)
+	print user.nickname
+	flag=orderobj.createOrder(
+							service_id_=user.service_id,
+							user_id_=user.user_id,
+							order_price_=1500*0.8,
+							order_type_='1',
+							order_memo_=mark)
 	context = {}
-	obj = {'result':'t'}
-	code = str(json.dumps(obj))
+	if flag:
+		obj = {'result':'t'}
+		code = str(json.dumps(obj))
+	else:
+		obj={'result':'f','msg':'申请加单失败'}
+		code=str(json.dumps(obj))
 	return HttpResponse(code)
 
 def MsgList(request):
@@ -133,9 +160,18 @@ def MsgRead(request):
 def ShowModel(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
+#<<<<<<< HEAD
 	username=request.session['username']
 	
 	context = {'username':username}
+# # =======
+# 	user_id = int(request.session['user_id']) 
+# 	user = models.Member().getUser(user_id)
+# 	global site_dns
+# 	context = {'reference_id':0}
+# 	if user!= None:
+# 		context['reference_id'] = reference_id 
+# >>>>>>> newbranch
 	return render(request, 'Member/ShowModel.html', context)
  
 def ComBank(request):
@@ -168,36 +204,46 @@ def MemberOrder(request):
 	username=request.session['username']
 	user_id=request.session['user_id']
 	start_time=request.GET.get('start')
+	print "start_time:",start_time
 	if start_time != None:
 		if start_time == 'None': 
 			start_time=None
+	else:
+		print "not none"
+	if start_time=="":
+		start_time=None
 	
 	
 	end_time=request.GET.get('end')
 	if end_time!=None:
 		if end_time == 'None':
 			end_time=None
+	if end_time=="":
+		end_time=None
 	
 	member_ = models.OrderForm()
-
-	money=0;
+	#print 'start_time:',len(start_time)
 	
 	curpage = request.GET.get('p')
 	if curpage == None:
 			curpage='1';
+	if curpage == 'None':
+		curpage='1'
 	curpage=int(curpage)
 	if curpage<=0:
 		curpage=1
 	print 'cur='+str(curpage)
-	ordlist,pagenum,totalnum = member_.myMemberOrder( 
-		user_id,
-		None,
-		None,
-		order_status, 
-		start_time,
-		end_time,
-		curpage
+	#def myMemberOrder(self,user_id_=None,
+	#				service_id_=None,user_or_phone_=None,order_type_='2',
+	#				start_time_=None,end_time_=None,pageNum=1):
+	ordlist,pagenum,totalnum,money = member_.myMemberOrder( 
+		user_id_=user_id,
+		order_type_=order_status, 
+		start_time_=start_time,
+		end_time_=end_time,
+		pageNum=curpage
 		)
+	print "len=",len(ordlist)
 	
 	for order in ordlist:
 		money+=order.order_price
@@ -248,7 +294,6 @@ def RewardOrder(request):
 	username=request.session['username']
 	user_id=request.session['user_id']
 	comissionobj=models.CommissionOrder()
-	money=0
 	type=request.GET.get('type')
 	print 'type:',type
 	if type == None:
@@ -262,11 +307,18 @@ def RewardOrder(request):
 	if curpage<=0:
 		curpage=1
 	print 'cur='+str(curpage)
-	comissionlist,pagenum,totalnum=comissionobj.commissionList(username,type,None,None,None,'0',curpage)
+	print username
+	#def commissionList(self,user_name_=None,commission_status_=None,\
+	#				commission_type_=None,commission_created_start_=None,commission_created_end_=None,\
+     #                     commission_send_start_=None,commission_send_end_=None,time_order_='0',pageNum=1):
+     
+	comissionlist,pagenum,totalnum,money=comissionobj.commissionList(
+															user_name_=username,
+															commission_status_=type,
+															time_order_='0',
+															pageNum=curpage)
 	
 	
-	for comission in comissionlist:
-		money+=comission.commission_price
 	print 'money:',money
 	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
 	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
@@ -313,12 +365,26 @@ def RewardOrderList(request):
 	username=request.session['username']
 	user_id=request.session['user_id']
 	comissionobj=models.CommissionOrder()
-	money=0
 	type=request.GET.get('type')
-	print 'type:',type
-	if type == None:
-		type='1'
-	print 'type:',type
+	create_start=request.GET.get("create_start")
+	create_end=request.GET.get("create_end")
+	sent_start=request.GET.get("sent_start")
+	sent_end=request.GET.get("sent_end")
+	rewardtype=request.GET.get("rewardtype")
+	print "created_start:",create_start
+	print "created_end",create_end
+	if type == '-1' or type == 'None':
+		type=None
+	if rewardtype == "-1" or rewardtype== "None":
+		rewardtype=None
+	if create_start == ""  or  create_start == "None":
+		create_start=None
+	if create_end ==""  or create_end == "None":
+		create_end=None
+	if sent_start == "" or sent_start== "None":
+		sent_start=None
+	if sent_end == "" or sent_end== "None":
+		sent_end=None
 	
 	curpage = request.GET.get('p')
 	if curpage == None:
@@ -327,11 +393,22 @@ def RewardOrderList(request):
 	if curpage<=0:
 		curpage=1
 	print 'cur='+str(curpage)
-	comissionlist,pagenum,totalnum=comissionobj.commissionList(username,type,None,None,None,'0',curpage)
+	#commissionList(self,user_name_=None,commission_status_=None,commission_type_=None,
+	#			           commission_created_start_=None,commission_created_end_=None,\
+     #                      commission_send_start_=None,commission_send_end_=None,time_order_='0',pageNum=1):
+	comissionlist,pagenum,totalnum,money=comissionobj.commissionList(
+															user_name_=username,
+															commission_status_=type,
+															commission_type_=rewardtype,
+															commission_created_start_=None,
+														    commission_created_end_=None,
+															commission_send_start_=None,
+															commission_send_end_=None,
+															time_order_='0',
+															pageNum=curpage)
+   
+	print username," ",type," ",rewardtype," ",create_start," ",create_end," ",curpage
 	
-	
-	for comission in comissionlist:
-		money+=comission.commission_price
 	print 'money:',money
 	prevpage = (1 if curpage - 1 < 1 else curpage - 1)
 	nextpage = (pagenum if curpage + 1 > pagenum else curpage + 1)
@@ -366,11 +443,31 @@ def RewardOrderList(request):
 				'nextomitpage':nextomitpage,
 				'nextpage':nextpage }
 	context['username']=username
-	context['comissionlist']=comissionlist
+	
 	context['type']=type
+	context['rewardtype']=rewardtype
 	context['money']=money
+	context["create_start"]=create_start
+	context["create_end"]=create_end
+	context["sent_start"]=sent_start
+	context["sent_end"]=sent_end
+	
+	cominfolist=[]
+	for comission in comissionlist:
+		print comission.commission_type .commission_desc
+		cominfo={"price":comission.commission_price,"rewardtype":comission.commission_type .commission_desc,"memo":comission.commission_memo ,
+				"created_time":comission. commission_created ,"sent_time":comission.commission_sent}
+		if comission.commission_status=='0':
+			cominfo["order_status"]="待审核"
+		if comission.commission_status=="1":
+			cominfo["order_status"]="待发放"
+		if comission.commission_status=="2":
+			cominfo["order_status"]="已发放"
+		cominfolist.append(cominfo)
+	context['cominfolist']=cominfolist
 	return render(request, 'Member/RewardOrderList.html', context)
 
+@transaction.atomic
 def Recome(request):
 	if request.session['role'] != '0':
 		return HttpResponseRedirect('/')
@@ -600,18 +697,18 @@ def GetMap(request):
 	memobj = models.Member()
 	serviceid = 1;
 	if reqUid == None:
-		serviceid=request.session['user_id']
+		username=request.session['username']
 		reqstep=0
-		memlist = memobj.myMemberNet(
-			userOrServiceid_=serviceid,
-			role_="0",
-			pageNum=1
+		memlist=[]
+		mem = memobj.getUser(
+			username
 			)
+		memlist.append(mem)
 	else:
 		if int(reqstep)<3 :
 			memlist = memobj.myMemberNet(
 										userOrServiceid_=reqUid,
-										role_="1",
+										role_="0",
 										pageNum=1
 										)
 		else:
@@ -632,10 +729,10 @@ def MyData(request):
 	user_id=request.session['user_id']
 	memobj=models.Member()
 	meminfo=memobj.myInfo(user_id)
-	if meminfo.status_id == 2:
-		modifiable='0'
-	else:
+	if meminfo.status_id == 1:
 		modifiable='1'
+	else:
+		modifiable='0'
 	print modifiable
 	
 	context = {}
@@ -819,3 +916,23 @@ def AdviceList(request):
 		print  adv.advice_title
 	
 	return render(request, 'Member/AdviceList.html', context)
+
+def AdviceView(request):
+	id=request.GET['Id']
+	advobj=models.Advice()
+	adv=advobj.one_advice(id)
+	print id
+	context={"advice":adv}
+	return render(request, 'Member/AdviceView.html', context)
+
+
+def QrCode(request, ReferenceId):
+	global dns_site
+	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
+	print url
+	img = qrcode.make(url);
+	buf = StringIO()
+  	img.save(buf)
+  	image_stream = buf.getvalue()
+	return HttpResponse(image_stream , content_type="image/png")
+
