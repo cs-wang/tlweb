@@ -33,7 +33,6 @@ def login(request):
             if role_ == '0':
                 request.session['role'] = '0'
                 request.session['user_id'] = models.Member.GetUser(user_).user_id
-                request.session['username']=user_
             elif role_ == '1':
                 request.session['role'] = '1'
                 request.session['service_id'] = models.Service.GetService(user_).service_id
