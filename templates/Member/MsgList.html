@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -169,7 +169,7 @@
                                 <span class="menu-text">
                                     消息中心
 
-                                            <span class="badge badge-danger">6</span>
+                                            <span class="badge badge-danger">{{count}}</span>
                                 </span>
                             </a>
                             <b class="arrow"></b> 
@@ -445,9 +445,9 @@
         <div>
             <form class="form-inline" action="?" method="Get">
 
-                <select class="" id="sta" name="sta"><option value="2">未读消息</option>
+                <select class="" id="sta" name="status"><option value="0">未读消息</option>
 <option value="1">已读消息</option>
-<option value="0">所有消息</option>
+<option value="2">所有消息</option>
 </select>
 
                 <button type="submit" class="btn btn-info btn-sm">
@@ -468,74 +468,21 @@
             </thead>
 
             <tbody>
-                    <tr>
+                   {% for msg in msg_list %}
+                   <tr>
+                        <td>{{msg.message_title}}</td>
+                        <td>{{msg.sent_time}}</td>
+                        <td>
+                             {% if msg.message_status == '0' %}
+                                    <span class="label label-warning ">未读</span>
+                             {% else %}
+                                    <span class="label label-warning ">已读</span>
+                             {% endif %}
+                        </td>
+                        <td> <button class="btn btn-minier btn-pink read" data-id={{msg.message_id}}  {% if msg.message_status ==  '1' %} disabled='disabled' {% endif %}>阅读</button></td>
                         
-                        <td>您推荐的会员【陈婷】审核通过，即将获得推荐奖!</td>
-                        <td>2016-03-13 15:38</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="955">阅读</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        <td>您底下3人排列已满，即将获得855元推广费[已扣除5%税金]。</td>
-                        <td>2016-03-12 20:31</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="941">阅读</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        <td>您推荐的会员【蒋荷燕】审核通过，即将获得推荐奖!</td>
-                        <td>2016-03-08 14:20</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="848">阅读</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        <td>您推荐的会员【张伟光】审核通过，即将获得推荐奖!</td>
-                        <td>2016-03-07 13:48</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="761">阅读</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        <td>您的账号已经通过审核</td>
-                        <td>2016-03-06 15:51</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="717">阅读</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        <td>您推荐的会员【李莉】审核通过，即将获得推荐奖!</td>
-                        <td>2016-03-06 14:51</td>
-                        <td>
-                                <span class="label label-warning ">未读</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-minier btn-pink read" data-id="703">阅读</button>
-                        </td>
-                    </tr>
-
-
+                   </tr>
+                   {% endfor %}
             </tbody>
         </table>
 
@@ -545,14 +492,33 @@
 
 
 <div class="row">
-    <div class="col-xs-6 iPagesLeft">
+    <div class="col-xs-3 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 6 条记录
+            第 1 页 共 1 页 &nbsp; 共 {{count}}条记录
         </div> 
     </div>
-    <div class="col-xs-6 iPagesRight">
+    <div class="col-xs-7 iPagesRight">
         <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p=1&status={{status}}">首页</a></li>
+                        <li class="paginate_button previous {% if curpage == 1 %} disabled {% endif %}"><a href="?p={{prevpage}}&status={{status}}">上一页</a></li>
+                        {% if preomit == True %}
+                        <li class="paginate_button more"><a href="?p={{prevomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        {% for pindex in pageshowlist %}
+                        {% if pindex == curpage %}
+                        <li class="paginate_button active"><a>{{curpage}}</a></li>
+                        {% elif pindex  %}
+                        <li class="paginate_button"><a href="?p={{pindex}}&sta={{sta}}">{{pindex}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if nextomit == True %}
+                        <li class="paginate_button more"><a href="?p={{nextomitpage}}&sta={{sta}}">...</a></li>
+                        {% endif %}
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{nextpage}}&status={{status}}">下一页</a></li>
+                        <li class="paginate_button next {% if curpage == pagenum %} disabled {% endif %}"><a href="?p={{pagenum}}&status={{status}}">末页</a></li>
 
+                </ul>
         </div>
     </div>
 </div>
@@ -561,8 +527,7 @@
 <script>
     $('.read').click(function () {
         var id = $(this).attr('data-id');
-        // var url = 'ViewMsg?MsgId=' + id;
-        var url = '弹窗-查看消息.html';
+        var url = 'ViewMsg?MsgId=' + id;
         //iframe层
         layer.open({
             type: 2,

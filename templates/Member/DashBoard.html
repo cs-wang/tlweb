@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{user_name}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -464,7 +464,7 @@
                     <div class="profile-info-name"> 登陆名 </div>
 
                     <div class="profile-info-value">
-                        15906753588
+                        {{user_name}}
                     </div>
                 </div>
 
@@ -472,7 +472,7 @@
                     <div class="profile-info-name"> 昵称 </div>
 
                     <div class="profile-info-value">
-                        赵林
+                        {{nickname}}
                     </div>
                 </div>
                 <div class="profile-info-row">
@@ -480,7 +480,7 @@
 
                     <div class="profile-info-value">
 	                    <!--span class="label label-success">已激活</span-->
-                        <span class="label label-inverse">已出局</span>
+                        <span class="label label-inverse">{{status_desc}}</span>
 						
 
                     </div>
@@ -501,15 +501,14 @@
                     <div class="profile-info-name"> 注册时间 </div>
 
                     <div class="profile-info-value">
-                        2016-03-06 14:06:09
+                        {{regist_time}}
                     </div>
                 </div>
 
                 <div class="profile-info-row">
                     <div class="profile-info-name"> 确认时间 </div>
 
-                    <div class="profile-info-value">
-2016-03-06 15:51:33                    </div>
+                    <div class="profile-info-value">{% if confirm_time != 'None' %} {{confirm_time}} {% endif %}       </div>
                 </div>
 
              
@@ -521,7 +520,7 @@
         <div style="margin:20px">&nbsp;</div>
 		<div class="row">
   			<div class="col-md-4 col-md-offset-5">
-  				<button type="button" class="btn btn-danger btn-lg reconsume" data-id="679">申请加单</button>
+  				<button type="button" class="btn btn-danger btn-lg reconsume" data-id={{user_id}}  {% if  mem_status != '4' %} disabled {% endif %} >申请加单</button>
   			</div>
 		</div>
         <div style="margin:20px">&nbsp;</div>
@@ -590,7 +589,7 @@
             title: '会员复消',
             shadeClose: true,
             shade: 0.8,
-            area: ['600px', '550px'],
+            area: ['600px', '600px'],
             content: _url
         });
 

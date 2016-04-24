@@ -33,6 +33,7 @@ def login(request):
             if role_ == '0':
                 request.session['role'] = '0'
                 request.session['user_id'] = models.Member.GetUser(user_).user_id
+                request.session['username']=user_
             elif role_ == '1':
                 request.session['role'] = '1'
                 request.session['service_id'] = models.Service.GetService(user_).service_id
@@ -122,4 +123,23 @@ def register(request, ReferenceId = None):
 
 def ChangePwd(request):
     context = {}
-    return render(request, 'Account/ChangePwd.html', context)
+    if request.method == 'GET':
+        context ={}
+        return render(request, 'Account/ChangePwd.html', context)   
+    elif request.method == 'POST':
+        user_or_service_id_ = request.session['user_id']
+        oldpwd_ = request.POST['OldPwd']
+        newpwd_ = request.POST['NewPwd']
+        role_id_ = request.session['role']
+        print 'user_or_service_id_',user_or_service_id_
+        print 'oldpwd_',oldpwd_
+        print 'newpwd_',newpwd_
+        print 'role_id_',role_id_
+        flag = models.fixPwd(user_or_service_id_,oldpwd_,newpwd_,role_id_)
+        print 'flag',flag
+        if flag:
+            obj = {'result':'t','msg':'修改成功'}
+        else:
+            obj = {'result':'f','msg':'请确认旧密码是否正确，副中心修改密码请联系服务中心'}
+        code = str(json.dumps(obj))
+        return HttpResponse(code)

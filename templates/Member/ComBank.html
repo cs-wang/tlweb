@@ -99,7 +99,7 @@
                             <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>欢迎,</small>
-                                15906753588
+                                {{username}}
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -444,7 +444,7 @@
 <div class="row noMarginLR">
     <div class="col-xs-12">
         <div class="alert alert-warning">
-            推荐会员资料填写完毕，汇款至指定账号后，<a href="Advice?type=BD">请点击此处</a>，填写汇款通知单，以免公司发生审核错误汇款信息。
+            推荐会员资料填写完毕，汇款至指定账号后，<a href="../Advice?type=BD">请点击此处</a>，填写汇款通知单，以免公司发生审核错误汇款信息。
         </div>
         
         <div class="iWideTable cf">
@@ -461,24 +461,14 @@
             </thead>
 
             <tbody>
-                    <tr>
-                        
-                        
-                        <td>微信支付(浙江区域）</td>
-
-                        <td>ymz005599</td>
-                        <td>天龙健康</td>
-                        <td>18368583552（浙江区域）</td>
-                    </tr>
-                    <tr>
-                        
-                        
-                        <td>招商银行绍兴诸暨支行（浙江区域）</td>
-
-                        <td>6214855751739091</td>
-                        <td>赵岩忠</td>
-                        <td>18368583552（浙江区域）</td>
-                    </tr>
+                   {% for info in infolist %}
+                   <tr>
+                       <td>{{info.bank}}</td>
+                       <td>{{info.bank_account}}</td>
+                       <td>{{info.holder}}</td>
+                       <td>{{info.phone}}</td>
+                      </tr>
+                   {% endfor %}
 
 
             </tbody>
@@ -493,7 +483,7 @@
 <div class="row">
     <div class="col-xs-6 iPagesLeft">
         <div class="dataTables_info" id="sample-table-2_info" role="status" aria-live="polite">
-            第 1 页 共 1 页 &nbsp; 共 2 条记录
+         <!--  第 1 页 共 1 页 &nbsp;-->    共 {{totalnum}} 条记录
         </div> 
     </div>
     <div class="col-xs-6 iPagesRight">

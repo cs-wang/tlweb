@@ -20,11 +20,7 @@ def DashBoard(request):
 	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	mb = models.Member()
-	try :
-		with transaction.atomic():
-			flag = mb.confirmMember(1,1)
-	except BaseException,e:
-		print e
+
 	context = {'username':request.session['username'],}
 	return render(request, 'Services/DashBoard.html', context)
 def NoticeList(request):
