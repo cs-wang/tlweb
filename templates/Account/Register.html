@@ -146,7 +146,12 @@
                     <input type="text" id="NickName" name="NickName" placeholder="必须填写，以便系统识别" class="col-xs-10 col-sm-5" maxlength="20" value=""/>
                 </div>
             </div>
-
+	        <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 推荐人用户名 </label>
+                <div class="col-sm-9 parentCls">
+                    <input type="text" id="RefUsername" name="RefUsername" placeholder="必须填写，没有推荐人无法注册成功" class="col-xs-10 col-sm-5" maxlength="20" {% if RefUsername != None %} value="{{RefUsername}}" {% endif %}/>
+                </div>
+            </div>
             
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 委托汇款人手机号 </label>
@@ -447,6 +452,7 @@
         $('#Save').click(function () {
             var UserId = $('#UserId').val();
             var UserName = $('#UserName').val();
+           	var RefUsername = $('#RefUsername').val();
             var NickName = $('#NickName').val();
             var IDCard = '';//$('#IDCard').val();
             var DepositMobile = $('#DepositMobile').val();
@@ -506,12 +512,17 @@
             //if (RecName == "") { $('#RecName').focus(); layer.tips('收货人不能为空', '#RecName'); return false; }
             //if (RecMob == "") { $('#RecMob').focus(); layer.tips('收货人电话不能为空', '#RecMob'); return false; }
             //if (RecAdd == "") { $('#RecAdd').focus(); layer.tips('收货地址不能为空', '#RecAdd'); return false; }
-
+			            var sum=getSum();
+            if (sum<3){
+            	layer.alert('产品价格未满1500元', { icon: 6 });
+                return false;
+            }
             var data = {
-                UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
+                UserId: UserId, UserName: UserName, NickName: NickName, RefUsername:RefUsername,IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
                 DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
                 WeChat: WeChat, Alipay: Alipay, BankName: BankName, BankAccount: BankAccount,
                 TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob, Mark: Mark
+                
             }
             $('#Save').prop('disabled', true);
             $.post('/Account/Reg/', data, function (json) {

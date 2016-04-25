@@ -216,7 +216,7 @@
             var sum=getSum();
             if (sum<3){
             	layer.alert('产品价格未满1500元', { icon: 6 });
-                return;
+                return false;
             }
             var data = { Mark: Mark }
             $('#Save').prop('disabled', true);

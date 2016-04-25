@@ -450,7 +450,7 @@
         });
 
         //$('#A3').trigger('change');
-
+      
         $('#Save').click(function () {
             var UserId = $('#UserId').val();
             var UserName = $('#UserName').val();
@@ -505,7 +505,7 @@
                     }
                 }
             }
-
+			
             if (IsMobile(DepositMobile) == false) { $('#DepositMobile').focus(); layer.tips('手机号码格式不正确', '#DepositMobile'); return false; }
             if (IsMobile(BindMob) == false) { $('#BindMob').focus(); layer.tips('手机号码格式不正确', '#BindMob'); return false; }
             if (IsMobile(RecMob) == false) { $('#RecMob').focus(); layer.tips('手机号码格式不正确', '#RecMob'); return false; }
@@ -522,6 +522,11 @@
                 layer.alert('请选择产品', { icon: 6 });
                 return false;
             }
+            var sum=getSum();
+            if (sum<3){
+            	layer.alert('产品价格未满1500元', { icon: 6 });
+                return false;
+            }
             var data = {
                 UserId: UserId, UserName: UserName, NickName: NickName, IDCard: IDCard, UserStatus: UserStatus, BindMob: BindMob,
                 DepositMobile: DepositMobile, UserPwd: UserPwd, UserPayPwd: UserPayPwd,
@@ -529,6 +534,7 @@
                 TrueName: TrueName, RecName: RecName, RecAdd: RecAdd, RecMob: RecMob, Mark: Mark
             }
             $('#Save').prop('disabled', true);
+           
             $.post('MemberSave/', data, function (json) {
                 if (json.result == "t") {
                     layer.msg('保存成功！', { icon: 1 }, function () { location.href = 'MemberList/'; });

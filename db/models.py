@@ -11,7 +11,6 @@ from django.db.models import Q
 from django.utils import timezone
 import sys
 from scipy.constants.constants import year
-from scipy.constants.constants import year
 from sphinx.ext.todo import Todo
 import hashlib
 reload(sys)
@@ -23,9 +22,9 @@ ThirdRatio = 0.04
 tax = 0.05
 ONE_PAGE_OF_DATA = 15
 #支持事务(已做)
-def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_info_,\
+def memberRegister(user,nickname_,ref_username_,delegation_phone_,delegation_info_,\
              bind_phone_,pwd,weixinId,bank_,account_,cardHolder,receiver_,reciever_phone_,\
-             receiver_addr_,order_Memo_,serviceid,referenceid):   
+             receiver_addr_,order_Memo_,serviceid):   
             userEntity = Member.objects.filter(user_name = user)
             if len(userEntity) >= 1:
                 print "已经存在用户"
@@ -33,7 +32,8 @@ def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_i
             else:
 #                 try:
                     #查出推荐人
-                    mem_ref = Member.objects.filter(bind_phone = ref_phone_)
+                    mem_ref = Member.objects.filter(user_name = ref_username_).get()
+#                     print mem_ref.user_id
                     if not mem_ref:
                         print "推荐人手机号码不存在"
                         return False
@@ -41,13 +41,12 @@ def memberRegister(self,user,nickname_,ref_phone_,delegation_phone_,delegation_i
                         time_ = timezone.now()
                         #修改member表
                         i = Member.objects.create(user_name = user,password = pwd,nickname = nickname_,\
-                                                  status_id = 1,service_id = serviceid,reference_id = referenceid,\
+                                                  status_id = 1,service_id = serviceid,reference_id = mem_ref.user_id,\
                                                   delegation_phone = delegation_phone_,\
                                                   delegation_info = delegation_info_,bind_phone = bind_phone_,\
                                                   weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
                                                   receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
                                                   register_time = time_)
-                        print i.user_id,"注册成功"
                         send_Short_Message(bind_phone_, "恭喜您已审核通过成为天龙健康会员，你的注册号："+user+\
                                                "，推荐会员可以获得公司推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】")
                         #修改订单表
@@ -479,6 +478,7 @@ class Member(models.Model):
          receiver_addr_,order_Memo_,serviceid,referenceid):
             
             userEntity = Member.objects.filter(user_name = user)
+            
             if len(userEntity) >= 1:
                 print "已经存在用户"
                 return False
@@ -493,7 +493,7 @@ class Member(models.Model):
                                               weixin_id = weixinId,bank = bank_,account = account_,card_holder = cardHolder,\
                                               receiver = receiver_,receiver_phone = reciever_phone_,receiver_addr = receiver_addr_,\
                                               register_time = time_)
-                    print i.user_id,"注册成功"
+                    print "注册成功"
                     send_Short_Message(bind_phone_, "恭喜您已审核通过成为天龙健康会员，你的注册号："+user+\
                                            "，推荐会员可以获得公司推广奖励，详见奖励模式请登录www.tljk518.com.回复TD退订【天龙健康】")
                         #修改订单表

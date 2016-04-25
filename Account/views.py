@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json
 from db import models
 from urllib2 import Request
+from django.db import transaction
 import hashlib
 md5_used = False
 def login(request):
@@ -55,18 +56,19 @@ def register(request, ReferenceId = None):
 
     if request.method == 'GET':
         member_ = models.Member()
-  
-        context ={}
+        RegRefUserName = request.GET.get('RefUsername')
+        context ={'RefUsername':RegRefUserName}
         return render(request, 'Account/Register.html', context)
     elif request.method == 'POST':
         RegUserId = request.POST['UserId']
         RegUserName = request.POST['UserName']
         RegNickName = request.POST['NickName']
-        RegIDCard = request.POST['IDCard']
+        RegRefUserName = request.POST['RefUsername']
+#         RegIDCard = request.POST['IDCard']
         RegUserStatus = request.POST['UserStatus']
         RegBindMob = request.POST['BindMob']
         RegDepositMobile = request.POST['DepositMobile']
-        RefMobile = request.POST['FromMobile']
+#         RefMobile = request.POST['FromMobile']
         # md5 for password
         RegUserPwd = request.POST['UserPwd']
         global md5_used
@@ -84,15 +86,16 @@ def register(request, ReferenceId = None):
         RegMark = request.POST['Mark']
         
 #         print "RefMobile:"
-        '''
+#         '''
         print "RegUserId:",RegUserId
         print "RegUserName:",RegUserName
+        print "RegRefUserName:",RegRefUserName
         print "RegNickName:",RegNickName
-        print "RegIDCard:",RegIDCard
+#         print "RegIDCard:",RegIDCard
         print "RegUserStatus:",RegUserStatus
         print "RegBindMob:",RegBindMob
         print "RegDepositMobile:",RegDepositMobile
-        print "RefMobile:",RefMobile
+#         print "RefMobile:",RefMobile
         print "RegUserPwd:",RegUserPwd
         print "RegUserPayPwd:",RegUserPayPwd
         print "RegWeChat:",RegWeChat
@@ -104,19 +107,22 @@ def register(request, ReferenceId = None):
         print "RegRecAdd:",RegRecAdd
         print "RegRecMob:",RegRecMob
         print "RegMark:",RegMark
-        '''
-        memberobj = models.Member()
+#         '''
+#         memberobj = models.Member()
         try :
             with transaction.atomic():
-                if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
-                                      RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
-                    obj = {'result':'t'}
+                if models.memberRegister(RegUserName,RegNickName,RegRefUserName,RegDepositMobile,RegAlipay,\
+                                      RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,RegTrueName,RegRecName,RegRecMob,\
+                                      RegRecAdd,RegMark,1) ==True:
+#                 if memberobj.register(RegUserName,RegNickName,RefMobile,RegDepositMobile,RegAlipay,RegBindMob,RegUserPwd,RegWeChat,RegBankName,RegBankAccount,
+#                                       RegTrueName,RegRecName,RegRecMob,RegRecAdd,RegMark,1,0) == True:
+                                            obj = {'result':'t'}
                 else:
                     obj = {'result':'f',
-                               'msg':'用户名已经被注册,或推荐人手机号无效'}
+                               'msg':'用户名已经被注册,或推荐人用户名无效'}
         except BaseException,e:
             print e
-            obj = {'result':'f','msg':'操作有误请重试'}
+            obj = {'result':'f','msg':'用户名已经被注册,或推荐人用户名无效'}
         code = str(json.dumps(obj))
         return HttpResponse(code)
 
