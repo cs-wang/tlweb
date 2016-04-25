@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^DashBoard/ReConsume/$', views.ReConsume),
     url(r'^DashBoard/ReConsume/ReConsumeSave/$', views.ReConsumeSave),
     url(r'^MsgList/ViewMsg/$',views.ViewMsg),
-   url(r'^MsgList/ViewMsg/MsgRead/$', views.MsgRead),
+    url(r'^MsgList/ViewMsg/MsgRead/$', views.MsgRead),
     url(r'^MsgList/$', views.MsgList),
     url(r'^ShowModel/$', views.ShowModel),
     url(r'^ComBank/$', views.ComBank),
@@ -25,6 +25,6 @@ urlpatterns = [
     url(r'^UserMap/$',views.UserMap),
     url(r'^Advice/$', views.Advice),
     url(r'^AdviceList/$', views.AdviceList),
-     url(r'^AdviceList/AdviceView/$', views.AdviceView),
-    url(r'^QrCode/(?P<ReferenceId>(\d)*)/$', views.QrCode)
+    url(r'^AdviceList/AdviceView/$', views.AdviceView),
+    url(r'^QrCode/$', views.QrCode)
 ]

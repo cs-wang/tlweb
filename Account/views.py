@@ -52,7 +52,7 @@ def login(request):
             return HttpResponse(code1)
          
 
-def register(request, ReferenceId = None):
+def register(request):
 
     if request.method == 'GET':
         member_ = models.Member()

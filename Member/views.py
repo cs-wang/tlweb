@@ -944,13 +944,13 @@ def AdviceView(request):
 
 def QrCode(request, ReferenceId):
 	global dns_site
-	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
+# 	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
 	username_ = request.session['username']
-	print url
-	img = qrcode.make(url);
-	buf = StringIO()
-  	img.save(buf)
-  	image_stream = buf.getvalue()
+# 	print url
+# 	img = qrcode.make(url);
+# 	buf = StringIO()
+#   	img.save(buf)
+#   	image_stream = buf.getvalue()
   	context = { 'username':username_ }
   	return render(request, 'Member/Qrcode.html',context)
 # 	return HttpResponse(image_stream , content_type="image/png")
