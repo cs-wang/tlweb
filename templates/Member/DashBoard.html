@@ -477,12 +477,22 @@
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> 状态 </div>
-
                     <div class="profile-info-value">
-	                    <!--span class="label label-success">已激活</span-->
-                        <span class="label label-inverse">{{status_desc}}</span>
-						
-
+						 {% if status_desc == "1" %}
+                        	<span class="label label-success">未审核</span>
+                        {% elif status_desc == "2" %}
+                        	<span class="label label-warning">已审核</span>
+                        {% elif member.0.status.status_id == "3" %}
+                            <span class="label label-success">已激活</span>
+                        {% elif member.0.status.status_id == "4" %}
+                            <span class="label label-inverse">已出局</span>
+                        {% elif member.0.status.status_id == "5" %}
+                            <span class="label label-warning">服务中心锁定</span>
+                        {% elif member.0.status.status_id == "6" %}
+                            <span class="label label-warning">管理员锁定</span>
+                        {% else %}
+							<span class="label">申请加单</span>
+                        {%endif%}
                     </div>
                 </div>
                 <div class="profile-info-row">
