@@ -478,17 +478,17 @@
                 <div class="profile-info-row">
                     <div class="profile-info-name"> 状态 </div>
                     <div class="profile-info-value">
-						 {% if status_desc == "1" %}
+						 {% if mem_status == "1" %}
                         	<span class="label label-success">未审核</span>
-                        {% elif status_desc == "2" %}
+                        {% elif mem_status == "2" %}
                         	<span class="label label-warning">已审核</span>
-                        {% elif member.0.status.status_id == "3" %}
+                        {% elif mem_status == "3" %}
                             <span class="label label-success">已激活</span>
-                        {% elif member.0.status.status_id == "4" %}
+                        {% elif mem_status == "4" %}
                             <span class="label label-inverse">已出局</span>
-                        {% elif member.0.status.status_id == "5" %}
+                        {% elif mem_status == "5" %}
                             <span class="label label-warning">服务中心锁定</span>
-                        {% elif member.0.status.status_id == "6" %}
+                        {% elif mem_status == "6" %}
                             <span class="label label-warning">管理员锁定</span>
                         {% else %}
 							<span class="label">申请加单</span>
@@ -544,8 +544,11 @@
 
         <div style="margin:20px">&nbsp;</div>
 		<div class="row">
-  			<div class="col-md-4 col-md-offset-5">
-  				<button type="button" class="btn btn-danger btn-lg reconsume" data-id={{user_id}}  {% if  mem_status != '4' %} disabled {% endif %} >申请加单</button>
+		
+  			<div class="col-md-4 col-md-offset-5" >
+  			{% if  mem_status == "4" %}
+  				<button type="button" class="btn btn-danger btn-lg reconsume" data-id={{user_id}}>申请加单</button>
+  				{% endif %}
   			</div>
 		</div>
         <div style="margin:20px">&nbsp;</div>

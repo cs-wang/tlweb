@@ -445,9 +445,9 @@
         <div>
             <form class="form-inline" action="?" method="Get">
 
-                <select class="" id="sta" name="status"><option value="0">未读消息</option>
-<option value="1">已读消息</option>
-<option value="2">所有消息</option>
+                <select class="" id="sta" name="status"><option value="2" {% if status == "2" %} selected = "selected"{% endif %}>所有消息</option>
+				<option value="0" {% if status == "0" %} selected = "selected"{% endif %}>未读消息</option>
+				<option value="1" {% if status == "1" %} selected = "selected"{% endif %}>已读消息</option>
 </select>
 
                 <button type="submit" class="btn btn-info btn-sm">

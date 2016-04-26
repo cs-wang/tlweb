@@ -134,7 +134,8 @@ def MsgList(request):
 				'nextomit':nextomit,
 				'prevomitpage':prevomitpage,
 				'nextomitpage':nextomitpage,
-				'nextpage':nextpage }
+				'nextpage':nextpage,
+				'status':status}
 	
 	print user_id
 	print len(msglist)
@@ -319,6 +320,10 @@ def RewardOrder(request):
 		curpage=1
 	print 'cur='+str(curpage)
 	print username
+	create_start = request.GET.get('create_start')
+	create_end = request.GET.get('create_end')
+	sent_start = request.GET.get('sent_start')
+	sent_end = request.GET.get('sent_end')
 	#def commissionList(self,user_name_=None,commission_status_=None,\
 	#				commission_type_=None,commission_created_start_=None,commission_created_end_=None,\
      #                     commission_send_start_=None,commission_send_end_=None,time_order_='0',pageNum=1):
@@ -326,6 +331,10 @@ def RewardOrder(request):
 	comissionlist,pagenum,totalnum,money=comissionobj.commissionList(
 															user_name_=username,
 															commission_status_=type,
+															commission_created_start_=create_start,
+															commission_created_end_=create_end,
+															commission_send_start_=sent_start,
+															commission_send_end_=sent_end,
 															time_order_='0',
 															pageNum=curpage)
 	
@@ -411,10 +420,10 @@ def RewardOrderList(request):
 															user_name_=username,
 															commission_status_=type,
 															commission_type_=rewardtype,
-															commission_created_start_=None,
-														    commission_created_end_=None,
-															commission_send_start_=None,
-															commission_send_end_=None,
+															commission_created_start_=create_start,
+														    commission_created_end_=create_end,
+															commission_send_start_=sent_start,
+															commission_send_end_=sent_end,
 															time_order_='0',
 															pageNum=curpage)
    
@@ -566,15 +575,26 @@ def RecomeList(request):
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
+	user_or_phone=request.GET.get('UserInfo')
 	memobj=models.Member()
 	curpage = request.GET.get('p')
+	if user_or_phone == 'None' or user_or_phone == "":
+		user_or_phone=None
 	if curpage == None:
 			curpage='1';
 	curpage=int(curpage)
 	if curpage<=0:
 		curpage=1
 	print 'cur='+str(curpage)
-	reflist,pagenum,totalnum = memobj.myReference( 
+	if user_or_phone != None:
+		print user_or_phone
+		reflist,pagenum,totalnum = memobj.myInfoByUserOrPhone(
+		user_or_phone, 
+		user_id,
+		curpage
+		)
+	else:
+		reflist,pagenum,totalnum = memobj.myReference(
 		user_id,
 		curpage
 		)
@@ -620,6 +640,7 @@ def RecomeList(request):
 	#context = {'username':username}
 	context['username']=username
 	context['refInfolist']=refInfolist
+	context['user_or_phone']=user_or_phone
 	
 	return render(request, 'Member/RecomeList.html', context)
 
@@ -863,15 +884,15 @@ def AdviceList(request):
 	end=request.GET.get('end')
 	advobj=models.Advice()
 	print readstatus,start,end
-	if readstatus=='':
+	if readstatus=="None" or readstatus=='':
 		readstatus=None
 		print 'service is none'
 		
-	if start=='':
+	if start=="None" or start=='':
 		start=None
-	if end=='':
+	if end=="None" or end=='':
 		end=None
-	if title == '':
+	if title=="None" or title == '':
 		title=None
 		print 'title is none'
 	else:
@@ -942,7 +963,7 @@ def AdviceView(request):
 	return render(request, 'Member/AdviceView.html', context)
 
 
-def QrCode(request, ReferenceId):
+def QrCode(request):
 	global dns_site
 # 	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
 	username_ = request.session['username']

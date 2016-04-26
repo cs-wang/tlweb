@@ -1233,6 +1233,21 @@ class Member(models.Model):
             return i,(count/ONE_PAGE_OF_DATA),count
         else:
             return i,(count/ONE_PAGE_OF_DATA)+1,count
+    #查看会员信息(根据用户名或者手机号获得取信息)
+    def myInfoByUserOrPhone(self,user_or_phone_,ref_id_,pageNum=1):
+        startPos = (pageNum-1)*ONE_PAGE_OF_DATA
+        endPos = pageNum*ONE_PAGE_OF_DATA
+        count = 0
+        try:
+            i = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(reference_id = ref_id_).all()[startPos:endPos]
+            count = Member.objects.filter(Q(user_name = user_or_phone_)|Q(bind_phone=user_or_phone_)).filter(reference_id = ref_id_).count()
+            if count%ONE_PAGE_OF_DATA == 0:
+                return i,(count/ONE_PAGE_OF_DATA),count
+            else:
+                return i,(count/ONE_PAGE_OF_DATA)+1,count
+        except BaseException,e:
+            print e
+    
     #查看会员信息
     def myInfo(self,user_id_):
         try:

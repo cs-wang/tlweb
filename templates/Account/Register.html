@@ -149,7 +149,7 @@
 	        <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> 推荐人用户名 </label>
                 <div class="col-sm-9 parentCls">
-                    <input type="text" id="RefUsername" name="RefUsername" placeholder="必须填写，没有推荐人无法注册成功" class="col-xs-10 col-sm-5" maxlength="20" {% if RefUsername != None %} value="{{RefUsername}}" {% endif %}/>
+                    <input type="text" id="RefUsername" name="RefUsername" placeholder="必须填写，没有推荐人无法注册成功" class="col-xs-10 col-sm-5" maxlength="20" {% if RefUsername != None %} value="{{RefUsername}}" disabled='disabled' {% endif %}/>
                 </div>
             </div>
             
