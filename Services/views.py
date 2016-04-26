@@ -731,7 +731,7 @@ def Promotion(request):
 		reqUserInfo = None
 	if reqGiftStatus == "3" or reqGiftStatus == "None":
 		reqGiftStatus =  None
-	if reqGiftFrom == "6" or reqGiftFrom == "None":
+	if reqGiftFrom == "8" or reqGiftFrom == "None":
 		reqGiftFrom = None
 	if reqAddStart == "" or reqAddStart == "None":
 		reqAddStart = None
@@ -946,14 +946,14 @@ def AdviceSub(request):
 	advcon = request.POST.get('info')
 	print "advcon:",advcon
 	advobj = models.Advice()
-	advobj.reply_advice(	
+	if advobj.reply_advice(	
 			user_id_ = 1, #useless
 			reply_content_ = advcon,
 			service_id_ = serviceid, # useless
 			advice_id_ = advid   
-			)
-	advice = advobj.one_advice(advid)
-	if advice.advice_status == "1":
+			) == True:
+	#advice = advobj.one_advice(advid)
+	#if advice.advice_status == "1":
 		obj = {'result':'t'}
 	else:
 		obj = {'result':'f'}
@@ -967,11 +967,12 @@ def SubService(request):
 	print "ServiceID:",serviceid
 	serobj = models.Service()
 	subserviceobj =  serobj.getSecService(service_id_ = serviceid)
-	print "subserviceobj:",subserviceobj.service_id
+# 	print "subserviceobj:",subserviceobj.service_id
 	context = {}
 	if subserviceobj != None:
 		context = { "subserviceobj":subserviceobj,
-					'username':request.session['username'], }
+					'username':request.session['username'],
+					'serviceid':serviceid }
 	return render(request, 'Services/SubService.html', context)
 
 def SubServiceSave(request):

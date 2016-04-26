@@ -111,12 +111,7 @@
                             <option value="0" {% if serviceReadStatus == "0" %} selected="selected" {% endif %}>未阅读</option>
                             <option value="1" {% if serviceReadStatus == "1" %} selected="selected" {% endif %}>已阅读</option>
                         </select>
-                管理员 <select class="" id="adminReadStatus" name="adminReadStatus">
-                            <option value="2" {% if adminReadStatus == "2" %} selected="selected" {% endif %}>所有</option>
-                            <option value="0" {% if adminReadStatus == "0" %} selected="selected" {% endif %}>未阅读</option>
-                            <option value="1" {% if adminReadStatus == "1" %} selected="selected" {% endif %}>已阅读</option>
-                        </select>
-
+                       &nbsp;
                 <input class="form-control date-picker" id="addStart" name="addStart" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 起" {% if addStart != None %} value = "{{addStart}}" {% endif %}/>
                 <input class="form-control date-picker" id="AddEnd" name="AddEnd" type="text" data-date-format="yyyy-mm-dd" style="width:90px;" placeholder="发表时间 止" {% if AddEnd != None %} value = "{{AddEnd}}" {% endif %}/>
 

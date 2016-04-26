@@ -172,7 +172,9 @@
                         <td data-name="mob" style="font-size:14px;">{{coms.user_id.bind_phone}}</td>
                         <td style="text-align:right">{{coms.commission_price}}</td>
                         <td>
-                        {% if coms.commission_type.commission_type == "1" %}
+                        {% if coms.commission_type.commission_type == "0" %}
+                        推荐奖
+                        {% elif coms.commission_type.commission_type == "1" %}
                         优秀推荐奖
                         {% elif coms.commission_type.commission_type == "2" %}
                         超级推荐奖

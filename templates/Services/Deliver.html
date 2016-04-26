@@ -93,7 +93,7 @@
         </table>
         <div style="text-align:center;font-size:14px">
             <p style="font-size:8px;text-align:left">(*)当您确定之后，系统将记录收货地址，之后无法再修改本次的发货单<br />(*)您可以不填写快递信息</p>
-            <input id="chk" type="checkbox" /><label for="chk">稍候请为我打印发货单</label><input id="sub" type="button" value="确定发货" />
+            <input id="sub" type="button" value="确定发货" />
         </div>
     </div>
     <script>
@@ -124,14 +124,11 @@
                 $.post('DeliverSub/', { data: arr.join(',') }, function (json) {
                     layer.closeAll('loading');
                     if (json.result == "t") {
-                        if ($('#chk').prop('checked')) {
-                            location.href = 'DeliverPrint?ids=' + json.ids;
-                        }
-                        else {
+
                             layer.msg('操作成功，正在刷新页面！', { icon: 1 }, function () { });
                             parent.location.href = parent.location.href;
                             parent.layer.closeAll();
-                        }
+                      
                     }
                     else {
                         layer.alert('操作失败！' + json.msg, { icon: 5 });

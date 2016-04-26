@@ -145,7 +145,13 @@
                             <td>{{order.user_id.user_name}}</td>
                             <td data-name="mob" style="font-size:16px;">{{order.user_id.bind_phone}}</td>
                             <td>{{order.order_price}}</td>
-                            <td>{{order.order_type}}报单</td>
+                            <td>
+                            {% if order.order_type == "0" %}
+                            报单
+                            {% elif order.order_type == "1" %}
+                            复消
+                            {% endif %}
+                            </td>
                             <td>{{order.order_created}}</td>
                             <td>{{order.order_memo}}</td>
                             <td>{{order.order_status}}</td>

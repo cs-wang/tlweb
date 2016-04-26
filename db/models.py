@@ -56,7 +56,7 @@ def memberRegister(user,nickname_,ref_username_,delegation_phone_,delegation_inf
                         #消息列表中增加一条
                         Message.objects.create(service_id = serviceid,message_title = nickname_+"首次加单，请审核订单并审核会员",\
                                                    message_content ="会员"+nickname_+"已申请加单,请至会员列表进行审核。",\
-                                                   sent_time = time_, message_status = '0',user_id = i.user_id)
+                                                   sent_time = time_, message_status = '0',user_id = None)
                         return True
 #                 except BaseException,e:
 #                         print e
@@ -858,6 +858,12 @@ class Member(models.Model):
                     #如果为首次加单 且上级不为空，判断此单为上级的第几单 复销推荐奖不记入推荐奖总数
                     if i.reference_id != 0:
                         #查询最近三十天上级的推荐奖类订单数量 time_1比time小30天
+                        ref = Member.objects.filter(user_id = i.reference_id).get()
+                        print ref.status.status_id
+                        if ref.status.status_id == "2":
+                            ref.status = MemberStatus(id = 3,status_id = '3')
+                            ref.save()
+                        
                         time = timezone.now()
                         #最近30天
                         time_1 = datetime.datetime(time.year,time.month,1)
@@ -902,7 +908,7 @@ class Member(models.Model):
                             if count == 19:
                                 print i.reference_id,'获得400元超级推荐奖+1900元'
                                 CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 400*(1-tax),\
-                                                        commission_created = timezone.now(),commission_status = '0',\
+                                                        commission_created = timezone.now(),commission_status = '3',\
 
                                                         commission_type = CommissionDetail(commission_type = '2'),service_id = i.service_id)
                                 CommissionOrder.objects.create(user_id = Member(user_id = i.reference_id),commission_price = 1900*(1-tax),\
@@ -1005,7 +1011,9 @@ class Member(models.Model):
                                 #给出局的上级发送短信
                                 if list[(index-1)/3].user_id.reference_id != 0:
                                     ref_man = Member.objects.filter(user_id = list[(index-1)/3].user_id.reference_id).get()
-                                    send_Short_Message(ref_man.bind_phone,ref_man.user_name+"会员您好,您推荐的用户:"+list[(index-1)/3].user_id.username+"即将获得第3次广告奖励500元后结束。希望你再次提醒会员，重复消费你将自动获得推荐奖200元。咨询电话：0575-87755511.回复TD退订")
+                                    ref_man.status =  MemberStatus(id = 4,status_id = '4')
+                                    ref_man.save()
+                                    send_Short_Message(ref_man.bind_phone,ref_man.user_name+"会员您好,您推荐的用户:"+list[(index-1)/3].user_id.user_name+"即将获得第3次广告奖励500元后结束。希望你再次提醒会员，重复消费你将自动获得推荐奖200元。咨询电话：0575-87755511.回复TD退订")
                     
                             #至此广告费结束
                         else:
