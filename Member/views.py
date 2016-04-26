@@ -973,7 +973,7 @@ def QrCode(request):
 #   	img.save(buf)
 #   	image_stream = buf.getvalue()
   	context = { 'username':username_ }
-  	return render(request, 'Member/Qrcode.html',context)
+  	return render(request, 'Member/QrCode.html',context)
 # 	return HttpResponse(image_stream , content_type="image/png")
 	
 
