@@ -24,11 +24,40 @@
     </style>
 </head>
 <body>
+    <script type="text/javascript" src="/assets/js/jquery.js"></script> 
+    <script type="text/javascript" src="/assets/js/jquery.qrcode.min.js"></script> 
     <div class="center">
-    	<!--<img src="QRCODE?data=139.196.235.142">!-->
-        <!--img src="QRCODE?data=http://www.tljk518.com/static/MemRecome?mob=15906753588"-->
-        <img src="https://chart.googleapis.com/chart?cht=qr&chs=300x300&choe=UTF-8&chld=L|4&chl=http://139.196.235.142/Account/Reg/?RefUsername={{username}}"/>
+        <br/>
+        <div id="code"></div>
         <p>请用微信扫一扫功能扫描该二维码</p>
     </div>
+    <script type="text/javascript">
+    function toUtf8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for(i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            }
+        }
+        return out;
+    }
+
+    var urlstr = toUtf8("{{qrurl}}");
+    $('#code').qrcode({
+        width: 300,
+        height:300,
+        text: urlstr
+    });
+    </script>
 </body>
 </html>
