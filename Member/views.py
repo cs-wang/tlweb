@@ -14,9 +14,9 @@ from urllib2 import Request
 from django.template.defaultfilters import title
 
 site_dns = 'http://192.168.3.108:8000'
-
+loginrole = '0'
 def DashBoard(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	user_id=request.session['user_id']
 	print user_id
@@ -44,9 +44,13 @@ def DashBoard(request):
 	return render(request, 'Member/DashBoard.html', context)
 	
 def ReConsume(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	context = {}
 	return render(request, 'Member/ReConsume.html', context)
 def ReConsumeSave(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	mark=request.POST['Mark']
 	username=request.session["username"]
 	#createOrder(self,service_id_,user_id_,order_price_,order_type_,order_memo_,order_status_="未发货"):
@@ -77,6 +81,8 @@ def ReConsumeSave(request):
 	return HttpResponse(code)
 
 def MsgList(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	print "msg list"
 	if request.session['role'] == None:
 		return HttpResponseRedirect('/')
@@ -149,6 +155,8 @@ def MsgList(request):
 
 
 def ViewMsg(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	message_id=int(request.GET["MsgId"])
 	print 'message_id='+str(message_id)
 	msgobj=models.Message()
@@ -157,6 +165,8 @@ def ViewMsg(request):
 	context={'message_id':message_id,'message_title':msg.message_title,'message_content':msg.message_content}
 	return render(request,'Member/ViewMsg.html',context)
 def MsgRead(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	print 'Message_read'
 	message_id=request.POST.get('MsgId')
 	msgobj=models.Message()
@@ -170,9 +180,8 @@ def MsgRead(request):
 	return HttpResponse(code)
 
 def ShowModel(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
-#<<<<<<< HEAD
 	username=request.session['username']
 	
 	context = {'username':username}
@@ -187,7 +196,7 @@ def ShowModel(request):
 	return render(request, 'Member/ShowModel.html', context)
  
 def ComBank(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -301,7 +310,7 @@ def MemberOrder(request):
 	return render(request, 'Member/MemberOrder.html', context)
 
 def RewardOrder(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -380,7 +389,7 @@ def RewardOrder(request):
 	return render(request, 'Member/RewardOrder.html', context)
 
 def RewardOrderList(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -489,7 +498,7 @@ def RewardOrderList(request):
 
 @transaction.atomic
 def Recome(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -510,6 +519,8 @@ def Recome(request):
 	return render(request, 'Member/Recome.html', context)
 
 def RecomeSave(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	#RegUserId = request.POST['UserId']
 	RegUserName = request.POST['UserName']
 	RegNickName = request.POST['NickName']
@@ -571,7 +582,7 @@ def RecomeSave(request):
 	return HttpResponse(code)
 
 def RecomeList(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -645,8 +656,8 @@ def RecomeList(request):
 	return render(request, 'Member/RecomeList.html', context)
 
 def MyRecomeAll(request):
-	if request.session['role'] != '0':
-		return HttpResponseRedirect('/')
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')	
 	user_id=request.session['user_id']
 	username=request.session['username']
 	memobj=models.Member()
@@ -715,6 +726,8 @@ def MyRecomeAll(request):
 	#print "最多",maxPage
 	return render(request, 'Member/MyRecomeAll.html', context)
 def UserMap(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	username=request.session['username']
 	context={}
 	context['username']=username
@@ -723,6 +736,8 @@ def UserMap(request):
 
 
 def GetMap(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	reqUid = request.POST.get('Uid')
 	reqstep = request.POST.get('step')
 
@@ -760,7 +775,7 @@ def GetMap(request):
 
 
 def MyData(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	username=request.session['username']
 	user_id=request.session['user_id']
@@ -778,6 +793,8 @@ def MyData(request):
 	context['meminfo']=meminfo
 	return render(request, 'Member/MyData.html', context)
 def MyDataUpdate(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	user_id=request.session["user_id"]
 	RegUserName = request.POST['UserName']
 	RegNickName = request.POST['NickName']
@@ -830,7 +847,7 @@ def MyDataUpdate(request):
 	return HttpResponse(code)
 
 def Advice(request):
-	if request.session['role'] != '0':
+	if request.session.get('role') == None or request.session['role'] != loginrole:
 		return HttpResponseRedirect('/')
 	type=request.GET.get('type')
 	username=request.session['username']
@@ -851,6 +868,8 @@ def Advice(request):
 #timezone.now()
 	return render(request, 'Member/Advice.html', context)
 def AdviceSub(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	title=request.POST['title']
 	info=request.POST['info']
 	user_id=request.session['user_id']
@@ -874,8 +893,8 @@ def AdviceSub(request):
 	return HttpResponse(code)
 
 def AdviceList(request):
-	if request.session['role'] != '0':
-		return HttpResponseRedirect('/')
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')	
 	user_id=request.session['user_id']
 	username=request.session['username']
 	title=request.GET.get('title')
@@ -955,6 +974,8 @@ def AdviceList(request):
 	return render(request, 'Member/AdviceList.html', context)
 
 def AdviceView(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	id=request.GET['Id']
 	advobj=models.Advice()
 	adv=advobj.one_advice(id)
@@ -964,6 +985,8 @@ def AdviceView(request):
 
 
 def QrCode(request):
+	if request.session.get('role') == None or request.session['role'] != loginrole:
+		return HttpResponseRedirect('/')
 	global dns_site
 # 	url = site_dns + "/Account/Reg/" + str(ReferenceId)+"/"
 	username_ = request.session['username']
